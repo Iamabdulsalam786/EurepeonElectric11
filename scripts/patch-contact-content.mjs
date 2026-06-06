@@ -20,7 +20,7 @@ html = html.replace(
                 <div class="row clearfix align-items-center">
                     <div class="col-lg-5 col-md-12 col-sm-12 image-column">
                         <figure class="contact-page-image p_relative d_block">
-                            <img src="/assets/images/resource/contact-1.jpg" alt="European Electric professional team">
+                            <img src="/assets/images/resource/about-5.jpg" alt="Licensed electrician at work">
                         </figure>
                     </div>
                     <div class="col-lg-3 col-md-12 col-sm-12 info-column">

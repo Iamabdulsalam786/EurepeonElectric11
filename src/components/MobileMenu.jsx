@@ -1,61 +1,80 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { SITE } from '../config/site';
+import { MAIN_NAV } from '../config/navigation';
+import BrandLogo from './BrandLogo';
+
+function closeMobileMenu() {
+  document.body.classList.remove('mobile-menu-visible');
+}
 
 export default function MobileMenu() {
-  return (
-    <div className="mobile-menu">
-      <div className="menu-backdrop"></div>
-      <div className="close-btn">
-        <i className="fas fa-times"></i>
-      </div>
+  const location = useLocation();
 
-      <nav className="menu-box">
-        <div className="nav-logo">
-          <Link to="/">
-            <img src={SITE.logos.mobile} alt={SITE.name} title={SITE.name} />
-          </Link>
+  useEffect(() => {
+    closeMobileMenu();
+  }, [location.pathname, location.hash]);
+
+  return (
+    <div className="mobile-menu mobile-menu--premium">
+      <div className="menu-backdrop" aria-hidden="true"></div>
+      <button type="button" className="close-btn" aria-label="Close menu">
+        <i className="fas fa-times" aria-hidden="true"></i>
+      </button>
+
+      <nav className="menu-box" aria-label="Mobile">
+        <div className="mobile-menu__header">
+          <div className="nav-logo">
+            <BrandLogo />
+          </div>
         </div>
-        <div className="menu-outer"></div>
-        <div className="contact-info">
-          <h4>Contact Info</h4>
-          <ul>
-            <li>{SITE.address}</li>
-            <li>
-              <a href={`tel:${SITE.phone.replace(/\D/g, '')}`}>{SITE.phone}</a>
-            </li>
-            <li>
-              <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-            </li>
+
+        <div className="mobile-menu__body">
+          <p className="mobile-menu__label">Menu</p>
+          <ul className="mobile-nav-list" data-react-mobile-nav="true">
+            {MAIN_NAV.map((item) => (
+              <li key={item.label}>
+                <NavLink
+                  to={item.to}
+                  className={({ isActive }) =>
+                    `mobile-nav-link${isActive && !item.to.includes('#') ? ' is-active' : ''}`
+                  }
+                  onClick={closeMobileMenu}
+                >
+                  <span>{item.label}</span>
+                  <i className="fas fa-chevron-right" aria-hidden="true"></i>
+                </NavLink>
+              </li>
+            ))}
           </ul>
-        </div>
-        <div className="social-links">
-          <ul className="clearfix">
-            <li>
-              <a href="/">
-                <span className="fab fa-twitter"></span>
-              </a>
-            </li>
-            <li>
-              <a href="/">
-                <span className="fab fa-facebook-square"></span>
-              </a>
-            </li>
-            <li>
-              <a href="/">
-                <span className="fab fa-pinterest-p"></span>
-              </a>
-            </li>
-            <li>
-              <a href="/">
-                <span className="fab fa-instagram"></span>
-              </a>
-            </li>
-            <li>
-              <a href="/">
-                <span className="fab fa-youtube"></span>
-              </a>
-            </li>
-          </ul>
+
+          <div className="mobile-menu-cta">
+            <Link to="/appointment" className="theme-btn btn-one" onClick={closeMobileMenu}>
+              {SITE.cta.primary}
+            </Link>
+          </div>
+
+          <div className="mobile-menu__contact contact-info">
+            <h4>Contact Info</h4>
+            <ul>
+              <li>
+                <i className="fas fa-map-marker-alt" aria-hidden="true"></i>
+                <span>{SITE.address}</span>
+              </li>
+              <li>
+                <i className="fas fa-phone-alt" aria-hidden="true"></i>
+                <a href={`tel:${SITE.phoneTel}`}>{SITE.phone}</a>
+              </li>
+              <li>
+                <i className="fas fa-envelope" aria-hidden="true"></i>
+                <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+              </li>
+              <li>
+                <i className="fas fa-clock" aria-hidden="true"></i>
+                <span>{SITE.hours}</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
     </div>

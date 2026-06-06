@@ -24,7 +24,7 @@ const FREE_IMAGES = {
 
   // About Us section — electrician on site, portrait crop
   'resource/about-1.jpg': 'https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=800&h=900&fit=crop',
-  'resource/contact-1.jpg': 'https://images.pexels.com/photos/5591463/pexels-photo-5591463.jpeg?auto=compress&cs=tinysrgb&w=800&h=900&fit=crop',
+  'resource/contact-1.jpg': 'https://images.pexels.com/photos/4246214/pexels-photo-4246214.jpeg?auto=compress&cs=tinysrgb&w=800&h=900&fit=crop',
 
   'resource/about-5.jpg': 'https://images.pexels.com/photos/4246214/pexels-photo-4246214.jpeg?auto=compress&cs=tinysrgb&w=700&h=800&fit=crop',
   'resource/about-6.jpg': 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=500&h=600&fit=crop&q=85',

@@ -2,9 +2,9 @@
 export const SERVICE_CARD_META = {
   residential: {
     cardTitle: 'Residential Electrical',
-    description: 'Repairs, installations and rewiring for homes — done safely and to code.',
+    description: 'Installations, rewiring, and panel upgrades for homes — done safely and to code.',
     highlights: [
-      'Repairs & troubleshooting',
+      'Outlets, lighting & detectors',
       'Whole-house rewiring',
       'Panel & service upgrades',
     ],
@@ -17,31 +17,40 @@ export const SERVICE_CARD_META = {
   },
   'ev-chargers': {
     cardTitle: 'EV Chargers',
-    description: 'Certified Tesla & Level 2 chargers for homes, businesses and fleets.',
-    highlights: ['Tesla & Level 2 chargers', 'Fleet & commercial sites', 'Diagnostics & repairs'],
+    description: 'Certified Tesla and Level 2 home charging — circuit, setup, and permits.',
+    highlights: [
+      'Tesla & Level 2 installation',
+      'Home charging station setup',
+      'Circuit & permit assistance',
+    ],
   },
 };
+
+/** Primary nav groups — keeps the services UI compact (3 tabs + specialty sub-nav) */
+export const SERVICE_PRIMARY_NAV = [
+  { id: 'residential', label: 'Residential', tabId: 'residential' },
+  { id: 'commercial', label: 'Commercial', tabId: 'commercial' },
+  { id: 'specialty', label: 'Specialty Services' },
+];
+
+export const SPECIALTY_SERVICE_IDS = [
+  'ev-chargers',
+  'lighting-solutions',
+  'panel-upgrades',
+  'safety-upgrades',
+  'new-construction',
+];
 
 /** Exact production copy — do not paraphrase item text */
 export const SERVICE_TABS = [
   {
     id: 'residential',
     tabLabel: 'Residential Services',
+    shortLabel: 'Residential',
     title: 'Residential Electrical Services',
     image: '/assets/images/service/service-1.jpg',
-    link: '/services',
+    link: '/#services',
     categories: [
-      {
-        title: 'Electrical Repairs',
-        items: [
-          'Troubleshoot power outages',
-          'Fix faulty outlets',
-          'Repair circuit breakers',
-          'Resolve flickering lights',
-          'Diagnose electrical faults',
-          'Repair damaged wiring',
-        ],
-      },
       {
         title: 'Electrical Installations',
         items: [
@@ -70,7 +79,6 @@ export const SERVICE_TABS = [
           'Service entrance upgrades',
           'Circuit breaker replacement',
           'Subpanel installation',
-          'Electrical capacity upgrades',
         ],
       },
     ],
@@ -78,9 +86,10 @@ export const SERVICE_TABS = [
   {
     id: 'commercial',
     tabLabel: 'Commercial Services',
+    shortLabel: 'Commercial',
     title: 'Commercial Electrical Services',
     image: '/assets/images/service/service-3.jpg',
-    link: '/services',
+    link: '/#services',
     categories: [
       {
         title: 'Tenant Improvements',
@@ -88,8 +97,6 @@ export const SERVICE_TABS = [
           'Office build-outs',
           'Retail space wiring',
           'Restaurant electrical installations',
-          'Commercial remodeling',
-          'Workspace electrical upgrades',
         ],
       },
       {
@@ -99,7 +106,6 @@ export const SERVICE_TABS = [
           'Power distribution systems',
           'Dedicated circuits',
           'Equipment power connections',
-          'Electrical load balancing',
         ],
       },
       {
@@ -109,17 +115,6 @@ export const SERVICE_TABS = [
           'Parking lot lighting',
           'Warehouse lighting',
           'Emergency lighting',
-          'Exit sign installation',
-        ],
-      },
-      {
-        title: 'Maintenance & Repairs',
-        items: [
-          'Preventive maintenance',
-          'Emergency repairs',
-          'Electrical inspections',
-          'System troubleshooting',
-          'Equipment diagnostics',
         ],
       },
     ],
@@ -127,9 +122,10 @@ export const SERVICE_TABS = [
   {
     id: 'ev-chargers',
     tabLabel: 'EV Charger Installation',
+    shortLabel: 'EV Charging',
     title: 'EV Charger Installation',
     image: '/assets/images/service/service-4.jpg',
-    link: '/services',
+    link: '/#services',
     categories: [
       {
         title: 'Residential EV Charging',
@@ -141,37 +137,15 @@ export const SERVICE_TABS = [
           'Permit assistance',
         ],
       },
-      {
-        title: 'Commercial EV Charging',
-        items: [
-          'Fleet charging stations',
-          'Apartment complex charging',
-          'Workplace charging solutions',
-          'Public charging stations',
-          'Charging infrastructure planning',
-        ],
-      },
-      {
-        title: 'EV Charger Maintenance',
-        items: [
-          'Charger diagnostics',
-          'Charger repairs',
-          'Software updates',
-          'System upgrades',
-        ],
-      },
     ],
   },
-];
-
-/**
- * Sections 4–8 of the full company menu — used on /services and extended pages.
- * Homepage tabs (SERVICE_TABS) intentionally cover sections 1–3 only.
- */
-export const EXTENDED_SERVICE_MENU = [
   {
     id: 'lighting-solutions',
+    tabLabel: 'Lighting Solutions',
+    shortLabel: 'Lighting',
     title: 'Lighting Solutions',
+    image: '/assets/images/service/service-5.jpg',
+    link: '/#services',
     categories: [
       {
         title: 'Indoor Lighting',
@@ -193,20 +167,15 @@ export const EXTENDED_SERVICE_MENU = [
           'Deck and patio lighting',
         ],
       },
-      {
-        title: 'Smart Lighting',
-        items: [
-          'Automated lighting systems',
-          'Smart switches',
-          'Remote lighting controls',
-          'Lighting scheduling',
-        ],
-      },
     ],
   },
   {
     id: 'panel-upgrades',
+    tabLabel: 'Panel Upgrades',
+    shortLabel: 'Panels',
     title: 'Panel Upgrades & Electrical Service',
+    image: '/assets/images/service/service-6.jpg',
+    link: '/#services',
     categories: [
       {
         title: 'Electrical Panels',
@@ -230,64 +199,30 @@ export const EXTENDED_SERVICE_MENU = [
     ],
   },
   {
-    id: 'safety-inspections',
-    title: 'Electrical Safety & Inspections',
+    id: 'safety-upgrades',
+    tabLabel: 'Safety Upgrades',
+    shortLabel: 'Safety',
+    title: 'Electrical Safety Upgrades',
+    image: '/assets/images/service/service-7.jpg',
+    link: '/#services',
     categories: [
-      {
-        title: 'Safety Inspections',
-        items: [
-          'Home electrical inspections',
-          'Commercial inspections',
-          'Pre-purchase inspections',
-          'Code compliance inspections',
-        ],
-      },
       {
         title: 'Safety Upgrades',
         items: ['GFCI installation', 'AFCI installation', 'Surge protection', 'Grounding improvements'],
-      },
-      {
-        title: 'Compliance Services',
-        items: ['Permit inspections', 'Electrical code corrections', 'Safety certifications'],
-      },
-    ],
-  },
-  {
-    id: 'emergency-electrical',
-    title: 'Emergency Electrical Services',
-    categories: [
-      {
-        title: 'Emergency Repairs',
-        items: [
-          'Power outage diagnosis',
-          'Burning smell investigations',
-          'Electrical fire damage repair',
-          'Emergency breaker replacement',
-        ],
-      },
-      {
-        title: 'Urgent Troubleshooting',
-        items: [
-          'Fault finding',
-          'Short circuit diagnosis',
-          'Tripped breaker investigation',
-          'Electrical hazard mitigation',
-        ],
-      },
-      {
-        title: '24/7 Service Calls',
-        items: ['Residential emergencies', 'Commercial emergencies', 'Storm damage repairs'],
       },
     ],
   },
   {
     id: 'new-construction',
+    tabLabel: 'New Construction',
+    shortLabel: 'Construction',
     title: 'New Construction & Remodeling',
+    image: '/assets/images/service/service-8.jpg',
+    link: '/#services',
     categories: [
       {
         title: 'New Construction',
         items: [
-          'Complete electrical system design',
           'New home wiring',
           'New commercial building wiring',
           'Temporary construction power',
@@ -302,10 +237,13 @@ export const EXTENDED_SERVICE_MENU = [
           'ADU electrical installation',
         ],
       },
-      {
-        title: 'Final Connections',
-        items: ['Appliance connections', 'Fixture installations', 'Final electrical inspections'],
-      },
     ],
   },
 ];
+
+/** Sections 4–7 — same data as homepage tabs (for reference / footer links) */
+export const EXTENDED_SERVICE_MENU = SERVICE_TABS.slice(3).map(({ id, title, categories }) => ({
+  id,
+  title,
+  categories,
+}));

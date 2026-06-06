@@ -2,12 +2,10 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import TemplatePage from './pages/TemplatePage';
 import manifest from './content/manifest.json';
-import { DISABLED_STANDALONE_SERVICE_PAGES } from './config/routes';
+import { PRODUCTION_ROUTES } from './config/routes';
 
 export default function App() {
-  const routes = Object.keys(manifest).filter(
-    (path) => !DISABLED_STANDALONE_SERVICE_PAGES.includes(path),
-  );
+  const routes = Object.keys(manifest).filter((path) => PRODUCTION_ROUTES.includes(path));
 
   return (
     <Routes>

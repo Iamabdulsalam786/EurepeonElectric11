@@ -1,11 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { SITE } from '../config/site';
+import { FOOTER_NAV } from '../config/navigation';
+import { SERVICE_TABS } from '../config/services';
+import BrandLogo from './BrandLogo';
 
 export default function Footer() {
   return (
     <footer className="main-footer p_relative bg-color-2">
       <div className="icon-layer">
-        <img src="/assets/images/icons/icon-5.png" alt="" />
+        <img src="/assets/images/icons/icon-5.png" alt="" aria-hidden="true" />
       </div>
       <div className="footer-top p_relative d_block">
         <div className="auto-container">
@@ -13,14 +16,12 @@ export default function Footer() {
             <div className="col-lg-4 col-md-6 col-sm-12 footer-column">
               <div className="footer-widget logo-widget">
                 <figure className="footer-logo">
-                  <Link to="/">
-                    <img src={SITE.logos.footer} alt={SITE.name} />
-                  </Link>
+                  <BrandLogo variant="footer" />
                 </figure>
                 <div className="text">
                   <p>
-                    {SITE.name} provides trusted residential and commercial electrical services with a commitment to
-                    safety, quality workmanship, and customer satisfaction.
+                    {SITE.name} delivers licensed residential and commercial electrical work — wiring, panels, lighting,
+                    EV charging, safety upgrades, and new construction — with transparent pricing and dependable results.
                   </p>
                 </div>
               </div>
@@ -28,29 +29,15 @@ export default function Footer() {
             <div className="col-lg-3 col-md-6 col-sm-12 footer-column">
               <div className="footer-widget links-widget ml_100">
                 <div className="widget-title">
-                  <h3>Links</h3>
+                  <h3>Quick Links</h3>
                 </div>
                 <div className="widget-content">
                   <ul className="links-list clearfix">
-                    <li>
-                      <Link to="/about">About</Link>
-                    </li>
-                    <li>
-                      {/* Standalone /services page disabled — homepage section instead */}
-                      <Link to="/#services">Services</Link>
-                    </li>
-                    <li>
-                      <Link to="/appointment">Appointment</Link>
-                    </li>
-                    <li>
-                      <Link to="/contact">Contact</Link>
-                    </li>
-                    <li>
-                      <Link to="/projects">Projects</Link>
-                    </li>
-                    <li>
-                      <Link to="/blog">Article</Link>
-                    </li>
+                    {FOOTER_NAV.map((item) => (
+                      <li key={item.label}>
+                        <Link to={item.to}>{item.label}</Link>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -62,24 +49,11 @@ export default function Footer() {
                 </div>
                 <div className="widget-content">
                   <ul className="links-list clearfix">
-                    <li>
-                      <Link to="/air-conditioning">Air Conditioning</Link>
-                    </li>
-                    <li>
-                      <Link to="/heating-service">Heating Service</Link>
-                    </li>
-                    <li>
-                      <Link to="/power-outlets">Power Outlets</Link>
-                    </li>
-                    <li>
-                      <Link to="/indoor-lighting">Indoor Lighting</Link>
-                    </li>
-                    <li>
-                      <Link to="/security-system">Security System</Link>
-                    </li>
-                    <li>
-                      <Link to="/electrical-panels">Electrical Panels</Link>
-                    </li>
+                    {SERVICE_TABS.map((tab) => (
+                      <li key={tab.id}>
+                        <Link to="/#services">{tab.tabLabel}</Link>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -87,13 +61,13 @@ export default function Footer() {
             <div className="col-lg-3 col-md-6 col-sm-12 footer-column">
               <div className="footer-widget contact-widget">
                 <div className="widget-title">
-                  <h3>Contacts</h3>
+                  <h3>Contact</h3>
                 </div>
                 <div className="widget-content">
                   <ul className="info-list clearfix">
                     <li>{SITE.address}</li>
                     <li>
-                      <a href={`tel:${SITE.phone.replace(/\D/g, '')}`}>{SITE.phone}</a>
+                      <a href={`tel:${SITE.phoneTel}`}>{SITE.phone}</a>
                     </li>
                     <li>
                       <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
@@ -110,17 +84,9 @@ export default function Footer() {
           <div className="bottom-inner p_relative">
             <div className="copyright">
               <p>
-                <Link to="/">{SITE.name}</Link> &copy; {new Date().getFullYear()} All Right Reserved
+                <Link to="/">{SITE.name}</Link> &copy; {new Date().getFullYear()} All Rights Reserved
               </p>
             </div>
-            <ul className="footer-nav">
-              <li>
-                <Link to="/">Terms of Service</Link>
-              </li>
-              <li>
-                <Link to="/">Privacy Policy</Link>
-              </li>
-            </ul>
           </div>
         </div>
       </div>

@@ -1,29 +1,90 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { SERVICE_TABS } from '../config/services';
+import {
+  SERVICE_TABS,
+  SERVICE_PRIMARY_NAV,
+  SPECIALTY_SERVICE_IDS,
+} from '../config/services';
+import { SITE } from '../config/site';
+
+const CARD_IMAGES = [
+  '/assets/images/service/service-1.jpg',
+  '/assets/images/service/service-2.jpg',
+  '/assets/images/service/service-3.jpg',
+  '/assets/images/service/service-4.jpg',
+  '/assets/images/service/service-5.jpg',
+  '/assets/images/service/service-6.jpg',
+];
 
 const animDurations = [800, 1000, 1200, 800, 1000, 1200];
 const imagePositions = ['center top', 'center', 'left center', 'right center'];
 
+function getCategoryImage(tabIndex, categoryIndex) {
+  return CARD_IMAGES[(tabIndex * 3 + categoryIndex) % CARD_IMAGES.length];
+}
+
+function getPrimaryNavId(tabId) {
+  if (tabId === 'residential') return 'residential';
+  if (tabId === 'commercial') return 'commercial';
+  return 'specialty';
+}
+
 export default function ServicesSection() {
   const [activeId, setActiveId] = useState(SERVICE_TABS[0].id);
-  const activeTab = SERVICE_TABS.find((tab) => tab.id === activeId) ?? SERVICE_TABS[0];
+  const activeTabIndex = SERVICE_TABS.findIndex((tab) => tab.id === activeId);
+  const activeTab = SERVICE_TABS[activeTabIndex] ?? SERVICE_TABS[0];
+  const activePrimaryId = getPrimaryNavId(activeId);
+
+  const specialtyTabs = useMemo(
+    () => SERVICE_TABS.filter((tab) => SPECIALTY_SERVICE_IDS.includes(tab.id)),
+    [],
+  );
 
   useEffect(() => {
-    AOS.init({ duration: 700, once: false, offset: 80 });
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    AOS.init({ duration: prefersReducedMotion ? 0 : 700, once: true, offset: 80 });
     const t1 = window.setTimeout(() => AOS.refresh(), 100);
-    const t2 = window.setTimeout(() => AOS.refreshHard(), 400);
-    return () => {
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
-    };
+    return () => window.clearTimeout(t1);
   }, []);
 
   useEffect(() => {
     AOS.refreshHard();
   }, [activeId]);
+
+  const handlePrimarySelect = useCallback((navItem) => {
+    if (navItem.tabId) {
+      setActiveId(navItem.tabId);
+      return;
+    }
+    setActiveId((current) =>
+      SPECIALTY_SERVICE_IDS.includes(current) ? current : SPECIALTY_SERVICE_IDS[0],
+    );
+  }, []);
+
+  const handleTabKeyDown = useCallback(
+    (event, tabs, index, onSelect) => {
+      let nextIndex = index;
+
+      if (event.key === 'ArrowRight') {
+        nextIndex = (index + 1) % tabs.length;
+      } else if (event.key === 'ArrowLeft') {
+        nextIndex = (index - 1 + tabs.length) % tabs.length;
+      } else if (event.key === 'Home') {
+        nextIndex = 0;
+      } else if (event.key === 'End') {
+        nextIndex = tabs.length - 1;
+      } else {
+        return;
+      }
+
+      event.preventDefault();
+      onSelect(tabs[nextIndex].id);
+      document.getElementById(`tab-${tabs[nextIndex].id}`)?.focus();
+    },
+    [],
+  );
 
   return (
     <section className="service-section services-premium" id="services">
@@ -36,37 +97,76 @@ export default function ServicesSection() {
             Full-Service Electrical Expertise
           </h2>
           <p data-aos="fade-up" data-aos-duration={1000}>
-            One licensed team for every electrical need — residential, commercial, EV charging and 24/7
-            emergency — with transparent pricing and guaranteed workmanship.
+            One licensed team for residential, commercial, EV charging, lighting, panel upgrades,
+            safety improvements, and new construction — with transparent pricing and guaranteed
+            workmanship.
           </p>
         </div>
 
-        <div className="services-premium__tabs" role="tablist" aria-label="Service categories">
-          {SERVICE_TABS.map((tab) => {
-            const isActive = tab.id === activeId;
+        <div
+          className="services-premium__tabs services-premium__tabs--primary"
+          role="tablist"
+          aria-label="Service categories"
+        >
+          {SERVICE_PRIMARY_NAV.map((navItem) => {
+            const isActive = activePrimaryId === navItem.id;
             return (
               <button
-                key={tab.id}
+                key={navItem.id}
                 type="button"
                 role="tab"
-                id={`tab-${tab.id}`}
+                id={`primary-tab-${navItem.id}`}
                 aria-selected={isActive}
-                aria-controls={`panel-${tab.id}`}
-                className={`services-premium__tab${isActive ? ' is-active' : ''}`}
-                onClick={() => setActiveId(tab.id)}
+                aria-controls={`panel-${activeId}`}
+                tabIndex={isActive ? 0 : -1}
+                className={`services-premium__tab services-premium__tab--primary${isActive ? ' is-active' : ''}`}
+                onClick={() => handlePrimarySelect(navItem)}
               >
-                {tab.tabLabel}
+                {navItem.label}
               </button>
             );
           })}
         </div>
+
+        {activePrimaryId === 'specialty' && (
+          <div
+            className="services-premium__subnav"
+            role="tablist"
+            aria-label="Specialty services"
+          >
+            {specialtyTabs.map((tab, index) => {
+              const isActive = tab.id === activeId;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  id={`tab-${tab.id}`}
+                  aria-selected={isActive}
+                  aria-controls={`panel-${tab.id}`}
+                  tabIndex={isActive ? 0 : -1}
+                  className={`services-premium__tab services-premium__tab--sub${isActive ? ' is-active' : ''}`}
+                  onClick={() => setActiveId(tab.id)}
+                  onKeyDown={(event) =>
+                    handleTabKeyDown(event, specialtyTabs, index, setActiveId)
+                  }
+                >
+                  {tab.shortLabel ?? tab.tabLabel}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         <div
           key={activeId}
           className="services-premium__panel home-services-grid"
           role="tabpanel"
           id={`panel-${activeId}`}
-          aria-labelledby={`tab-${activeId}`}
+          aria-labelledby={
+            activePrimaryId === 'specialty' ? `tab-${activeId}` : `primary-tab-${activePrimaryId}`
+          }
+          tabIndex={0}
         >
           <div className="row services-premium__cards-row">
             {activeTab.categories.map((category, index) => (
@@ -79,15 +179,17 @@ export default function ServicesSection() {
                 <div className="service-auhtor-boxarea">
                   <div className="img1">
                     <img
-                      src={activeTab.image}
+                      src={getCategoryImage(activeTabIndex, index)}
                       alt={category.title}
                       loading="lazy"
                       style={{ objectPosition: imagePositions[index % imagePositions.length] }}
                     />
                   </div>
                   <div className="content-area">
-                    <h3>{String(index + 1).padStart(2, '0')}</h3>
-                    <span className="service-card-title">{category.title}</span>
+                    <span className="service-card-index" aria-hidden="true">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <h3 className="service-card-title">{category.title}</h3>
                     <ul className="service-highlights">
                       {category.items.map((item) => (
                         <li key={item}>
@@ -104,7 +206,7 @@ export default function ServicesSection() {
 
           <div className="services-premium__footer">
             <Link to="/appointment" className="theme-btn btn-one">
-              Request a Free Quote
+              {SITE.cta.secondary}
             </Link>
           </div>
         </div>

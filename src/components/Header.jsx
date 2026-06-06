@@ -1,13 +1,19 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { SITE } from '../config/site';
 import { MAIN_NAV } from '../config/navigation';
+import BrandLogo from './BrandLogo';
 
 function NavItem({ item }) {
   return (
     <li className="nav-item-premium">
-      <Link to={item.to} className="nav-link-premium">
+      <NavLink
+        to={item.to}
+        className={({ isActive }) =>
+          `nav-link-premium${isActive && !item.to.includes('#') ? ' is-active' : ''}`
+        }
+      >
         <span>{item.label}</span>
-      </Link>
+      </NavLink>
     </li>
   );
 }
@@ -29,19 +35,20 @@ function HeaderBar({ sticky = false }) {
         <div className="menu-area clearfix">
           <div className="logo-box">
             <figure className="logo">
-              <Link to="/">
-                <img src={SITE.logos.main} alt={SITE.name} />
-              </Link>
+              <BrandLogo />
             </figure>
           </div>
-          {!sticky && (
-            <div className="mobile-nav-toggler">
-              <i className="icon-bar"></i>
-              <i className="icon-bar"></i>
-              <i className="icon-bar"></i>
-            </div>
-          )}
-          <nav className="main-menu navbar-expand-md navbar-light">
+          <button
+            type="button"
+            className="mobile-nav-toggler"
+            aria-label="Open menu"
+            aria-expanded="false"
+          >
+            <span className="icon-bar" aria-hidden="true"></span>
+            <span className="icon-bar" aria-hidden="true"></span>
+            <span className="icon-bar" aria-hidden="true"></span>
+          </button>
+          <nav className="main-menu navbar-expand-md navbar-light" aria-label="Primary">
             <div
               className="collapse navbar-collapse show clearfix"
               id={sticky ? undefined : 'navbarSupportedContent'}
@@ -53,17 +60,14 @@ function HeaderBar({ sticky = false }) {
         <div className="nav-right">
           <div className="support-box">
             <h6>
-              <i className="icon-4"></i>
+              <i className="icon-4" aria-hidden="true"></i>
               Call:{' '}
-              <a href={`tel:${SITE.phone.replace(/\D/g, '')}`}>{SITE.phone}</a>
+              <a href={`tel:${SITE.phoneTel}`}>{SITE.phone}</a>
             </h6>
           </div>
-          <div className="search-box-outer search-toggler">
-            <i className="icon-5"></i>
-          </div>
-          <div className="btn-box">
+          <div className="btn-box header-cta">
             <Link to="/appointment" className="theme-btn btn-one">
-              Get a Quote
+              {SITE.cta.primary}
             </Link>
           </div>
         </div>
@@ -81,38 +85,16 @@ export default function Header() {
             <div className="left-column">
               <ul className="info clearfix">
                 <li>
-                  <i className="icon-1"></i>
+                  <i className="icon-1" aria-hidden="true"></i>
                   {SITE.hours}
                 </li>
                 <li>
-                  <i className="icon-2"></i>
+                  <i className="icon-2" aria-hidden="true"></i>
                   {SITE.address}
                 </li>
                 <li>
-                  <i className="icon-3"></i>
+                  <i className="icon-3" aria-hidden="true"></i>
                   <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-                </li>
-              </ul>
-            </div>
-            <div className="right-column">
-              <ul className="social-links clearfix">
-                <li>
-                  <p>Follow Us:</p>
-                </li>
-                <li>
-                  <a href="/" aria-label="Facebook">
-                    <i className="fab fa-facebook-f"></i>
-                  </a>
-                </li>
-                <li>
-                  <a href="/" aria-label="Twitter">
-                    <i className="fab fa-twitter"></i>
-                  </a>
-                </li>
-                <li>
-                  <a href="/" aria-label="LinkedIn">
-                    <i className="fab fa-linkedin-in"></i>
-                  </a>
                 </li>
               </ul>
             </div>

@@ -117,7 +117,7 @@ html = html.replace(
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12 image-column">
                         <figure class="cta-contact-image p_relative d_block">
-                            <img src="/assets/images/resource/contact-1.jpg" alt="Contact European Electric LLC">
+                            <img src="/assets/images/resource/about-5.jpg" alt="Licensed electrician at work">
                         </figure>
                     </div>
                 </div>
