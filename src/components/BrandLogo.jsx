@@ -5,13 +5,26 @@ import BrandMark from './BrandMark';
 export default function BrandLogo({ variant = 'header', className = '' }) {
   const isFooter = variant === 'footer';
 
-  const classes = [
-    'brand-lockup',
-    isFooter ? 'brand-lockup--footer' : 'brand-lockup--header',
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
+  if (isFooter) {
+    return (
+      <Link
+        to="/"
+        className={['brand-lockup', 'brand-lockup--footer', 'brand-lockup--footer-image', className]
+          .filter(Boolean)
+          .join(' ')}
+        aria-label={SITE.name}
+      >
+        <img
+          src={SITE.logos.footer}
+          alt={SITE.name}
+          className="brand-lockup__footer-img"
+          decoding="async"
+        />
+      </Link>
+    );
+  }
+
+  const classes = ['brand-lockup', 'brand-lockup--header', className].filter(Boolean).join(' ');
 
   return (
     <Link to="/" className={classes} aria-label={SITE.name}>

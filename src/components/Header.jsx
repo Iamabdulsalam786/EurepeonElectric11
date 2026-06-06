@@ -38,6 +38,30 @@ function HeaderBar({ sticky = false }) {
               <BrandLogo />
             </figure>
           </div>
+          <nav className="main-menu navbar-expand-md navbar-light" aria-label="Primary">
+            <div
+              className="collapse navbar-collapse show clearfix"
+              id={sticky ? undefined : 'navbarSupportedContent'}
+            >
+              <MainNavigation />
+            </div>
+          </nav>
+        </div>
+        <div className="header-bar__end">
+          <div className="nav-right">
+            <div className="support-box">
+              <h6>
+                <i className="icon-4" aria-hidden="true"></i>
+                Call:{' '}
+                <a href={`tel:${SITE.phoneTel}`}>{SITE.phone}</a>
+              </h6>
+            </div>
+            <div className="btn-box header-cta">
+              <Link to="/appointment" className="theme-btn btn-one">
+                {SITE.cta.primary}
+              </Link>
+            </div>
+          </div>
           <button
             type="button"
             className="mobile-nav-toggler"
@@ -48,28 +72,6 @@ function HeaderBar({ sticky = false }) {
             <span className="icon-bar" aria-hidden="true"></span>
             <span className="icon-bar" aria-hidden="true"></span>
           </button>
-          <nav className="main-menu navbar-expand-md navbar-light" aria-label="Primary">
-            <div
-              className="collapse navbar-collapse show clearfix"
-              id={sticky ? undefined : 'navbarSupportedContent'}
-            >
-              <MainNavigation />
-            </div>
-          </nav>
-        </div>
-        <div className="nav-right">
-          <div className="support-box">
-            <h6>
-              <i className="icon-4" aria-hidden="true"></i>
-              Call:{' '}
-              <a href={`tel:${SITE.phoneTel}`}>{SITE.phone}</a>
-            </h6>
-          </div>
-          <div className="btn-box header-cta">
-            <Link to="/appointment" className="theme-btn btn-one">
-              {SITE.cta.primary}
-            </Link>
-          </div>
         </div>
       </div>
     </div>

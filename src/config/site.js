@@ -24,7 +24,7 @@ export const SITE = {
     mark: '/assets/images/logo4.png',
     main: '/assets/images/logo2.jpeg',
     mobile: '/assets/images/logo4.png',
-    footer: '/assets/images/logo2.jpeg',
+    footer: '/assets/images/Logo1.jpeg',
     favicon: '/assets/images/logo4.png',
   },
   social: {},
