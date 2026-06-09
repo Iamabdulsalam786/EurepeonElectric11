@@ -74,7 +74,7 @@ export default function MobileMenu() {
                 <span>{SITE.address}</span>
               </li>
               <li>
-                <i className="fas fa-phone-alt" aria-hidden="true"></i>
+                <i className="fas fa-phone" aria-hidden="true"></i>
                 <a href={`tel:${SITE.phoneTel}`}>{SITE.phone}</a>
               </li>
               <li>

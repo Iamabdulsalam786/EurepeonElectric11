@@ -53,26 +53,26 @@ function HeaderBar({ sticky = false }) {
           </nav>
         </div>
         <div className="header-bar__end">
-          <div className="header-actions">
+          <div className="header-bar__controls">
             <a
               href={`tel:${SITE.phoneTel}`}
-              className="theme-btn btn-one header-actions__call"
+              className="header-actions__call theme-btn btn-one"
               aria-label={`Call now ${SITE.phone}`}
             >
-              <i className="far fa-phone-alt" aria-hidden="true" />
-              Call Now
+              <i className="fas fa-phone" aria-hidden="true" />
+              <span className="header-actions__call-text">Call Now</span>
             </a>
+            <button
+              type="button"
+              className="mobile-nav-toggler"
+              aria-label="Open menu"
+              aria-expanded="false"
+            >
+              <span className="icon-bar" aria-hidden="true"></span>
+              <span className="icon-bar" aria-hidden="true"></span>
+              <span className="icon-bar" aria-hidden="true"></span>
+            </button>
           </div>
-          <button
-            type="button"
-            className="mobile-nav-toggler"
-            aria-label="Open menu"
-            aria-expanded="false"
-          >
-            <span className="icon-bar" aria-hidden="true"></span>
-            <span className="icon-bar" aria-hidden="true"></span>
-            <span className="icon-bar" aria-hidden="true"></span>
-          </button>
         </div>
       </div>
     </div>
