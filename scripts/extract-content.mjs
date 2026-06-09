@@ -137,6 +137,5 @@ fs.writeFileSync(
 
 console.log(`Extracted ${Object.keys(manifest).length} pages to src/content/`);
 
-execSync('node scripts/patch-index-content.mjs', { cwd: rootDir, stdio: 'inherit' });
+execSync('node scripts/patch-canonical-pages.mjs', { cwd: rootDir, stdio: 'inherit' });
 execSync('node scripts/patch-services-section.mjs', { cwd: rootDir, stdio: 'inherit' });
-execSync('node scripts/patch-contact-content.mjs', { cwd: rootDir, stdio: 'inherit' });

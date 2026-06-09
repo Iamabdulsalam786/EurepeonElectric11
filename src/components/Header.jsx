@@ -1,7 +1,8 @@
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { SITE } from '../config/site';
 import { MAIN_NAV } from '../config/navigation';
 import BrandLogo from './BrandLogo';
+import ServicesNavDropdown from './ServicesNavDropdown';
 
 function NavItem({ item }) {
   return (
@@ -21,9 +22,13 @@ function NavItem({ item }) {
 function MainNavigation() {
   return (
     <ul className="navigation clearfix navigation-premium">
-      {MAIN_NAV.map((item) => (
-        <NavItem key={item.label} item={item} />
-      ))}
+      {MAIN_NAV.map((item) =>
+        item.type === 'services' ? (
+          <ServicesNavDropdown key={item.label} />
+        ) : (
+          <NavItem key={item.label} item={item} />
+        ),
+      )}
     </ul>
   );
 }
@@ -48,19 +53,15 @@ function HeaderBar({ sticky = false }) {
           </nav>
         </div>
         <div className="header-bar__end">
-          <div className="nav-right">
-            <div className="support-box">
-              <h6>
-                <i className="icon-4" aria-hidden="true"></i>
-                Call:{' '}
-                <a href={`tel:${SITE.phoneTel}`}>{SITE.phone}</a>
-              </h6>
-            </div>
-            <div className="btn-box header-cta">
-              <Link to="/appointment" className="theme-btn btn-one">
-                {SITE.cta.primary}
-              </Link>
-            </div>
+          <div className="header-actions">
+            <a
+              href={`tel:${SITE.phoneTel}`}
+              className="theme-btn btn-one header-actions__call"
+              aria-label={`Call now ${SITE.phone}`}
+            >
+              <i className="far fa-phone-alt" aria-hidden="true" />
+              Call Now
+            </a>
           </div>
           <button
             type="button"

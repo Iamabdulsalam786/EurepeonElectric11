@@ -11,7 +11,8 @@ export const PAGE_META = {
   },
   '/contact': {
     title: 'Contact',
-    description: 'Contact European Electric LLC for quotes, project inquiries, and electrical service scheduling.',
+    description:
+      'Request a free electrical quote from European Electric LLC — residential, commercial, EV charging, lighting, panels, and new construction in Melbourne.',
   },
   '/faq': {
     title: 'FAQ',

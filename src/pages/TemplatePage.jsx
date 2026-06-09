@@ -2,13 +2,23 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import manifest from '../content/manifest.json';
 import ServicesSection from '../components/ServicesSection';
-import { loadTemplateScripts } from '../utils/loadScripts';
+import { loadPageEnhancements } from '../utils/loadScripts';
 import { initializeTemplate } from '../utils/initTemplate';
 
-const contentModules = import.meta.glob('../content/*.html', {
-  query: '?raw',
-  import: 'default',
-});
+const contentModules = import.meta.glob(
+  [
+    '../content/index.html',
+    '../content/about.html',
+    '../content/contact.html',
+    '../content/faq.html',
+    '../content/appointment.html',
+    '../content/error.html',
+  ],
+  {
+    query: '?raw',
+    import: 'default',
+  },
+);
 
 const SERVICE_SECTION_RE =
   /<!-- service-section -->[\s\S]*?<!-- service-section end -->/;
@@ -62,11 +72,11 @@ export default function TemplatePage() {
     let active = true;
 
     const boot = async () => {
-      await loadTemplateScripts();
+      await loadPageEnhancements();
       if (!active) return;
-      window.requestAnimationFrame(async () => {
+      window.requestAnimationFrame(() => {
         if (!active) return;
-        await initializeTemplate();
+        initializeTemplate();
       });
     };
 

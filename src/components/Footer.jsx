@@ -86,6 +86,7 @@ export default function Footer() {
               <p>
                 <Link to="/">{SITE.name}</Link> &copy; {new Date().getFullYear()} All Rights Reserved
               </p>
+              <p className="footer-credit">Designed by The Nexus dynamics</p>
             </div>
           </div>
         </div>

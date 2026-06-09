@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import { Link, useLocation } from 'react-router-dom';
+import { parseServiceHash } from '../utils/serviceNavigation';
 import {
   SERVICE_TABS,
   SERVICE_PRIMARY_NAV,
@@ -9,21 +8,8 @@ import {
 } from '../config/services';
 import { SITE } from '../config/site';
 
-const CARD_IMAGES = [
-  '/assets/images/service/service-1.jpg',
-  '/assets/images/service/service-2.jpg',
-  '/assets/images/service/service-3.jpg',
-  '/assets/images/service/service-4.jpg',
-  '/assets/images/service/service-5.jpg',
-  '/assets/images/service/service-6.jpg',
-];
-
+const DEFAULT_SERVICE_IMAGE = '/assets/images/service/residential-install.jpg';
 const animDurations = [800, 1000, 1200, 800, 1000, 1200];
-const imagePositions = ['center top', 'center', 'left center', 'right center'];
-
-function getCategoryImage(tabIndex, categoryIndex) {
-  return CARD_IMAGES[(tabIndex * 3 + categoryIndex) % CARD_IMAGES.length];
-}
 
 function getPrimaryNavId(tabId) {
   if (tabId === 'residential') return 'residential';
@@ -32,10 +18,17 @@ function getPrimaryNavId(tabId) {
 }
 
 export default function ServicesSection() {
+  const location = useLocation();
   const [activeId, setActiveId] = useState(SERVICE_TABS[0].id);
-  const activeTabIndex = SERVICE_TABS.findIndex((tab) => tab.id === activeId);
-  const activeTab = SERVICE_TABS[activeTabIndex] ?? SERVICE_TABS[0];
+  const activeTab = SERVICE_TABS.find((tab) => tab.id === activeId) ?? SERVICE_TABS[0];
   const activePrimaryId = getPrimaryNavId(activeId);
+
+  useEffect(() => {
+    const { tabId } = parseServiceHash(location.hash);
+    if (tabId && SERVICE_TABS.some((tab) => tab.id === tabId)) {
+      setActiveId(tabId);
+    }
+  }, [location.hash]);
 
   const specialtyTabs = useMemo(
     () => SERVICE_TABS.filter((tab) => SPECIALTY_SERVICE_IDS.includes(tab.id)),
@@ -43,14 +36,42 @@ export default function ServicesSection() {
   );
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    AOS.init({ duration: prefersReducedMotion ? 0 : 700, once: true, offset: 80 });
-    const t1 = window.setTimeout(() => AOS.refresh(), 100);
-    return () => window.clearTimeout(t1);
+    let cancelled = false;
+    let refreshTimer;
+
+    const bootAos = async () => {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+
+      const [{ default: AOS }] = await Promise.all([
+        import('aos'),
+        import('aos/dist/aos.css'),
+      ]);
+
+      if (cancelled) return;
+
+      AOS.init({ duration: 700, once: true, offset: 80 });
+      refreshTimer = window.setTimeout(() => AOS.refresh(), 100);
+    };
+
+    bootAos();
+
+    return () => {
+      cancelled = true;
+      if (refreshTimer) window.clearTimeout(refreshTimer);
+    };
   }, []);
 
   useEffect(() => {
-    AOS.refreshHard();
+    let cancelled = false;
+
+    import('aos').then(({ default: AOS }) => {
+      if (!cancelled) AOS.refreshHard();
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, [activeId]);
 
   const handlePrimarySelect = useCallback((navItem) => {
@@ -179,10 +200,12 @@ export default function ServicesSection() {
                 <div className="service-auhtor-boxarea">
                   <div className="img1">
                     <img
-                      src={getCategoryImage(activeTabIndex, index)}
+                      src={category.image ?? activeTab.image ?? DEFAULT_SERVICE_IMAGE}
                       alt={category.title}
                       loading="lazy"
-                      style={{ objectPosition: imagePositions[index % imagePositions.length] }}
+                      style={{
+                        objectPosition: category.imagePosition ?? 'center',
+                      }}
                     />
                   </div>
                   <div className="content-area">

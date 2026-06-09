@@ -3,9 +3,13 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { SITE } from '../config/site';
 import { MAIN_NAV } from '../config/navigation';
 import BrandLogo from './BrandLogo';
+import ServicesNavDropdown from './ServicesNavDropdown';
 
 function closeMobileMenu() {
   document.body.classList.remove('mobile-menu-visible');
+  document.querySelectorAll('.mobile-nav-toggler').forEach((btn) => {
+    btn.setAttribute('aria-expanded', 'false');
+  });
 }
 
 export default function MobileMenu() {
@@ -32,20 +36,28 @@ export default function MobileMenu() {
         <div className="mobile-menu__body">
           <p className="mobile-menu__label">Menu</p>
           <ul className="mobile-nav-list" data-react-mobile-nav="true">
-            {MAIN_NAV.map((item) => (
-              <li key={item.label}>
-                <NavLink
-                  to={item.to}
-                  className={({ isActive }) =>
-                    `mobile-nav-link${isActive && !item.to.includes('#') ? ' is-active' : ''}`
-                  }
-                  onClick={closeMobileMenu}
-                >
-                  <span>{item.label}</span>
-                  <i className="fas fa-chevron-right" aria-hidden="true"></i>
-                </NavLink>
-              </li>
-            ))}
+            {MAIN_NAV.map((item) =>
+              item.type === 'services' ? (
+                <ServicesNavDropdown
+                  key={item.label}
+                  variant="mobile"
+                  onNavigate={closeMobileMenu}
+                />
+              ) : (
+                <li key={item.label}>
+                  <NavLink
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `mobile-nav-link${isActive && !item.to.includes('#') ? ' is-active' : ''}`
+                    }
+                    onClick={closeMobileMenu}
+                  >
+                    <span>{item.label}</span>
+                    <i className="fas fa-chevron-right" aria-hidden="true"></i>
+                  </NavLink>
+                </li>
+              ),
+            )}
           </ul>
 
           <div className="mobile-menu-cta">

@@ -28,6 +28,13 @@ export const SITE = {
     favicon: '/assets/images/logo4.png',
   },
   social: {},
+  /** Digits only with country code — update when your WhatsApp number is ready */
+  whatsapp: {
+    number: '12304561552',
+    label: 'Chat on WhatsApp',
+    shortLabel: 'WhatsApp',
+    defaultMessage: 'Hi, I would like a quote for electrical work.',
+  },
   cta: {
     primary: 'Get a Quote',
     secondary: 'Request a Free Quote',
