@@ -4804,15 +4804,15 @@ a.contact-premium__card:hover {
     gap: 6px;
   }
 
-  .header-actions__call,
-  .main-header--premium .header-bar__end .mobile-nav-toggler {
-    width: 44px;
-    height: 44px;
-    min-height: 44px !important;
+  .header-actions__call {
+    width: 36px;
+    height: 36px;
+    min-height: 36px !important;
+    box-shadow: 0 2px 8px rgba(0, 120, 193, 0.2) !important;
   }
 
   .header-actions__call i {
-    font-size: 17px;
+    font-size: 14px;
   }
 }
 
