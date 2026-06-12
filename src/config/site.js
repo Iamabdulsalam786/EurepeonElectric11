@@ -1,8 +1,10 @@
 export const SITE = {
   name: 'European Electric LLC',
   shortName: 'European Electric',
-  phone: '+1 (230) 456-1552',
-  phoneTel: '+12304561552',
+  /** Update to your live Hostinger domain before launch */
+  url: 'https://europeanelectric.com',
+  phone: '+1 (510) 468-4495',
+  phoneTel: '+15104684495',
   email: 'info@europeanelectric.com',
   address: '380 Albert St, Melbourne, VIC',
   hours: 'Mon–Fri  8:00 AM – 5:00 PM',
@@ -30,7 +32,7 @@ export const SITE = {
   social: {},
   /** Digits only with country code — update when your WhatsApp number is ready */
   whatsapp: {
-    number: '12304561552',
+    number: '15104684495',
     label: 'Chat on WhatsApp',
     shortLabel: 'WhatsApp',
     defaultMessage: 'Hi, I would like a quote for electrical work.',

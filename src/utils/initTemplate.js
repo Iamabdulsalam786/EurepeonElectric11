@@ -178,14 +178,28 @@ function initInteractions($) {
   }
 }
 
+export function hidePreloader() {
+  const wrap = document.querySelector('.loader-wrap');
+  if (!wrap || wrap.dataset.hidden === 'true') return;
+
+  wrap.dataset.hidden = 'true';
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (prefersReducedMotion) {
+    wrap.style.display = 'none';
+    return;
+  }
+
+  wrap.style.transition = 'opacity 0.28s ease';
+  wrap.style.opacity = '0';
+  window.setTimeout(() => {
+    wrap.style.display = 'none';
+  }, 280);
+}
+
 function handlePreloader($) {
   if (!$('.loader-wrap').length) return;
-
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const delay = prefersReducedMotion ? 0 : 280;
-  const fade = prefersReducedMotion ? 0 : 280;
-
-  $('.loader-wrap').delay(delay).fadeOut(fade);
+  hidePreloader();
 }
 
 function initFunfactCounters($) {

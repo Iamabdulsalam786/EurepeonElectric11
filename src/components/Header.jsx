@@ -3,6 +3,7 @@ import { SITE } from '../config/site';
 import { MAIN_NAV } from '../config/navigation';
 import BrandLogo from './BrandLogo';
 import ServicesNavDropdown from './ServicesNavDropdown';
+import { openMobileMenu } from '../utils/mobileMenu';
 
 function NavItem({ item }) {
   return (
@@ -59,14 +60,17 @@ function HeaderBar({ sticky = false }) {
               className="header-actions__call theme-btn btn-one"
               aria-label={`Call now ${SITE.phone}`}
             >
-              <i className="fas fa-phone" aria-hidden="true" />
               <span className="header-actions__call-text">Call Now</span>
+              <span className="header-actions__call-icon" aria-hidden="true">
+                <i className="fas fa-phone" />
+              </span>
             </a>
             <button
               type="button"
               className="mobile-nav-toggler"
               aria-label="Open menu"
               aria-expanded="false"
+              onClick={openMobileMenu}
             >
               <span className="icon-bar" aria-hidden="true"></span>
               <span className="icon-bar" aria-hidden="true"></span>

@@ -1,12 +1,19 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { SERVICE_NAV_ITEMS } from '../config/navigation';
-import { getServiceNavHref } from '../utils/serviceNavigation';
+import {
+  getServiceNavHref,
+  parseServiceHash,
+  scrollToServicesSection,
+} from '../utils/serviceNavigation';
+import { parseInternalHref } from '../utils/mobileMenu';
 
 export default function ServicesNavDropdown({ variant = 'header', onNavigate }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const menuId = useId();
   const rootRef = useRef(null);
+  const closeTimerRef = useRef(null);
   const [open, setOpen] = useState(false);
 
   const isServicesActive =
@@ -20,12 +27,65 @@ export default function ServicesNavDropdown({ variant = 'header', onNavigate }) 
     onNavigate?.();
   }, [onNavigate]);
 
+  const scrollToServiceTarget = useCallback((hash) => {
+    const { sectionId } = parseServiceHash(hash);
+    if (sectionId !== 'services') return;
+
+    const attemptScroll = () => scrollToServicesSection();
+    attemptScroll();
+    window.setTimeout(attemptScroll, 120);
+    window.setTimeout(attemptScroll, 450);
+  }, []);
+
+  const goToService = useCallback(
+    (tabId) => (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const target = parseInternalHref(getServiceNavHref(tabId));
+      if (!target) return;
+
+      handleNavigate();
+
+      const sameRoute = location.pathname === target.pathname && location.hash === target.hash;
+      if (sameRoute) {
+        scrollToServiceTarget(target.hash);
+        return;
+      }
+
+      navigate(target);
+    },
+    [navigate, handleNavigate, location.pathname, location.hash, scrollToServiceTarget],
+  );
+
+  const handleMouseEnter = useCallback(() => {
+    if (closeTimerRef.current) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setOpen(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    closeTimerRef.current = window.setTimeout(() => {
+      setOpen(false);
+      closeTimerRef.current = null;
+    }, 200);
+  }, []);
+
   useEffect(() => {
     closeDropdown();
   }, [location.pathname, location.hash, closeDropdown]);
 
+  useEffect(
+    () => () => {
+      if (closeTimerRef.current) window.clearTimeout(closeTimerRef.current);
+    },
+    [],
+  );
+
   useEffect(() => {
-    if (!open) return undefined;
+    if (!open || variant === 'mobile') return undefined;
 
     const onPointerDown = (event) => {
       if (!rootRef.current?.contains(event.target)) {
@@ -43,11 +103,14 @@ export default function ServicesNavDropdown({ variant = 'header', onNavigate }) 
       document.removeEventListener('mousedown', onPointerDown);
       document.removeEventListener('keydown', onKeyDown);
     };
-  }, [open, closeDropdown]);
+  }, [open, closeDropdown, variant]);
 
   if (variant === 'mobile') {
     return (
-      <li className={`mobile-nav-item mobile-nav-item--services${open ? ' is-open' : ''}`}>
+      <li
+        ref={rootRef}
+        className={`mobile-nav-item mobile-nav-item--services${open ? ' is-open' : ''}`}
+      >
         <button
           type="button"
           className="mobile-nav-link mobile-nav-link--toggle"
@@ -60,21 +123,21 @@ export default function ServicesNavDropdown({ variant = 'header', onNavigate }) 
         </button>
         <ul id={menuId} className="mobile-nav-sublist" hidden={!open}>
           <li>
-            <Link to={getServiceNavHref()} className="mobile-nav-sublink" onClick={handleNavigate}>
+            <button type="button" className="mobile-nav-sublink" onClick={goToService()}>
               All Services
-            </Link>
+            </button>
           </li>
           {SERVICE_NAV_ITEMS.map((item) => (
             <li key={item.id}>
-              <Link
-                to={getServiceNavHref(item.id)}
+              <button
+                type="button"
                 className={`mobile-nav-sublink${
                   location.hash === `#services-${item.id}` ? ' is-active' : ''
                 }`}
-                onClick={handleNavigate}
+                onClick={goToService(item.id)}
               >
                 {item.label}
-              </Link>
+              </button>
             </li>
           ))}
         </ul>
@@ -88,8 +151,8 @@ export default function ServicesNavDropdown({ variant = 'header', onNavigate }) 
       className={`nav-item-premium nav-item-premium--dropdown${open ? ' is-open' : ''}${
         isServicesActive ? ' is-active' : ''
       }`}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <button
         type="button"
@@ -104,27 +167,27 @@ export default function ServicesNavDropdown({ variant = 'header', onNavigate }) 
       </button>
       <ul id={menuId} className="nav-dropdown-menu" role="menu" hidden={!open}>
         <li role="none">
-          <Link
-            to={getServiceNavHref()}
+          <a
+            href={getServiceNavHref()}
             className="nav-dropdown-link nav-dropdown-link--all"
             role="menuitem"
-            onClick={closeDropdown}
+            onClick={goToService()}
           >
             View All Services
-          </Link>
+          </a>
         </li>
         {SERVICE_NAV_ITEMS.map((item) => (
           <li key={item.id} role="none">
-            <Link
-              to={getServiceNavHref(item.id)}
+            <a
+              href={getServiceNavHref(item.id)}
               className={`nav-dropdown-link${
                 location.hash === `#services-${item.id}` ? ' is-active' : ''
               }`}
               role="menuitem"
-              onClick={closeDropdown}
+              onClick={goToService(item.id)}
             >
               {item.label}
-            </Link>
+            </a>
           </li>
         ))}
       </ul>

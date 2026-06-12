@@ -9,6 +9,8 @@ import WhatsAppFloat from './WhatsAppFloat';
 import { SITE } from '../config/site';
 import { PAGE_META } from '../config/pageMeta';
 import { bindScrollHandlers } from '../utils/initTemplate';
+import { loadTemplateScripts } from '../utils/loadScripts';
+import { parseInternalHref } from '../utils/mobileMenu';
 import { parseServiceHash, scrollToAnchor, scrollToServicesSection } from '../utils/serviceNavigation';
 
 function getPageTitle(pathname) {
@@ -71,6 +73,15 @@ export default function Layout() {
     favicon.href = SITE.logos.favicon;
     favicon.type = 'image/png';
 
+    const canonicalUrl = `${SITE.url}${location.pathname === '/' ? '' : location.pathname}`;
+    let canonical = document.querySelector("link[rel='canonical']");
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
+    }
+    canonical.href = canonicalUrl;
+
     return () => {
       hashTimers.forEach((timer) => window.clearTimeout(timer));
     };
@@ -82,19 +93,50 @@ export default function Layout() {
       if (!anchor) return;
 
       const href = anchor.getAttribute('href');
-      if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) {
+      if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')) {
         return;
       }
 
-      if (href.startsWith('/')) {
+      if (href.startsWith('#')) {
         event.preventDefault();
-        navigate(href);
+        navigate({ pathname: location.pathname, hash: href });
+        return;
+      }
+
+      const target = parseInternalHref(href);
+      if (target) {
+        event.preventDefault();
+        navigate(target);
       }
     };
 
     document.addEventListener('click', handleClick);
     return () => document.removeEventListener('click', handleClick);
-  }, [navigate]);
+  }, [navigate, location.pathname]);
+
+  useEffect(() => {
+    let cancelled = false;
+    let idleId;
+    let timeoutId;
+
+    const prefetchScripts = () => {
+      if (!cancelled) loadTemplateScripts();
+    };
+
+    if (typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(prefetchScripts, { timeout: 2500 });
+    } else {
+      timeoutId = window.setTimeout(prefetchScripts, 300);
+    }
+
+    return () => {
+      cancelled = true;
+      if (idleId && typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, []);
 
   useEffect(() => {
     const cleanupScroll = bindScrollHandlers();

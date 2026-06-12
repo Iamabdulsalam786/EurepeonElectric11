@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { SITE } from '../config/site';
 import BrandMark from './BrandMark';
+import { hidePreloader } from '../utils/initTemplate';
 
 const WORD_LINES = [
   { text: 'European', mod: 'primary', baseDelay: 0.35 },
@@ -23,6 +25,22 @@ function AnimatedWord({ text, mod, baseDelay }) {
 }
 
 export default function Preloader() {
+  useEffect(() => {
+    const onClose = () => hidePreloader();
+    const closeBtn = document.querySelector('.preloader-close');
+    closeBtn?.addEventListener('click', onClose);
+    closeBtn?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        onClose();
+      }
+    });
+
+    return () => {
+      closeBtn?.removeEventListener('click', onClose);
+    };
+  }, []);
+
   return (
     <div className="loader-wrap">
       <div className="preloader">

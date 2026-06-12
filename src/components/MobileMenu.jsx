@@ -4,13 +4,7 @@ import { SITE } from '../config/site';
 import { MAIN_NAV } from '../config/navigation';
 import BrandLogo from './BrandLogo';
 import ServicesNavDropdown from './ServicesNavDropdown';
-
-function closeMobileMenu() {
-  document.body.classList.remove('mobile-menu-visible');
-  document.querySelectorAll('.mobile-nav-toggler').forEach((btn) => {
-    btn.setAttribute('aria-expanded', 'false');
-  });
-}
+import { closeMobileMenu } from '../utils/mobileMenu';
 
 export default function MobileMenu() {
   const location = useLocation();
@@ -21,8 +15,16 @@ export default function MobileMenu() {
 
   return (
     <div className="mobile-menu mobile-menu--premium">
-      <div className="menu-backdrop" aria-hidden="true"></div>
-      <button type="button" className="close-btn" aria-label="Close menu">
+      <div
+        className="menu-backdrop"
+        aria-hidden="true"
+        onClick={closeMobileMenu}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') closeMobileMenu();
+        }}
+        role="presentation"
+      ></div>
+      <button type="button" className="close-btn" aria-label="Close menu" onClick={closeMobileMenu}>
         <i className="fas fa-times" aria-hidden="true"></i>
       </button>
 
