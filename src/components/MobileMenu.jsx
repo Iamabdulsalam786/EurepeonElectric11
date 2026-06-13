@@ -4,6 +4,7 @@ import { SITE } from '../config/site';
 import { MAIN_NAV } from '../config/navigation';
 import BrandLogo from './BrandLogo';
 import ServicesNavDropdown from './ServicesNavDropdown';
+import MobileServicesNav from './MobileServicesNav';
 import { closeMobileMenu } from '../utils/mobileMenu';
 
 export default function MobileMenu() {
@@ -40,11 +41,7 @@ export default function MobileMenu() {
           <ul className="mobile-nav-list" data-react-mobile-nav="true">
             {MAIN_NAV.map((item) =>
               item.type === 'services' ? (
-                <ServicesNavDropdown
-                  key={item.label}
-                  variant="mobile"
-                  onNavigate={closeMobileMenu}
-                />
+                <MobileServicesNav key={item.label} onNavigate={closeMobileMenu} />
               ) : (
                 <li key={item.label}>
                   <NavLink

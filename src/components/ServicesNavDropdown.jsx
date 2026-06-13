@@ -14,7 +14,7 @@ export default function ServicesNavDropdown({ variant = 'header', onNavigate }) 
   const menuId = useId();
   const rootRef = useRef(null);
   const closeTimerRef = useRef(null);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(variant === 'mobile');
 
   const isServicesActive =
     location.pathname === '/' &&
@@ -45,15 +45,19 @@ export default function ServicesNavDropdown({ variant = 'header', onNavigate }) 
       const target = parseInternalHref(getServiceNavHref(tabId));
       if (!target) return;
 
+      const sameRoute = location.pathname === target.pathname && location.hash === target.hash;
+
       handleNavigate();
 
-      const sameRoute = location.pathname === target.pathname && location.hash === target.hash;
       if (sameRoute) {
         scrollToServiceTarget(target.hash);
         return;
       }
 
       navigate(target);
+      window.setTimeout(() => scrollToServiceTarget(target.hash), 300);
+      window.setTimeout(() => scrollToServiceTarget(target.hash), 800);
+      window.setTimeout(() => scrollToServiceTarget(target.hash), 1400);
     },
     [navigate, handleNavigate, location.pathname, location.hash, scrollToServiceTarget],
   );

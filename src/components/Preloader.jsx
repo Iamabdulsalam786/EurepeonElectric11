@@ -71,7 +71,6 @@ export default function Preloader() {
                     mod={WORD_LINES[1].mod}
                     baseDelay={WORD_LINES[1].baseDelay}
                   />
-                  <span className="preloader-brand__llc">LLC</span>
                 </span>
               </div>
             </div>
