@@ -7,8 +7,9 @@ import {
   SPECIALTY_SERVICE_IDS,
 } from '../config/services';
 import { SITE } from '../config/site';
+import { CATEGORY_IMAGES } from '../config/media';
 
-const DEFAULT_SERVICE_IMAGE = '/assets/images/service/residential-install.jpg';
+const DEFAULT_SERVICE_IMAGE = CATEGORY_IMAGES.residential.default;
 const animDurations = [800, 1000, 1200, 800, 1000, 1200];
 
 function getPrimaryNavId(tabId) {
@@ -189,7 +190,9 @@ export default function ServicesSection() {
           }
           tabIndex={0}
         >
-          <div className="row services-premium__cards-row">
+          <div
+            className={`row services-premium__cards-row services-premium__cards-row--count-${activeTab.categories.length}`}
+          >
             {activeTab.categories.map((category, index) => (
               <div
                 className="col-lg-4 col-md-6 services-premium__card-col"
@@ -213,7 +216,15 @@ export default function ServicesSection() {
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <h3 className="service-card-title">{category.title}</h3>
-                    <ul className="service-highlights">
+                    <ul
+                      className={[
+                        'service-highlights',
+                        category.items.length < 5 ? 'service-highlights--balanced' : '',
+                        category.items.length > 5 ? 'service-highlights--compact' : '',
+                      ]
+                        .filter(Boolean)
+                        .join(' ')}
+                    >
                       {category.items.map((item) => (
                         <li key={item}>
                           <i className="fa-solid fa-bolt" aria-hidden="true" />

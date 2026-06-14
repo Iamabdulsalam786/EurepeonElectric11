@@ -33,10 +33,7 @@ export default function BrandLogo({ variant = 'header', className = '' }) {
       </span>
       <span className="brand-lockup__wordmark">
         <span className="brand-lockup__line brand-lockup__line--primary">European</span>
-        <span className="brand-lockup__line brand-lockup__line--secondary">
-          Electric
-          <span className="brand-lockup__llc"> LLC</span>
-        </span>
+        <span className="brand-lockup__line brand-lockup__line--secondary">Electric</span>
       </span>
     </Link>
   );

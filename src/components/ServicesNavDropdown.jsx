@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useId, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { SERVICE_NAV_ITEMS } from '../config/navigation';
+import { SERVICE_TABS } from '../config/services';
+import { getServicePagePath } from '../config/servicePages';
 import {
   getServiceNavHref,
   parseServiceHash,
@@ -8,19 +9,37 @@ import {
 } from '../utils/serviceNavigation';
 import { parseInternalHref } from '../utils/mobileMenu';
 
-export default function ServicesNavDropdown({ variant = 'header', onNavigate }) {
+export default function ServicesNavDropdown({ tabId, label, onNavigate }) {
   const location = useLocation();
   const navigate = useNavigate();
   const menuId = useId();
   const rootRef = useRef(null);
   const closeTimerRef = useRef(null);
-  const [open, setOpen] = useState(variant === 'mobile');
+  const [open, setOpen] = useState(false);
 
-  const isServicesActive =
-    location.pathname === '/' &&
-    (location.hash === '#services' || location.hash.startsWith('#services-'));
+  const tab = SERVICE_TABS.find((entry) => entry.id === tabId);
+  const isGroupActive =
+    location.pathname.startsWith(`/services/${tabId}/`) ||
+    (location.pathname === '/' &&
+      (location.hash === `#services-${tabId}` || location.hash === '#services'));
+
+  const openDropdown = useCallback(() => {
+    if (closeTimerRef.current) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setOpen(true);
+  }, []);
 
   const closeDropdown = useCallback(() => setOpen(false), []);
+
+  const scheduleClose = useCallback(() => {
+    if (closeTimerRef.current) window.clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = window.setTimeout(() => {
+      setOpen(false);
+      closeTimerRef.current = null;
+    }, 220);
+  }, []);
 
   const handleNavigate = useCallback(() => {
     setOpen(false);
@@ -37,8 +56,8 @@ export default function ServicesNavDropdown({ variant = 'header', onNavigate }) 
     window.setTimeout(attemptScroll, 450);
   }, []);
 
-  const goToService = useCallback(
-    (tabId) => (event) => {
+  const goToAllServices = useCallback(
+    (event) => {
       event.preventDefault();
       event.stopPropagation();
 
@@ -46,7 +65,6 @@ export default function ServicesNavDropdown({ variant = 'header', onNavigate }) 
       if (!target) return;
 
       const sameRoute = location.pathname === target.pathname && location.hash === target.hash;
-
       handleNavigate();
 
       if (sameRoute) {
@@ -59,23 +77,20 @@ export default function ServicesNavDropdown({ variant = 'header', onNavigate }) 
       window.setTimeout(() => scrollToServiceTarget(target.hash), 800);
       window.setTimeout(() => scrollToServiceTarget(target.hash), 1400);
     },
-    [navigate, handleNavigate, location.pathname, location.hash, scrollToServiceTarget],
+    [navigate, handleNavigate, location.pathname, location.hash, scrollToServiceTarget, tabId],
   );
 
-  const handleMouseEnter = useCallback(() => {
-    if (closeTimerRef.current) {
-      window.clearTimeout(closeTimerRef.current);
-      closeTimerRef.current = null;
-    }
-    setOpen(true);
-  }, []);
+  const goToServicePage = useCallback(
+    (itemPath) => (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!itemPath) return;
 
-  const handleMouseLeave = useCallback(() => {
-    closeTimerRef.current = window.setTimeout(() => {
-      setOpen(false);
-      closeTimerRef.current = null;
-    }, 200);
-  }, []);
+      handleNavigate();
+      navigate(itemPath);
+    },
+    [navigate, handleNavigate],
+  );
 
   useEffect(() => {
     closeDropdown();
@@ -89,74 +104,27 @@ export default function ServicesNavDropdown({ variant = 'header', onNavigate }) 
   );
 
   useEffect(() => {
-    if (!open || variant === 'mobile') return undefined;
-
-    const onPointerDown = (event) => {
-      if (!rootRef.current?.contains(event.target)) {
-        closeDropdown();
-      }
-    };
+    if (!open) return undefined;
 
     const onKeyDown = (event) => {
       if (event.key === 'Escape') closeDropdown();
     };
 
-    document.addEventListener('mousedown', onPointerDown);
     document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('mousedown', onPointerDown);
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [open, closeDropdown, variant]);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [open, closeDropdown]);
 
-  if (variant === 'mobile') {
-    return (
-      <li
-        ref={rootRef}
-        className={`mobile-nav-item mobile-nav-item--services${open ? ' is-open' : ''}`}
-      >
-        <button
-          type="button"
-          className="mobile-nav-link mobile-nav-link--toggle"
-          aria-expanded={open}
-          aria-controls={menuId}
-          onClick={() => setOpen((prev) => !prev)}
-        >
-          <span>Services</span>
-          <i className={`fas fa-chevron-down mobile-nav-caret${open ? ' is-open' : ''}`} aria-hidden="true" />
-        </button>
-        <ul id={menuId} className="mobile-nav-sublist" hidden={!open}>
-          <li>
-            <button type="button" className="mobile-nav-sublink" onClick={goToService()}>
-              All Services
-            </button>
-          </li>
-          {SERVICE_NAV_ITEMS.map((item) => (
-            <li key={item.id}>
-              <button
-                type="button"
-                className={`mobile-nav-sublink${
-                  location.hash === `#services-${item.id}` ? ' is-active' : ''
-                }`}
-                onClick={goToService(item.id)}
-              >
-                {item.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </li>
-    );
-  }
+  if (!tab) return null;
 
   return (
     <li
       ref={rootRef}
       className={`nav-item-premium nav-item-premium--dropdown${open ? ' is-open' : ''}${
-        isServicesActive ? ' is-active' : ''
+        isGroupActive ? ' is-active' : ''
       }`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={openDropdown}
+      onMouseLeave={scheduleClose}
+      data-react-nav="true"
     >
       <button
         type="button"
@@ -165,34 +133,51 @@ export default function ServicesNavDropdown({ variant = 'header', onNavigate }) 
         aria-haspopup="true"
         aria-controls={menuId}
         onClick={() => setOpen((prev) => !prev)}
+        onFocus={openDropdown}
       >
-        <span>Services</span>
+        <span>{label}</span>
         <i className={`fas fa-chevron-down nav-dropdown-caret${open ? ' is-open' : ''}`} aria-hidden="true" />
       </button>
-      <ul id={menuId} className="nav-dropdown-menu" role="menu" hidden={!open}>
+      <ul
+        id={menuId}
+        className="nav-dropdown-menu"
+        role="menu"
+        onMouseEnter={openDropdown}
+        onMouseLeave={scheduleClose}
+      >
         <li role="none">
           <a
-            href={getServiceNavHref()}
+            href={getServiceNavHref(tabId)}
             className="nav-dropdown-link nav-dropdown-link--all"
             role="menuitem"
-            onClick={goToService()}
+            onClick={goToAllServices}
           >
-            View All Services
+            All {label} Services
           </a>
         </li>
-        {SERVICE_NAV_ITEMS.map((item) => (
-          <li key={item.id} role="none">
-            <a
-              href={getServiceNavHref(item.id)}
-              className={`nav-dropdown-link${
-                location.hash === `#services-${item.id}` ? ' is-active' : ''
-              }`}
-              role="menuitem"
-              onClick={goToService(item.id)}
-            >
-              {item.label}
-            </a>
-          </li>
+        {tab.categories.map((category) => (
+          <Fragment key={category.title}>
+            <li role="presentation" className="nav-dropdown-divider">
+              <span className="nav-dropdown-group__label">{category.title}</span>
+            </li>
+            {category.items.map((item) => {
+              const itemPath = getServicePagePath(tabId, item);
+              const isItemActive = itemPath && location.pathname === itemPath;
+
+              return (
+                <li key={item} role="none">
+                  <a
+                    href={itemPath ?? '#'}
+                    className={`nav-dropdown-link${isItemActive ? ' is-active' : ''}`}
+                    role="menuitem"
+                    onClick={goToServicePage(itemPath)}
+                  >
+                    {item}
+                  </a>
+                </li>
+              );
+            })}
+          </Fragment>
         ))}
       </ul>
     </li>

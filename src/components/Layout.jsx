@@ -8,18 +8,32 @@ import ScrollToTop from './ScrollToTop';
 import WhatsAppFloat from './WhatsAppFloat';
 import { SITE } from '../config/site';
 import { PAGE_META } from '../config/pageMeta';
-import { bindScrollHandlers } from '../utils/initTemplate';
-import { loadTemplateScripts } from '../utils/loadScripts';
+import { getServicePageMeta } from '../config/servicePages';
+import { getInsightPageMeta } from '../config/insightArticles';
+import { bindScrollHandlers, hidePreloader } from '../utils/initTemplate';
+import { primeTemplateScripts } from '../utils/loadScripts';
 import { parseInternalHref } from '../utils/mobileMenu';
 import { parseServiceHash, scrollToAnchor, scrollToServicesSection } from '../utils/serviceNavigation';
 
 function getPageTitle(pathname) {
+  const insightMeta = getInsightPageMeta(pathname);
+  if (insightMeta) return insightMeta.title;
+
+  const serviceMeta = getServicePageMeta(pathname);
+  if (serviceMeta) return serviceMeta.title;
+
   const meta = PAGE_META[pathname];
   if (!meta) return 'Page Not Found';
   return meta.title;
 }
 
 function getPageDescription(pathname) {
+  const insightMeta = getInsightPageMeta(pathname);
+  if (insightMeta) return insightMeta.description;
+
+  const serviceMeta = getServicePageMeta(pathname);
+  if (serviceMeta) return serviceMeta.description;
+
   const meta = PAGE_META[pathname];
   return meta?.description ?? SITE.name;
 }
@@ -92,6 +106,8 @@ export default function Layout() {
       const anchor = event.target.closest('a');
       if (!anchor) return;
 
+      if (anchor.closest('[data-react-nav]')) return;
+
       const href = anchor.getAttribute('href');
       if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')) {
         return;
@@ -115,28 +131,13 @@ export default function Layout() {
   }, [navigate, location.pathname]);
 
   useEffect(() => {
-    let cancelled = false;
-    let idleId;
-    let timeoutId;
+    const timer = window.setTimeout(() => hidePreloader(), 420);
+    return () => window.clearTimeout(timer);
+  }, [location.pathname]);
 
-    const prefetchScripts = () => {
-      if (!cancelled) loadTemplateScripts();
-    };
-
-    if (typeof window.requestIdleCallback === 'function') {
-      idleId = window.requestIdleCallback(prefetchScripts, { timeout: 2500 });
-    } else {
-      timeoutId = window.setTimeout(prefetchScripts, 300);
-    }
-
-    return () => {
-      cancelled = true;
-      if (idleId && typeof window.cancelIdleCallback === 'function') {
-        window.cancelIdleCallback(idleId);
-      }
-      if (timeoutId) window.clearTimeout(timeoutId);
-    };
-  }, []);
+  useEffect(() => {
+    primeTemplateScripts().catch(() => {});
+  }, [location.pathname]);
 
   useEffect(() => {
     const cleanupScroll = bindScrollHandlers();

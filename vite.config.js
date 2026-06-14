@@ -9,8 +9,11 @@ export default defineConfig({
     sourcemap: false,
     cssMinify: true,
     minify: 'esbuild',
-    assetsInlineLimit: 4096,
+    assetsInlineLimit: 2048,
     chunkSizeWarningLimit: 600,
+    modulePreload: {
+      polyfill: false,
+    },
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -22,6 +25,9 @@ export default defineConfig({
           }
           if (id.includes('node_modules/aos')) {
             return 'vendor-aos';
+          }
+          if (id.includes('/src/config/')) {
+            return 'app-config';
           }
         },
       },

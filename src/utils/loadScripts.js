@@ -1,10 +1,9 @@
+import { loadStylesheet } from './loadStyles';
+
 const CORE_AFTER_JQUERY = [
   '/assets/js/popper.min.js',
   '/assets/js/bootstrap.min.js',
   '/assets/js/plugins.js',
-  '/assets/js/owl.js',
-  '/assets/js/wow.js',
-  '/assets/js/appear.js',
 ];
 
 const OPTIONAL_SCRIPTS = {
@@ -12,11 +11,16 @@ const OPTIONAL_SCRIPTS = {
   jqueryUi: '/assets/js/jquery-ui.js',
   niceSelect: '/assets/js/jquery.nice-select.min.js',
   parallax: '/assets/js/parallax-scroll.js',
+  owl: '/assets/js/owl.js',
+  wow: '/assets/js/wow.js',
+  appear: '/assets/js/appear.js',
 };
 
 const OPTIONAL_STYLES = {
   fancybox: '/assets/css/jquery.fancybox.min.css',
   jqueryUi: '/assets/css/jquery-ui.css',
+  owl: '/assets/css/owl.css',
+  animate: '/assets/css/animate.css',
 };
 
 let scriptsLoaded = false;
@@ -49,20 +53,32 @@ function loadScript(src) {
   });
 }
 
-function loadStylesheet(href) {
-  if (document.querySelector(`link[data-template-style="${href}"]`)) {
-    return Promise.resolve();
+function getConditionalScripts() {
+  const scripts = [];
+
+  if (document.querySelector('.owl-carousel')) {
+    scripts.push(OPTIONAL_SCRIPTS.owl);
   }
 
-  return new Promise((resolve, reject) => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = href;
-    link.dataset.templateStyle = href;
-    link.onload = () => resolve();
-    link.onerror = () => reject(new Error(`Failed to load ${href}`));
-    document.head.appendChild(link);
-  });
+  if (document.querySelector('.wow')) {
+    scripts.push(OPTIONAL_SCRIPTS.wow, OPTIONAL_SCRIPTS.appear);
+  }
+
+  return scripts;
+}
+
+function getConditionalStyles() {
+  const styles = [];
+
+  if (document.querySelector('.owl-carousel')) {
+    styles.push(OPTIONAL_STYLES.owl);
+  }
+
+  if (document.querySelector('.wow')) {
+    styles.push(OPTIONAL_STYLES.animate);
+  }
+
+  return styles;
 }
 
 export function loadTemplateScripts() {
@@ -73,6 +89,8 @@ export function loadTemplateScripts() {
   if (!loadingPromise) {
     loadingPromise = loadScript('/assets/js/jquery.js')
       .then(() => Promise.all(CORE_AFTER_JQUERY.map(loadScript)))
+      .then(() => Promise.all(getConditionalScripts().map(loadScript)))
+      .then(() => Promise.all(getConditionalStyles().map(loadStylesheet)))
       .then(() => {
         scriptsLoaded = true;
       });
@@ -106,4 +124,30 @@ export async function loadPageEnhancements() {
   }
 
   await Promise.all([...styleLoads, ...scriptLoads]);
+}
+
+export function primeTemplateScripts() {
+  const needsSoon =
+    document.querySelector('.banner-carousel, .owl-carousel, .wow, [data-parallax]') != null;
+
+  if (needsSoon) {
+    return loadTemplateScripts();
+  }
+
+  if (typeof window.requestIdleCallback === 'function') {
+    return new Promise((resolve) => {
+      window.requestIdleCallback(
+        () => {
+          loadTemplateScripts().then(resolve);
+        },
+        { timeout: 2000 },
+      );
+    });
+  }
+
+  return new Promise((resolve) => {
+    window.setTimeout(() => {
+      loadTemplateScripts().then(resolve);
+    }, 400);
+  });
 }

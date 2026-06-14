@@ -1,3 +1,5 @@
+import { CATEGORY_IMAGES, RELEVANT_PICS } from './media';
+
 /** Homepage showcase cards — summary copy for the 3-card layout */
 export const SERVICE_CARD_META = {
   residential: {
@@ -48,12 +50,12 @@ export const SERVICE_TABS = [
     tabLabel: 'Residential Services',
     shortLabel: 'Residential',
     title: 'Residential Electrical Services',
-    image: '/assets/images/service/residential-install.jpg',
+    image: CATEGORY_IMAGES.residential.default,
     link: '/#services',
     categories: [
       {
-        title: 'Electrical Installations',
-        image: '/assets/images/service/residential-install.jpg',
+        title: 'Home Electrical Installations',
+        image: CATEGORY_IMAGES.residential.installations,
         imagePosition: 'center',
         items: [
           'Install outlets and switches',
@@ -66,7 +68,7 @@ export const SERVICE_TABS = [
       },
       {
         title: 'Home Rewiring',
-        image: '/assets/images/service/residential-rewire.jpg',
+        image: CATEGORY_IMAGES.residential.rewiring,
         imagePosition: 'center top',
         items: [
           'Whole-house rewiring',
@@ -77,8 +79,8 @@ export const SERVICE_TABS = [
         ],
       },
       {
-        title: 'Panel & Service Upgrades',
-        image: '/assets/images/service/residential-panel.jpg',
+        title: 'Residential Panel & Service',
+        image: CATEGORY_IMAGES.panels.electrical,
         imagePosition: 'center',
         items: [
           'Main panel replacement',
@@ -94,12 +96,12 @@ export const SERVICE_TABS = [
     tabLabel: 'Commercial Services',
     shortLabel: 'Commercial',
     title: 'Commercial Electrical Services',
-    image: '/assets/images/service/commercial-tenant.jpg',
+    image: CATEGORY_IMAGES.commercial.default,
     link: '/#services',
     categories: [
       {
-        title: 'Tenant Improvements',
-        image: '/assets/images/service/commercial-tenant.jpg',
+        title: 'Commercial Tenant Improvements',
+        image: CATEGORY_IMAGES.commercial.tenant,
         imagePosition: 'center',
         items: [
           'Office build-outs',
@@ -109,7 +111,7 @@ export const SERVICE_TABS = [
       },
       {
         title: 'Commercial Power Systems',
-        image: '/assets/images/service/commercial-power.jpg',
+        image: CATEGORY_IMAGES.panels.electrical,
         imagePosition: 'center',
         items: [
           'Panel installations',
@@ -120,7 +122,7 @@ export const SERVICE_TABS = [
       },
       {
         title: 'Commercial Lighting',
-        image: '/assets/images/service/commercial-lighting.jpg',
+        image: CATEGORY_IMAGES.lighting.outdoor,
         imagePosition: 'center',
         items: [
           'LED retrofits',
@@ -136,12 +138,12 @@ export const SERVICE_TABS = [
     tabLabel: 'EV Charger Installation',
     shortLabel: 'EV Charging',
     title: 'EV Charger Installation',
-    image: '/assets/images/service/ev-charging.jpg',
+    image: CATEGORY_IMAGES.ev.default,
     link: '/#services',
     categories: [
       {
-        title: 'Residential EV Charging',
-        image: '/assets/images/service/ev-charging.jpg',
+        title: 'EV Charging Services',
+        image: CATEGORY_IMAGES.ev.charging,
         imagePosition: 'center',
         items: [
           'Tesla charger installation',
@@ -158,13 +160,13 @@ export const SERVICE_TABS = [
     tabLabel: 'Lighting Solutions',
     shortLabel: 'Lighting',
     title: 'Lighting Solutions',
-    image: '/assets/images/service/lighting-indoor.jpg',
+    image: CATEGORY_IMAGES.lighting.default,
     link: '/#services',
     categories: [
       {
         title: 'Indoor Lighting',
-        image: '/assets/images/service/lighting-indoor.jpg',
-        imagePosition: 'center',
+        image: CATEGORY_IMAGES.lighting.indoor,
+        imagePosition: 'center top',
         items: [
           'Recessed lighting',
           'Pendant lighting',
@@ -175,7 +177,7 @@ export const SERVICE_TABS = [
       },
       {
         title: 'Outdoor Lighting',
-        image: '/assets/images/service/lighting-outdoor.jpg',
+        image: CATEGORY_IMAGES.lighting.outdoor,
         imagePosition: 'center',
         items: [
           'Landscape lighting',
@@ -192,12 +194,12 @@ export const SERVICE_TABS = [
     tabLabel: 'Panel Upgrades',
     shortLabel: 'Panels',
     title: 'Panel Upgrades & Electrical Service',
-    image: '/assets/images/service/panel-electrical.jpg',
+    image: CATEGORY_IMAGES.panels.default,
     link: '/#services',
     categories: [
       {
         title: 'Electrical Panels',
-        image: '/assets/images/service/panel-electrical.jpg',
+        image: CATEGORY_IMAGES.panels.electrical,
         imagePosition: 'center',
         items: [
           'Panel replacement',
@@ -209,7 +211,7 @@ export const SERVICE_TABS = [
       },
       {
         title: 'Service Upgrades',
-        image: '/assets/images/service/panel-service.jpg',
+        image: CATEGORY_IMAGES.panels.service,
         imagePosition: 'center top',
         items: [
           '100A to 200A upgrades',
@@ -225,12 +227,12 @@ export const SERVICE_TABS = [
     tabLabel: 'Safety Upgrades',
     shortLabel: 'Safety',
     title: 'Electrical Safety Upgrades',
-    image: '/assets/images/service/safety-upgrades.jpg',
+    image: RELEVANT_PICS.commercialSwitchgear,
     link: '/#services',
     categories: [
       {
         title: 'Safety Upgrades',
-        image: '/assets/images/service/safety-upgrades.jpg',
+        image: RELEVANT_PICS.commercialSwitchgear,
         imagePosition: 'center',
         items: ['GFCI installation', 'AFCI installation', 'Surge protection', 'Grounding improvements'],
       },
@@ -241,12 +243,12 @@ export const SERVICE_TABS = [
     tabLabel: 'New Construction',
     shortLabel: 'Construction',
     title: 'New Construction & Remodeling',
-    image: '/assets/images/service/new-construction.jpg',
+    image: RELEVANT_PICS.commercialConduit,
     link: '/#services',
     categories: [
       {
         title: 'New Construction',
-        image: '/assets/images/service/new-construction.jpg',
+        image: RELEVANT_PICS.commercialConduit,
         imagePosition: 'center',
         items: [
           'New home wiring',
@@ -256,8 +258,8 @@ export const SERVICE_TABS = [
       },
       {
         title: 'Remodeling Projects',
-        image: '/assets/images/service/remodel-wiring.jpg',
-        imagePosition: 'center',
+        image: RELEVANT_PICS.electricianAtPanel,
+        imagePosition: 'center top',
         items: [
           'Kitchen remodel wiring',
           'Bathroom remodel wiring',

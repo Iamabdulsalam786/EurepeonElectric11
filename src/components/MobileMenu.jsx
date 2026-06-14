@@ -3,8 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { SITE } from '../config/site';
 import { MAIN_NAV } from '../config/navigation';
 import BrandLogo from './BrandLogo';
-import ServicesNavDropdown from './ServicesNavDropdown';
-import MobileServicesNav from './MobileServicesNav';
+import MobileServiceGroupNav from './MobileServiceGroupNav';
 import { closeMobileMenu } from '../utils/mobileMenu';
 
 export default function MobileMenu() {
@@ -38,10 +37,15 @@ export default function MobileMenu() {
 
         <div className="mobile-menu__body">
           <p className="mobile-menu__label">Menu</p>
-          <ul className="mobile-nav-list" data-react-mobile-nav="true">
+          <ul className="mobile-nav-list" data-react-mobile-nav="true" data-react-nav="true">
             {MAIN_NAV.map((item) =>
-              item.type === 'services' ? (
-                <MobileServicesNav key={item.label} onNavigate={closeMobileMenu} />
+              item.type === 'service-group' ? (
+                <MobileServiceGroupNav
+                  key={item.id}
+                  tabId={item.tabId}
+                  label={item.label}
+                  onNavigate={closeMobileMenu}
+                />
               ) : (
                 <li key={item.label}>
                   <NavLink

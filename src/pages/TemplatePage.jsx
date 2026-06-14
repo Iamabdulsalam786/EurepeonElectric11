@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import manifest from '../content/manifest.json';
 import ServicesSection from '../components/ServicesSection';
 import { loadPageEnhancements } from '../utils/loadScripts';
+import { loadDeferredStyles } from '../utils/loadStyles';
 import { initializeTemplate } from '../utils/initTemplate';
 
 const contentModules = import.meta.glob(
@@ -72,12 +73,24 @@ export default function TemplatePage() {
     let active = true;
 
     const boot = async () => {
-      await loadPageEnhancements();
-      if (!active) return;
-      window.requestAnimationFrame(() => {
+      loadDeferredStyles().catch(() => {});
+
+      const runEnhancements = async () => {
+        await loadPageEnhancements();
         if (!active) return;
         initializeTemplate();
-      });
+      };
+
+      if (document.querySelector('.banner-carousel, .owl-carousel')) {
+        await runEnhancements();
+        return;
+      }
+
+      if (typeof window.requestIdleCallback === 'function') {
+        window.requestIdleCallback(() => runEnhancements(), { timeout: 900 });
+      } else {
+        window.setTimeout(runEnhancements, 50);
+      }
     };
 
     boot();
