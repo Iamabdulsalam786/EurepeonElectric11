@@ -42,6 +42,7 @@ function splitHomeContent(html) {
 export default function TemplatePage() {
   const location = useLocation();
   const [content, setContent] = useState('');
+  const [loadError, setLoadError] = useState('');
   const pageMeta = manifest[location.pathname];
   const isHome = location.pathname === '/';
 
@@ -51,6 +52,9 @@ export default function TemplatePage() {
   }, [content, isHome]);
 
   useEffect(() => {
+    setContent('');
+    setLoadError('');
+
     if (!pageMeta) {
       setContent('');
       return;
@@ -59,12 +63,16 @@ export default function TemplatePage() {
     const loader = contentModules[`../content/${pageMeta.file}`];
     if (!loader) {
       setContent('');
+      setLoadError(`Could not find content file: ${pageMeta.file}`);
       return;
     }
 
     loader()
       .then((html) => setContent(html))
-      .catch(() => setContent(''));
+      .catch((error) => {
+        setContent('');
+        setLoadError(error?.message || 'Could not load page content.');
+      });
   }, [location.pathname, pageMeta]);
 
   useEffect(() => {
@@ -106,6 +114,31 @@ export default function TemplatePage() {
         <div className="auto-container">
           <div className="content-box">
             <h2>Page Not Found</h2>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <section className="page-title centred">
+        <div className="auto-container">
+          <div className="content-box">
+            <h2>Page Content Error</h2>
+            <p>{loadError}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!content) {
+    return (
+      <section className="page-title centred">
+        <div className="auto-container">
+          <div className="content-box">
+            <h2>Loading...</h2>
           </div>
         </div>
       </section>

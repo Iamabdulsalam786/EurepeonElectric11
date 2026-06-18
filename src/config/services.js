@@ -1,4 +1,4 @@
-import { CATEGORY_IMAGES, RELEVANT_PICS } from './media';
+import { CATEGORY_IMAGES } from './media';
 
 /** Homepage showcase cards — summary copy for the 3-card layout */
 export const SERVICE_CARD_META = {
@@ -80,7 +80,7 @@ export const SERVICE_TABS = [
       },
       {
         title: 'Residential Panel & Service',
-        image: CATEGORY_IMAGES.panels.electrical,
+        image: CATEGORY_IMAGES.residential.panels,
         imagePosition: 'center',
         items: [
           'Main panel replacement',
@@ -111,7 +111,7 @@ export const SERVICE_TABS = [
       },
       {
         title: 'Commercial Power Systems',
-        image: CATEGORY_IMAGES.panels.electrical,
+        image: CATEGORY_IMAGES.commercial.power,
         imagePosition: 'center',
         items: [
           'Panel installations',
@@ -122,7 +122,7 @@ export const SERVICE_TABS = [
       },
       {
         title: 'Commercial Lighting',
-        image: CATEGORY_IMAGES.lighting.outdoor,
+        image: CATEGORY_IMAGES.commercial.lighting,
         imagePosition: 'center',
         items: [
           'LED retrofits',
@@ -227,12 +227,12 @@ export const SERVICE_TABS = [
     tabLabel: 'Safety Upgrades',
     shortLabel: 'Safety',
     title: 'Electrical Safety Upgrades',
-    image: RELEVANT_PICS.commercialSwitchgear,
+    image: CATEGORY_IMAGES.safety.default,
     link: '/#services',
     categories: [
       {
         title: 'Safety Upgrades',
-        image: RELEVANT_PICS.commercialSwitchgear,
+        image: CATEGORY_IMAGES.safety.default,
         imagePosition: 'center',
         items: ['GFCI installation', 'AFCI installation', 'Surge protection', 'Grounding improvements'],
       },
@@ -243,12 +243,12 @@ export const SERVICE_TABS = [
     tabLabel: 'New Construction',
     shortLabel: 'Construction',
     title: 'New Construction & Remodeling',
-    image: RELEVANT_PICS.commercialConduit,
+    image: CATEGORY_IMAGES.construction.default,
     link: '/#services',
     categories: [
       {
         title: 'New Construction',
-        image: RELEVANT_PICS.commercialConduit,
+        image: CATEGORY_IMAGES.construction.newBuild,
         imagePosition: 'center',
         items: [
           'New home wiring',
@@ -258,7 +258,7 @@ export const SERVICE_TABS = [
       },
       {
         title: 'Remodeling Projects',
-        image: RELEVANT_PICS.electricianAtPanel,
+        image: CATEGORY_IMAGES.construction.remodel,
         imagePosition: 'center top',
         items: [
           'Kitchen remodel wiring',

@@ -50,7 +50,7 @@ function ServiceVideo({ src, poster, title }) {
     <div className="service-details-premium__video">
       <h3>See Our {title} Work</h3>
       <div className="service-details-premium__video-frame">
-        <video controls playsInline preload="metadata" poster={poster}>
+        <video controls playsInline muted preload="metadata" poster={poster}>
           <source src={src} type="video/mp4" />
           Your browser does not support embedded video.
         </video>
@@ -174,7 +174,7 @@ export default function ServiceDetailPage() {
 
                 <ServiceVideo
                   src={page.video}
-                  poster={page.image}
+                  poster={secondaryImageOne}
                   title={page.groupLabel}
                 />
 

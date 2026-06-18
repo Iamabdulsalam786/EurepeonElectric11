@@ -72,10 +72,12 @@ export default function MobileMenu() {
           <div className="mobile-menu__contact contact-info">
             <h4>Contact Info</h4>
             <ul>
-              <li>
-                <i className="fas fa-map-marker-alt" aria-hidden="true"></i>
-                <span>{SITE.address}</span>
-              </li>
+              {SITE.showAddress && (
+                <li>
+                  <i className="fas fa-map-marker-alt" aria-hidden="true"></i>
+                  <span>{SITE.address}</span>
+                </li>
+              )}
               <li>
                 <i className="fas fa-phone" aria-hidden="true"></i>
                 <a href={`tel:${SITE.phoneTel}`}>{SITE.phone}</a>

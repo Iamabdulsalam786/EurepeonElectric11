@@ -95,9 +95,15 @@ export default function Header() {
                   <i className="icon-1" aria-hidden="true"></i>
                   {SITE.hours}
                 </li>
+                {SITE.showAddress && (
+                  <li>
+                    <i className="icon-2" aria-hidden="true"></i>
+                    {SITE.address}
+                  </li>
+                )}
                 <li>
-                  <i className="icon-2" aria-hidden="true"></i>
-                  {SITE.address}
+                  <i className="fas fa-phone" aria-hidden="true"></i>
+                  <a href={`tel:${SITE.phoneTel}`}>{SITE.phone}</a>
                 </li>
                 <li>
                   <i className="icon-3" aria-hidden="true"></i>

@@ -36,8 +36,13 @@ export default function Preloader() {
       }
     });
 
+    const quickHide = window.setTimeout(hidePreloader, 900);
+    const failSafeHide = window.setTimeout(hidePreloader, 2500);
+
     return () => {
       closeBtn?.removeEventListener('click', onClose);
+      window.clearTimeout(quickHide);
+      window.clearTimeout(failSafeHide);
     };
   }, []);
 

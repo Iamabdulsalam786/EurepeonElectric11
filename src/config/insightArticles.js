@@ -1,4 +1,4 @@
-import { CATEGORY_IMAGES, RELEVANT_PICS } from './media';
+import { CLIENT_IMAGES, STOCK_IMAGES } from './media';
 import { SITE } from './site';
 
 export const INSIGHT_ARTICLES = [
@@ -8,7 +8,7 @@ export const INSIGHT_ARTICLES = [
     title: '5 Signs You Need a Panel Upgrade',
     category: 'Electrical Safety',
     author: SITE.shortName,
-    image: RELEVANT_PICS.commercialPanels,
+    image: CLIENT_IMAGES.residentialPanel,
     imagePosition: 'center',
     excerpt:
       'Flickering lights, tripping breakers, and outdated panels are warning signs that your home may need a licensed upgrade.',
@@ -49,7 +49,7 @@ export const INSIGHT_ARTICLES = [
     ],
     relatedServicePath: '/services/residential/main-panel-replacement',
     relatedServiceLabel: 'Panel replacement services',
-    secondaryImages: [RELEVANT_PICS.electricianAtPanel, CATEGORY_IMAGES.panels.service],
+    secondaryImages: [CLIENT_IMAGES.panelElectrical, CLIENT_IMAGES.newConstruction],
   },
   {
     slug: 'home-ev-charger-planning',
@@ -57,7 +57,7 @@ export const INSIGHT_ARTICLES = [
     title: 'Planning a Home EV Charger Install',
     category: 'EV Charging',
     author: SITE.shortName,
-    image: RELEVANT_PICS.electricianAtPanel,
+    image: STOCK_IMAGES.insightEv,
     imagePosition: 'center top',
     excerpt:
       'Learn what to expect with circuit sizing, panel capacity, and permit-ready Level 2 or Tesla charger installation at home.',
@@ -98,7 +98,7 @@ export const INSIGHT_ARTICLES = [
     ],
     relatedServicePath: '/services/ev-chargers/level-2-charger-installation',
     relatedServiceLabel: 'Level 2 charger installation',
-    secondaryImages: [RELEVANT_PICS.commercialPanels, CATEGORY_IMAGES.ev.charging],
+    secondaryImages: [CLIENT_IMAGES.panelElectrical, CLIENT_IMAGES.remodelWiring],
   },
   {
     slug: 'commercial-lighting-energy',
@@ -106,7 +106,7 @@ export const INSIGHT_ARTICLES = [
     title: 'Commercial Lighting That Saves Energy',
     category: 'Commercial',
     author: SITE.shortName,
-    image: RELEVANT_PICS.commercialConduit,
+    image: CLIENT_IMAGES.lightingOutdoor,
     imagePosition: 'center',
     excerpt:
       'LED retrofits, warehouse lighting, and emergency lighting upgrades help businesses lower energy costs and stay compliant.',
@@ -147,7 +147,7 @@ export const INSIGHT_ARTICLES = [
     ],
     relatedServicePath: '/#services-commercial',
     relatedServiceLabel: 'Commercial lighting services',
-    secondaryImages: [RELEVANT_PICS.commercialSwitchgear, CATEGORY_IMAGES.lighting.outdoor],
+    secondaryImages: [CLIENT_IMAGES.lightingIndoor, CLIENT_IMAGES.commercialLighting],
   },
 ];
 

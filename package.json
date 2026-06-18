@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "preview:host": "vite preview --host 0.0.0.0 --port 4173",
     "extract": "node scripts/extract-content.mjs",
-    "images": "node scripts/download-free-images.mjs"
+    "images": "node scripts/download-free-images.mjs",
+    "optimize-images": "node scripts/optimize-relevant-pics.mjs"
   },
   "dependencies": {
     "aos": "^2.3.4",

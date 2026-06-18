@@ -53,7 +53,7 @@ const FREE_IMAGES = {
   'service/residential-rewire.jpg':
     'https://images.pexels.com/photos/8062300/pexels-photo-8062300.jpeg?auto=compress&cs=tinysrgb&w=600&h=420&fit=crop',
   'service/residential-panel.jpg':
-    'https://images.pexels.com/photos/442150/pexels-photo-442150.jpeg?auto=compress&cs=tinysrgb&w=600&h=420&fit=crop',
+    'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=600&h=420&fit=crop&q=85',
   'service/commercial-tenant.jpg':
     'https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg?auto=compress&cs=tinysrgb&w=600&h=420&fit=crop',
   'service/commercial-power.jpg':
@@ -69,24 +69,31 @@ const FREE_IMAGES = {
   'service/panel-electrical.jpg':
     'https://images.pexels.com/photos/442150/pexels-photo-442150.jpeg?auto=compress&cs=tinysrgb&w=600&h=420&fit=crop',
   'service/panel-service.jpg':
-    'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=600&h=420&fit=crop&q=85',
+    'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&h=420&fit=crop&q=85',
   'service/safety-upgrades.jpg':
-    'https://images.pexels.com/photos/4246214/pexels-photo-4246214.jpeg?auto=compress&cs=tinysrgb&w=600&h=420&fit=crop',
+    'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=600&h=420&fit=crop',
   'service/new-construction.jpg':
-    'https://images.pexels.com/photos/4483612/pexels-photo-4483612.jpeg?auto=compress&cs=tinysrgb&w=600&h=420&fit=crop',
+    'https://images.pexels.com/photos/1903285/pexels-photo-1903285.jpeg?auto=compress&cs=tinysrgb&w=600&h=420&fit=crop',
   'service/remodel-wiring.jpg':
     'https://images.pexels.com/photos/2089698/pexels-photo-2089698.jpeg?auto=compress&cs=tinysrgb&w=600&h=420&fit=crop',
+  // Insights + homepage cards — each unique scene
+  'service/insight-panel.jpg':
+    'https://images.pexels.com/photos/442150/pexels-photo-442150.jpeg?auto=compress&cs=tinysrgb&w=800&h=520&fit=crop',
+  'service/insight-ev.jpg':
+    'https://images.pexels.com/photos/9799996/pexels-photo-9799996.jpeg?auto=compress&cs=tinysrgb&w=800&h=520&fit=crop',
+  'service/insight-lighting.jpg':
+    'https://images.pexels.com/photos/1267338/pexels-photo-1267338.jpeg?auto=compress&cs=tinysrgb&w=800&h=520&fit=crop',
   // Projects carousel (after Why Choose Us) — licensed electrical work scenes
   'project/project-1.jpg': 'https://images.pexels.com/photos/5691631/pexels-photo-5691631.jpeg?auto=compress&cs=tinysrgb&w=800&h=650&fit=crop',
   'project/project-2.jpg': 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=800&h=650&fit=crop',
   'project/project-3.jpg': 'https://images.pexels.com/photos/4246214/pexels-photo-4246214.jpeg?auto=compress&cs=tinysrgb&w=800&h=650&fit=crop',
   'project/project-4.jpg': 'https://images.pexels.com/photos/8062300/pexels-photo-8062300.jpeg?auto=compress&cs=tinysrgb&w=800&h=650&fit=crop',
-  'project/project-5.jpg': 'https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=800&h=650&fit=crop',
-  'project/project-6.jpg': 'https://images.pexels.com/photos/7659564/pexels-photo-7659564.jpeg?auto=compress&cs=tinysrgb&w=800&h=650&fit=crop',
-  'project/project-7.jpg': 'https://images.pexels.com/photos/4483612/pexels-photo-4483612.jpeg?auto=compress&cs=tinysrgb&w=800&h=650&fit=crop',
-  'news/news-1.jpg': 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&h=400&fit=crop&q=85',
-  'news/news-2.jpg': 'https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
-  'news/news-3.jpg': 'https://images.pexels.com/photos/442150/pexels-photo-442150.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+  'project/project-5.jpg': 'https://images.pexels.com/photos/8062300/pexels-photo-8062300.jpeg?auto=compress&cs=tinysrgb&w=800&h=650&fit=crop',
+  'project/project-6.jpg': 'https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg?auto=compress&cs=tinysrgb&w=800&h=650&fit=crop',
+  'project/project-7.jpg': 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&h=650&fit=crop&q=85',
+  'news/news-1.jpg': 'https://images.pexels.com/photos/442150/pexels-photo-442150.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+  'news/news-2.jpg': 'https://images.pexels.com/photos/9799996/pexels-photo-9799996.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+  'news/news-3.jpg': 'https://images.pexels.com/photos/1267338/pexels-photo-1267338.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
 };
 
 function downloadFile(url, dest) {

@@ -65,7 +65,7 @@ export default function Footer() {
                 </div>
                 <div className="widget-content">
                   <ul className="info-list clearfix">
-                    <li>{SITE.address}</li>
+                    {SITE.showAddress && <li>{SITE.address}</li>}
                     <li>
                       <a href={`tel:${SITE.phoneTel}`}>{SITE.phone}</a>
                     </li>

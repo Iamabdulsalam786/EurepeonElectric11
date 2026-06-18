@@ -11,6 +11,7 @@ import { PAGE_META } from '../config/pageMeta';
 import { getServicePageMeta } from '../config/servicePages';
 import { getInsightPageMeta } from '../config/insightArticles';
 import { bindScrollHandlers, hidePreloader } from '../utils/initTemplate';
+import { initWeb3Forms } from '../utils/web3forms';
 import { primeTemplateScripts } from '../utils/loadScripts';
 import { parseInternalHref } from '../utils/mobileMenu';
 import { parseServiceHash, scrollToAnchor, scrollToServicesSection } from '../utils/serviceNavigation';
@@ -133,6 +134,10 @@ export default function Layout() {
   useEffect(() => {
     const timer = window.setTimeout(() => hidePreloader(), 420);
     return () => window.clearTimeout(timer);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    initWeb3Forms();
   }, [location.pathname]);
 
   useEffect(() => {

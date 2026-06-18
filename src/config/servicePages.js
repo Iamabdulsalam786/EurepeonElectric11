@@ -1,6 +1,6 @@
 import { SERVICE_TABS } from './services';
 import { SITE } from './site';
-import { CATEGORY_IMAGES, RELEVANT_PICS } from './media';
+import { CATEGORY_IMAGES, CLIENT_IMAGES, RELEVANT_VIDEOS } from './media';
 
 export const SERVICE_NAV_GROUP_IDS = ['residential', 'commercial', 'ev-chargers'];
 
@@ -39,57 +39,90 @@ const GROUP_BENEFITS = {
   ],
 };
 
-const RESIDENTIAL_IMAGES = {
-  'install-outlets-and-switches': CATEGORY_IMAGES.residential.installations,
-  'install-ceiling-fans': CATEGORY_IMAGES.residential.installations,
-  'install-lighting-fixtures': CATEGORY_IMAGES.residential.installations,
-  'install-dimmer-switches': CATEGORY_IMAGES.residential.installations,
-  'install-smoke-detectors': CATEGORY_IMAGES.residential.installations,
-  'install-carbon-monoxide-detectors': CATEGORY_IMAGES.residential.installations,
-  'whole-house-rewiring': CATEGORY_IMAGES.residential.rewiring,
-  'partial-rewiring': CATEGORY_IMAGES.residential.rewiring,
-  'knob-and-tube-replacement': CATEGORY_IMAGES.residential.rewiring,
-  'aluminum-wiring-replacement': CATEGORY_IMAGES.residential.rewiring,
-  'code-compliance-upgrades': CATEGORY_IMAGES.residential.panels,
-  'main-panel-replacement': CATEGORY_IMAGES.residential.panels,
-  'service-entrance-upgrades': CATEGORY_IMAGES.residential.panels,
-  'circuit-breaker-replacement': CATEGORY_IMAGES.residential.panels,
-  'subpanel-installation': CATEGORY_IMAGES.residential.panels,
-};
+/** Real no-face/local images for service detail heroes. Avoid placeholders and face-forward stock. */
+const SERVICE_DETAIL_STOCK_POOL = [
+  CLIENT_IMAGES.residentialInstall,
+  CLIENT_IMAGES.residentialRewire,
+  CLIENT_IMAGES.residentialPanel,
+  CLIENT_IMAGES.commercialTenant,
+  CLIENT_IMAGES.commercialPower,
+  CLIENT_IMAGES.commercialLighting,
+  CLIENT_IMAGES.evCharging,
+  CLIENT_IMAGES.lightingIndoor,
+  CLIENT_IMAGES.lightingOutdoor,
+  CLIENT_IMAGES.panelElectrical,
+  CLIENT_IMAGES.safetyUpgrades,
+  CLIENT_IMAGES.newConstruction,
+  CLIENT_IMAGES.remodelWiring,
+  CLIENT_IMAGES.heroOne,
+  CLIENT_IMAGES.heroTwo,
+  CLIENT_IMAGES.heroThree,
+  '/assets/images/service/service-3.jpg',
+  '/assets/images/service/service-4.jpg',
+  '/assets/images/service/service-7.jpg',
+  '/assets/images/resource/chooseus-2.jpg',
+  '/assets/images/resource/faq-2.jpg',
+  '/assets/images/project/project-1.jpg',
+  '/assets/images/project/project-3.jpg',
+  '/assets/images/project/project-6.jpg',
+  '/assets/images/news/news-2.jpg',
+];
 
-const COMMERCIAL_IMAGES = {
-  'office-build-outs': CATEGORY_IMAGES.commercial.tenant,
-  'retail-space-wiring': CATEGORY_IMAGES.commercial.tenant,
-  'restaurant-electrical-installations': CATEGORY_IMAGES.commercial.tenant,
-  'panel-installations': CATEGORY_IMAGES.commercial.power,
-  'power-distribution-systems': CATEGORY_IMAGES.commercial.power,
-  'dedicated-circuits': CATEGORY_IMAGES.commercial.power,
-  'equipment-power-connections': CATEGORY_IMAGES.commercial.power,
-  'led-retrofits': CATEGORY_IMAGES.commercial.lighting,
-  'parking-lot-lighting': CATEGORY_IMAGES.commercial.lighting,
-  'warehouse-lighting': CATEGORY_IMAGES.commercial.lighting,
-  'emergency-lighting': CATEGORY_IMAGES.commercial.lighting,
-};
+const SERVICE_DETAIL_SECONDARY_POOL = [
+  CLIENT_IMAGES.safetyUpgrades,
+  CLIENT_IMAGES.panelElectrical,
+  CLIENT_IMAGES.lightingOutdoor,
+  CLIENT_IMAGES.commercialPower,
+  CLIENT_IMAGES.evCharging,
+  '/assets/images/service/service-3.jpg',
+  '/assets/images/service/service-4.jpg',
+  '/assets/images/resource/chooseus-2.jpg',
+  '/assets/images/project/project-1.jpg',
+  '/assets/images/project/project-3.jpg',
+];
 
-const EV_IMAGES = {
-  'tesla-charger-installation': CATEGORY_IMAGES.ev.charging,
-  'level-2-charger-installation': CATEGORY_IMAGES.ev.charging,
-  'home-charging-station-setup': CATEGORY_IMAGES.ev.charging,
-  'circuit-installation': RELEVANT_PICS.electricianAtPanel,
-  'permit-assistance': RELEVANT_PICS.electricianAtPanel,
-};
+function buildServiceDetailImageMap() {
+  const map = new Map();
+  let heroIndex = 0;
+  let secondaryIndex = 0;
 
-const SERVICE_ITEM_IMAGES = {
-  ...RESIDENTIAL_IMAGES,
-  ...COMMERCIAL_IMAGES,
-  ...EV_IMAGES,
-};
+  for (const groupId of SERVICE_NAV_GROUP_IDS) {
+    const tab = SERVICE_TABS.find((entry) => entry.id === groupId);
+    if (!tab) continue;
 
-const GROUP_SECONDARY_IMAGES = {
-  residential: [CATEGORY_IMAGES.residential.rewiring, CATEGORY_IMAGES.residential.panels],
-  commercial: [RELEVANT_PICS.commercialPanels, RELEVANT_PICS.commercialSwitchgear],
-  'ev-chargers': [CATEGORY_IMAGES.ev.charging, RELEVANT_PICS.electricianAtPanel],
-};
+    for (const category of tab.categories) {
+      for (const title of category.items) {
+        const slug = slugify(title);
+        const hero = SERVICE_DETAIL_STOCK_POOL[heroIndex % SERVICE_DETAIL_STOCK_POOL.length];
+        heroIndex += 1;
+
+        let secondaryOne = SERVICE_DETAIL_SECONDARY_POOL[secondaryIndex % SERVICE_DETAIL_SECONDARY_POOL.length];
+        secondaryIndex += 1;
+        let secondaryTwo = SERVICE_DETAIL_SECONDARY_POOL[secondaryIndex % SERVICE_DETAIL_SECONDARY_POOL.length];
+        secondaryIndex += 1;
+
+        if (secondaryOne === hero) {
+          secondaryIndex += 1;
+          secondaryOne = SERVICE_DETAIL_SECONDARY_POOL[secondaryIndex % SERVICE_DETAIL_SECONDARY_POOL.length];
+        }
+        if (secondaryTwo === hero || secondaryTwo === secondaryOne) {
+          secondaryIndex += 1;
+          secondaryTwo = SERVICE_DETAIL_SECONDARY_POOL[secondaryIndex % SERVICE_DETAIL_SECONDARY_POOL.length];
+        }
+
+        map.set(`${groupId}:${slug}`, {
+          hero,
+          secondaryImages: [secondaryOne, secondaryTwo],
+          imagePosition: category.imagePosition ?? 'center',
+        });
+      }
+    }
+  }
+
+  return map;
+}
+
+const SERVICE_DETAIL_IMAGE_MAP = buildServiceDetailImageMap();
 
 function buildIntro({ title, groupId, category }) {
   return `${SITE.shortName} provides professional ${title.toLowerCase()} for ${GROUP_AUDIENCE[groupId]}. Our licensed electricians deliver safe, code-compliant ${category.toLowerCase()} with clear pricing, dependable scheduling, and workmanship built to pass inspection.`;
@@ -107,12 +140,15 @@ function buildDescription({ title, groupId }) {
 }
 
 function getPageImages(tab, category, slug) {
-  const hero = SERVICE_ITEM_IMAGES[slug] ?? category.image ?? tab.image;
-  const [secondaryOne, secondaryTwo] = GROUP_SECONDARY_IMAGES[tab.id] ?? [hero, hero];
+  const mapped = SERVICE_DETAIL_IMAGE_MAP.get(`${tab.id}:${slug}`);
+  if (mapped) return mapped;
 
   return {
-    hero,
-    secondaryImages: [secondaryOne, secondaryTwo],
+    hero: category.image ?? tab.image,
+    secondaryImages: [
+      SERVICE_DETAIL_SECONDARY_POOL[0],
+      SERVICE_DETAIL_SECONDARY_POOL[1],
+    ],
     imagePosition: category.imagePosition ?? 'center',
   };
 }
@@ -142,9 +178,9 @@ export const SERVICE_PAGES = SERVICE_NAV_GROUP_IDS.flatMap((groupId) => {
         secondaryImages: images.secondaryImages,
         video:
           groupId === 'commercial'
-            ? '/assets/images/RelevantPics/video2.mp4'
+            ? RELEVANT_VIDEOS.projectShowcase
             : groupId === 'ev-chargers'
-              ? '/assets/images/RelevantPics/video1.mp4'
+              ? RELEVANT_VIDEOS.fieldWork
               : null,
       };
     }),

@@ -1208,6 +1208,40 @@ h2.fs_30,
   background-repeat: no-repeat !important;
 }
 
+/* Full hero photo — disable template Ken Burns zoom (was scale 1.25) */
+.banner-style-one .banner-carousel .slide-item .image-layer {
+  left: 50% !important;
+  top: 50% !important;
+  width: 112% !important;
+  height: 112% !important;
+  transform: translate(-50%, -50%) scale(1) !important;
+  -webkit-transform: translate(-50%, -50%) scale(1) !important;
+  -ms-transform: translate(-50%, -50%) scale(1) !important;
+  transition: none !important;
+}
+
+.banner-style-one .banner-carousel .active .slide-item .image-layer {
+  transform: translate(-50%, -50%) scale(1) !important;
+  -webkit-transform: translate(-50%, -50%) scale(1) !important;
+  -ms-transform: translate(-50%, -50%) scale(1) !important;
+}
+
+.banner-style-one .banner-carousel .slide-item.hero-banner-slide--1 .image-layer {
+  background-position: center 42% !important;
+}
+
+.banner-style-one .banner-carousel .slide-item.hero-banner-slide--2 .image-layer {
+  background-position: center 48% !important;
+}
+
+.banner-style-one .banner-carousel .slide-item.hero-banner-slide--3 .image-layer {
+  background-position: center 38% !important;
+}
+
+.banner-style-one .banner-carousel .slide-item {
+  padding-bottom: 210px !important;
+}
+
 .banner-carousel .slide-item .hero-slide-shape {
   position: absolute;
   inset: 0;
@@ -1222,6 +1256,15 @@ h2.fs_30,
 
 .banner-carousel .content-box {
   z-index: 5 !important;
+}
+
+/* Keep hero copy below the blue diagonal shape strip */
+.banner-style-one .banner-carousel .slide-item.pt_180 {
+  padding-top: 180px;
+}
+
+.banner-style-one .banner-carousel .content-box {
+  padding-top: 4px;
 }
 
 /* ===== Premium Services Section (React) ===== */
@@ -3247,7 +3290,7 @@ select:focus-visible {
 }
 
 .banner-carousel .content-box h2 {
-  font-size: clamp(24px, 3.2vw, 38px) !important;
+  font-size: clamp(25px, 3.35vw, 40px) !important;
   line-height: 1.2 !important;
   letter-spacing: -0.02em;
   max-width: 680px;
@@ -3278,6 +3321,19 @@ select:focus-visible {
   .banner-carousel .slide-item {
     min-height: 420px;
   }
+
+  .banner-style-one .banner-carousel .slide-item.pt_180 {
+    padding-top: 178px !important;
+  }
+
+  .banner-style-one .banner-carousel .slide-item {
+    padding-bottom: 190px !important;
+  }
+
+  .banner-style-one .banner-carousel .slide-item .image-layer {
+    width: 113% !important;
+    height: 113% !important;
+  }
 }
 
 @media (max-width: 767px) {
@@ -3294,6 +3350,48 @@ select:focus-visible {
 
   .banner-carousel .slide-item {
     min-height: 360px !important;
+    padding-top: 0 !important;
+  }
+
+  .banner-style-one .banner-carousel .slide-item.pt_180 {
+    padding-top: 190px !important;
+  }
+
+  .banner-style-one .banner-carousel .content-box {
+    padding-top: 8px;
+  }
+
+  .banner-style-one .banner-section .shape .shape-2 {
+    width: min(100%, 420px);
+    height: 88px;
+  }
+
+  .banner-style-one .banner-section .shape .shape-3 {
+    width: min(100%, 460px);
+    height: 118px;
+  }
+
+  .banner-style-one .banner-carousel .slide-item .image-layer {
+    width: 115% !important;
+    height: 115% !important;
+    background-position: center 40% !important;
+  }
+
+  .banner-style-one .banner-carousel .slide-item {
+    padding-bottom: 165px !important;
+  }
+
+  .banner-style-one .banner-carousel .slide-item::before {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 30, 60, 0.78) 0%,
+      rgba(0, 120, 193, 0.42) 55%,
+      rgba(0, 0, 0, 0.35) 100%
+    ) !important;
+  }
+
+  .banner-carousel .content-box {
+    padding-right: 12px;
   }
 }
 
@@ -3610,6 +3708,15 @@ select:focus-visible {
 
   .banner-carousel .slide-item {
     min-height: 320px !important;
+    padding-top: 0 !important;
+  }
+
+  .banner-style-one .banner-carousel .slide-item.pt_180 {
+    padding-top: 172px !important;
+  }
+
+  .banner-style-one .banner-carousel .content-box {
+    padding-top: 6px;
   }
 
   .funfact-section .inner-container {
@@ -5943,5 +6050,180 @@ a.contact-premium__card:hover {
 
 .news-section--insights .news-block-one:hover .lower-content h3 a {
   color: var(--brand-primary);
+}
+
+/* Web3Forms feedback */
+.web3form-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.web3form-status {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.web3form-status--success {
+  background: #e8f7ee;
+  color: #0d6832;
+  border: 1px solid #b8e6cc;
+}
+
+.web3form-status--error {
+  background: #fdecea;
+  color: #b42318;
+  border: 1px solid #f5c2c0;
+}
+
+/* Hero consultation form — stable button position on desktop, tablet, and mobile */
+.search-field .search-area form {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: stretch;
+  margin-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.search-field .search-area form > .row {
+  flex: 1 1 calc(100% - 190px);
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0 !important;
+}
+
+.search-field .search-area form > .row::before,
+.search-field .search-area form > .row::after {
+  display: none !important;
+}
+
+.search-field .search-area form > .row > .form-group {
+  width: auto !important;
+  max-width: none !important;
+  flex: initial !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.search-field .search-area .btn-box {
+  position: static !important;
+  inset: auto !important;
+  flex: 0 0 175px;
+  width: 175px;
+}
+
+.search-field .search-area .btn-box .theme-btn {
+  width: 100%;
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 12px 18px !important;
+}
+
+.search-field .web3form-status--hero {
+  flex: 0 0 100%;
+  width: 100%;
+  margin: 0 !important;
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .search-field .search-area form > .row,
+  .search-field .search-area .btn-box {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  .search-field .search-area form > .row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 575px) {
+  .search-field .search-area form > .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Final hero form lock: 4 fields + quote button must stay on one row on desktop/tablet. */
+.search-field .search-area form {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  column-gap: 14px !important;
+  row-gap: 14px !important;
+  align-items: stretch !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.search-field .search-area form > .row {
+  display: contents !important;
+  margin: 0 !important;
+}
+
+.search-field .search-area form > .row::before,
+.search-field .search-area form > .row::after {
+  display: none !important;
+  content: none !important;
+}
+
+.search-field .search-area form > .row > .form-group,
+.search-field .search-area form > .btn-box {
+  grid-column: auto !important;
+  width: auto !important;
+  max-width: none !important;
+  flex: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.search-field .search-area form > .btn-box {
+  position: static !important;
+  inset: auto !important;
+}
+
+.search-field .search-area form > .btn-box .theme-btn {
+  width: 100% !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  padding: 10px 12px !important;
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.search-field .web3form-status--hero {
+  grid-column: 1 / -1 !important;
+}
+
+@media (max-width: 767px) {
+  .search-field .search-area form {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .search-field .search-area form > .btn-box,
+  .search-field .web3form-status--hero {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .search-field .search-area form {
+    grid-template-columns: 1fr !important;
+  }
 }
 
