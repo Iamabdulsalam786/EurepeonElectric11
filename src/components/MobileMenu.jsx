@@ -43,6 +43,7 @@ export default function MobileMenu() {
                 <MobileServiceGroupNav
                   key={item.id}
                   tabId={item.tabId}
+                  tabIds={item.tabIds}
                   label={item.label}
                   onNavigate={closeMobileMenu}
                 />

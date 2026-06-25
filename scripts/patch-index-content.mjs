@@ -20,7 +20,7 @@ const aboutImageBlock = `<div class="image_block_eight">
                                     <div class="shape-2" style="background-image: url(/assets/images/shape/shape-45.png);"></div>
                                 </div>
                                 <div class="icon-box float-bob-y"><img src="/assets/images/icons/icon-1.png" alt=""></div>
-                                <figure class="overlay-anim-black-bg image image-1 overlay-animation" data-animation="overlay-animation"><img src="/assets/images/resource/about-5.jpg" alt="European Electric electrician at work"></figure>
+                                <figure class="overlay-anim-black-bg image image-1 overlay-animation" data-animation="overlay-animation"><img src="/assets/images/resource/about-5.jpg" alt="European Electric LLC electrician at work"></figure>
                                 <figure class="image image-2"><img src="/assets/images/resource/about-6.jpg" alt="Electrical installation service"></figure>
                             </div>
                         </div>`;
@@ -73,7 +73,7 @@ html = html.replace(
                     <div class="col-lg-6 col-md-12 col-sm-12 title-column">
                         <div class="sec-title light p_relative mb_50">
                             <h5 class="d_block fs_17 lh_25 fw_medium mb_9">Testimonials</h5>
-                            <h2 class="d_block fs_40 lh_50 fw_bold">What Our Clients Say <br />About European Electric.</h2>
+                            <h2 class="d_block fs_40 lh_50 fw_bold">What Our Clients Say <br />About European Electric LLC.</h2>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12 testimonial-column">
@@ -82,7 +82,7 @@ html = html.replace(
                                 ${testimonialSlide(
                                   'Sarah Mitchell',
                                   'Homeowner',
-                                  'European Electric upgraded our panel and installed new lighting throughout our home. Professional, on time, and the work passed inspection without a single issue.'
+                                  'European Electric LLC upgraded our panel and installed new lighting throughout our home. Professional, on time, and the work passed inspection without a single issue.'
                                 )}
                                 ${testimonialSlide(
                                   'James Porter',
@@ -129,7 +129,7 @@ html = html.replace(
 // --- Why Choose Us: real copy + image alt text ---
 html = html.replace(
   /<h2 class="d_block fs_40 lh_50 fw_bold mb_25">Great Reasons For People Choose Easton<\/h2>\s*<p>Consectetur adipisicing elit[^<]*<\/p>/,
-  `<h2 class="d_block fs_40 lh_50 fw_bold mb_25">Why Homeowners &amp; Businesses Choose European Electric</h2>
+  `<h2 class="d_block fs_40 lh_50 fw_bold mb_25">Why Homeowners &amp; Businesses Choose European Electric LLC</h2>
                                     <p>Licensed electricians, transparent pricing, and dependable service for residential wiring, commercial build-outs, and EV charger installations across every project size.</p>`
 );
 

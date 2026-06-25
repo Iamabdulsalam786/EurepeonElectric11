@@ -9,7 +9,7 @@ import {
 } from '../utils/serviceNavigation';
 import { parseInternalHref } from '../utils/mobileMenu';
 
-export default function ServicesNavDropdown({ tabId, label, onNavigate }) {
+export default function ServicesNavDropdown({ tabId, tabIds, label, onNavigate }) {
   const location = useLocation();
   const navigate = useNavigate();
   const menuId = useId();
@@ -17,11 +17,17 @@ export default function ServicesNavDropdown({ tabId, label, onNavigate }) {
   const closeTimerRef = useRef(null);
   const [open, setOpen] = useState(false);
 
-  const tab = SERVICE_TABS.find((entry) => entry.id === tabId);
+  const groupTabIds = tabIds?.length ? tabIds : [tabId];
+  const tabs = groupTabIds
+    .map((entryId) => SERVICE_TABS.find((entry) => entry.id === entryId))
+    .filter(Boolean);
+  const primaryTabId = groupTabIds[0];
+  const isGrouped = tabs.length > 1;
   const isGroupActive =
-    location.pathname.startsWith(`/services/${tabId}/`) ||
+    groupTabIds.some((entryId) => location.pathname.startsWith(`/services/${entryId}/`)) ||
     (location.pathname === '/' &&
-      (location.hash === `#services-${tabId}` || location.hash === '#services'));
+      (groupTabIds.some((entryId) => location.hash === `#services-${entryId}`) ||
+        location.hash === '#services'));
 
   const openDropdown = useCallback(() => {
     if (closeTimerRef.current) {
@@ -61,7 +67,7 @@ export default function ServicesNavDropdown({ tabId, label, onNavigate }) {
       event.preventDefault();
       event.stopPropagation();
 
-      const target = parseInternalHref(getServiceNavHref(tabId));
+      const target = parseInternalHref(isGrouped ? getServiceNavHref() : getServiceNavHref(primaryTabId));
       if (!target) return;
 
       const sameRoute = location.pathname === target.pathname && location.hash === target.hash;
@@ -77,7 +83,7 @@ export default function ServicesNavDropdown({ tabId, label, onNavigate }) {
       window.setTimeout(() => scrollToServiceTarget(target.hash), 800);
       window.setTimeout(() => scrollToServiceTarget(target.hash), 1400);
     },
-    [navigate, handleNavigate, location.pathname, location.hash, scrollToServiceTarget, tabId],
+    [navigate, handleNavigate, location.pathname, location.hash, scrollToServiceTarget, isGrouped, primaryTabId],
   );
 
   const goToServicePage = useCallback(
@@ -114,7 +120,7 @@ export default function ServicesNavDropdown({ tabId, label, onNavigate }) {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [open, closeDropdown]);
 
-  if (!tab) return null;
+  if (!tabs.length) return null;
 
   return (
     <li
@@ -147,7 +153,7 @@ export default function ServicesNavDropdown({ tabId, label, onNavigate }) {
       >
         <li role="none">
           <a
-            href={getServiceNavHref(tabId)}
+            href={isGrouped ? getServiceNavHref() : getServiceNavHref(primaryTabId)}
             className="nav-dropdown-link nav-dropdown-link--all"
             role="menuitem"
             onClick={goToAllServices}
@@ -155,28 +161,39 @@ export default function ServicesNavDropdown({ tabId, label, onNavigate }) {
             All {label} Services
           </a>
         </li>
-        {tab.categories.map((category) => (
-          <Fragment key={category.title}>
-            <li role="presentation" className="nav-dropdown-divider">
-              <span className="nav-dropdown-group__label">{category.title}</span>
-            </li>
-            {category.items.map((item) => {
-              const itemPath = getServicePagePath(tabId, item);
-              const isItemActive = itemPath && location.pathname === itemPath;
+        {tabs.map((entryTab) => (
+          <Fragment key={entryTab.id}>
+            {isGrouped && (
+              <li role="presentation" className="nav-dropdown-divider">
+                <span className="nav-dropdown-group__label">{entryTab.title}</span>
+              </li>
+            )}
+            {entryTab.categories.map((category) => (
+              <Fragment key={`${entryTab.id}-${category.title}`}>
+                {!isGrouped && (
+                  <li role="presentation" className="nav-dropdown-divider">
+                    <span className="nav-dropdown-group__label">{category.title}</span>
+                  </li>
+                )}
+                {category.items.map((item) => {
+                  const itemPath = getServicePagePath(entryTab.id, item);
+                  const isItemActive = itemPath && location.pathname === itemPath;
 
-              return (
-                <li key={item} role="none">
-                  <a
-                    href={itemPath ?? '#'}
-                    className={`nav-dropdown-link${isItemActive ? ' is-active' : ''}`}
-                    role="menuitem"
-                    onClick={goToServicePage(itemPath)}
-                  >
-                    {item}
-                  </a>
-                </li>
-              );
-            })}
+                  return (
+                    <li key={`${entryTab.id}-${item}`} role="none">
+                      <a
+                        href={itemPath ?? '#'}
+                        className={`nav-dropdown-link${isItemActive ? ' is-active' : ''}`}
+                        role="menuitem"
+                        onClick={goToServicePage(itemPath)}
+                      >
+                        {item}
+                      </a>
+                    </li>
+                  );
+                })}
+              </Fragment>
+            ))}
           </Fragment>
         ))}
       </ul>

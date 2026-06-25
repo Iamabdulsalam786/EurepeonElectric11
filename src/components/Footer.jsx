@@ -51,7 +51,7 @@ export default function Footer() {
                   <ul className="links-list clearfix">
                     {SERVICE_TABS.map((tab) => (
                       <li key={tab.id}>
-                        <Link to="/#services">{tab.tabLabel}</Link>
+                        <Link to={`/services/${tab.id}`}>{tab.tabLabel}</Link>
                       </li>
                     ))}
                   </ul>

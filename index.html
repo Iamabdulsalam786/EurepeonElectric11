@@ -8,13 +8,52 @@
     <meta name="theme-color" content="#0078c1" />
     <meta name="robots" content="index, follow" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <link rel="icon" href="/assets/images/logo4.png" type="image/png" />
+    <link rel="icon" href="/assets/images/logo4.png?v=20260622" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://wa.me" />
-    <link rel="preload" href="/assets/images/banner/banner-1.jpg" as="image" fetchpriority="high" />
-    <link rel="preload" href="/assets/css/brand.css" as="style" />
-    <link rel="preload" href="/assets/css/bootstrap.css" as="style" />
+    <link rel="preload" href="/assets/images/banner/banner-1.jpg?v=20260622" as="image" fetchpriority="high" />
+    <link rel="preload" href="/assets/css/brand.css?v=20260622" as="style" />
+    <link rel="preload" href="/assets/css/bootstrap.css?v=20260622" as="style" />
+    <style>
+      /* Critical first-paint guard: prevent the hero carousel from collapsing before Owl/React finish loading. */
+      .main-header--premium .header-shell--bar {
+        min-height: 82px;
+      }
+      .banner-section {
+        position: relative;
+        min-height: 710px;
+      }
+      .banner-section .banner-carousel.owl-carousel {
+        display: block;
+      }
+      .banner-section .banner-carousel:not(.owl-loaded) .slide-item {
+        display: none;
+      }
+      .banner-section .banner-carousel:not(.owl-loaded) .slide-item:first-child {
+        display: block;
+        min-height: 500px;
+        padding-top: 180px;
+        padding-bottom: 210px;
+      }
+      .search-field {
+        position: relative;
+        z-index: 20;
+      }
+      @media (max-width: 991px) {
+        .banner-section {
+          min-height: 610px;
+        }
+      }
+      @media (max-width: 767px) {
+        .main-header--premium .header-shell--bar {
+          min-height: 64px;
+        }
+        .banner-section {
+          min-height: 560px;
+        }
+      }
+    </style>
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
@@ -27,14 +66,14 @@
         rel="stylesheet"
       />
     </noscript>
-    <link href="/assets/css/font-awesome-all.css" rel="stylesheet" />
-    <link href="/assets/css/flaticon.css" rel="stylesheet" />
-    <link href="/assets/css/bootstrap.css" rel="stylesheet" />
-    <link href="/assets/css/color.css" rel="stylesheet" />
-    <link href="/assets/css/elpath.css" rel="stylesheet" />
-    <link href="/assets/css/style.css" rel="stylesheet" />
-    <link href="/assets/css/responsive.css" rel="stylesheet" />
-    <link href="/assets/css/brand.css" rel="stylesheet" />
+    <link href="/assets/css/font-awesome-all.css?v=20260622" rel="stylesheet" />
+    <link href="/assets/css/flaticon.css?v=20260622" rel="stylesheet" />
+    <link href="/assets/css/bootstrap.css?v=20260622" rel="stylesheet" />
+    <link href="/assets/css/color.css?v=20260622" rel="stylesheet" />
+    <link href="/assets/css/elpath.css?v=20260622" rel="stylesheet" />
+    <link href="/assets/css/style.css?v=20260622" rel="stylesheet" />
+    <link href="/assets/css/responsive.css?v=20260622" rel="stylesheet" />
+    <link href="/assets/css/brand.css?v=20260622" rel="stylesheet" />
     <title>European Electric LLC</title>
   </head>
   <body>

@@ -62,7 +62,7 @@ export const INSIGHT_ARTICLES = [
     excerpt:
       'Learn what to expect with circuit sizing, panel capacity, and permit-ready Level 2 or Tesla charger installation at home.',
     intro:
-      'A reliable home EV charger starts with the right electrical foundation — not just mounting hardware on the wall. Here is how European Electric approaches Level 2 and Tesla-ready installs from quote to inspection.',
+      'A reliable home EV charger starts with the right electrical foundation — not just mounting hardware on the wall. Here is how European Electric LLC approaches Level 2 and Tesla-ready installs from quote to inspection.',
     sections: [
       {
         heading: 'Confirm panel capacity first',

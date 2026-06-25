@@ -108,6 +108,7 @@ export default function Layout() {
       if (!anchor) return;
 
       if (anchor.closest('[data-react-nav]')) return;
+      if (anchor.closest('[data-service-detail-route]')) return;
 
       const href = anchor.getAttribute('href');
       if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')) {

@@ -40,11 +40,11 @@ export const CLIENT_IMAGES = {
 
 /** Paths used by canonical HTML + React service cards */
 export const STOCK_IMAGES = {
-  residentialInstall: `${S}/residential-install.jpg`,
+  residentialInstall: CLIENT_IMAGES.residentialInstall,
   residentialRewire: `${S}/residential-rewire.jpg`,
   residentialPanel: `${S}/residential-panel.jpg`,
   commercialTenant: `${S}/commercial-tenant.jpg`,
-  commercialPower: `${S}/commercial-power.jpg`,
+  commercialPower: CLIENT_IMAGES.commercialPower,
   commercialLighting: `${S}/commercial-lighting.jpg`,
   evCharging: `${S}/ev-charging.jpg`,
   lightingIndoor: `${S}/lighting-indoor.jpg`,

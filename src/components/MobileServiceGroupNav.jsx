@@ -5,17 +5,23 @@ import { getServicePagePath } from '../config/servicePages';
 import { getServiceNavHref, parseServiceHash, scrollToServicesSection } from '../utils/serviceNavigation';
 import { parseInternalHref } from '../utils/mobileMenu';
 
-export default function MobileServiceGroupNav({ tabId, label, onNavigate }) {
+export default function MobileServiceGroupNav({ tabId, tabIds, label, onNavigate }) {
   const location = useLocation();
   const navigate = useNavigate();
   const menuId = useId();
   const [open, setOpen] = useState(false);
 
-  const tab = SERVICE_TABS.find((entry) => entry.id === tabId);
+  const groupTabIds = tabIds?.length ? tabIds : [tabId];
+  const tabs = groupTabIds
+    .map((entryId) => SERVICE_TABS.find((entry) => entry.id === entryId))
+    .filter(Boolean);
+  const primaryTabId = groupTabIds[0];
+  const isGrouped = tabs.length > 1;
   const isGroupActive =
-    location.pathname.startsWith(`/services/${tabId}/`) ||
+    groupTabIds.some((entryId) => location.pathname.startsWith(`/services/${entryId}/`)) ||
     (location.pathname === '/' &&
-      (location.hash === `#services-${tabId}` || location.hash === '#services'));
+      (groupTabIds.some((entryId) => location.hash === `#services-${entryId}`) ||
+        location.hash === '#services'));
 
   const scrollToServiceTarget = useCallback((hash) => {
     const { sectionId } = parseServiceHash(hash);
@@ -28,7 +34,7 @@ export default function MobileServiceGroupNav({ tabId, label, onNavigate }) {
   }, []);
 
   const goToAllServices = useCallback(() => {
-    const target = parseInternalHref(getServiceNavHref(tabId));
+    const target = parseInternalHref(isGrouped ? getServiceNavHref() : getServiceNavHref(primaryTabId));
     if (!target) return;
 
     const sameRoute = location.pathname === target.pathname && location.hash === target.hash;
@@ -43,19 +49,19 @@ export default function MobileServiceGroupNav({ tabId, label, onNavigate }) {
     window.setTimeout(() => scrollToServiceTarget(target.hash), 300);
     window.setTimeout(() => scrollToServiceTarget(target.hash), 800);
     window.setTimeout(() => scrollToServiceTarget(target.hash), 1400);
-  }, [navigate, onNavigate, location.pathname, location.hash, scrollToServiceTarget, tabId]);
+  }, [navigate, onNavigate, location.pathname, location.hash, scrollToServiceTarget, isGrouped, primaryTabId]);
 
   const goToServicePage = useCallback(
-    (title) => {
-      const path = getServicePagePath(tabId, title);
+    (entryTabId, title) => {
+      const path = getServicePagePath(entryTabId, title);
       if (!path) return;
       onNavigate?.();
       navigate(path);
     },
-    [navigate, onNavigate, tabId],
+    [navigate, onNavigate],
   );
 
-  if (!tab) return null;
+  if (!tabs.length) return null;
 
   return (
     <li
@@ -79,7 +85,8 @@ export default function MobileServiceGroupNav({ tabId, label, onNavigate }) {
             type="button"
             className={`mobile-nav-sublink${
               location.pathname === '/' &&
-              (location.hash === `#services-${tabId}` || location.hash === '#services')
+              (groupTabIds.some((entryId) => location.hash === `#services-${entryId}`) ||
+                location.hash === '#services')
                 ? ' is-active'
                 : ''
             }`}
@@ -89,26 +96,30 @@ export default function MobileServiceGroupNav({ tabId, label, onNavigate }) {
           </button>
         </li>
 
-        {tab.categories.map((category) => (
-          <li key={category.title} className="mobile-nav-group">
-            <span className="mobile-nav-group__label">{category.title}</span>
+        {tabs.map((entryTab) => (
+          <li key={entryTab.id} className="mobile-nav-group">
+            <span className="mobile-nav-group__label">
+              {isGrouped ? entryTab.title : entryTab.categories[0]?.title}
+            </span>
             <ul className="mobile-nav-group__items">
-              {category.items.map((item) => {
-                const itemPath = getServicePagePath(tabId, item);
-                const isItemActive = itemPath && location.pathname === itemPath;
+              {entryTab.categories.flatMap((category) =>
+                category.items.map((item) => {
+                  const itemPath = getServicePagePath(entryTab.id, item);
+                  const isItemActive = itemPath && location.pathname === itemPath;
 
-                return (
-                  <li key={item}>
-                    <button
-                      type="button"
-                      className={`mobile-nav-sublink mobile-nav-sublink--leaf${isItemActive ? ' is-active' : ''}`}
-                      onClick={() => goToServicePage(item)}
-                    >
-                      {item}
-                    </button>
-                  </li>
-                );
-              })}
+                  return (
+                    <li key={`${entryTab.id}-${item}`}>
+                      <button
+                        type="button"
+                        className={`mobile-nav-sublink mobile-nav-sublink--leaf${isItemActive ? ' is-active' : ''}`}
+                        onClick={() => goToServicePage(entryTab.id, item)}
+                      >
+                        {item}
+                      </button>
+                    </li>
+                  );
+                }),
+              )}
             </ul>
           </li>
         ))}

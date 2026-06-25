@@ -1,6 +1,6 @@
 export const SITE = {
   name: 'European Electric LLC',
-  shortName: 'European Electric',
+  shortName: 'European Electric LLC',
   /** Update to your live Hostinger domain before launch */
   url: 'https://europeanelectric.com',
   phone: '+1 (510) 468-4495',

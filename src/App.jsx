@@ -22,6 +22,14 @@ export default function App() {
           <Route key={path} path={path} element={<TemplatePage />} />
         ))}
         <Route
+          path="/services/:groupId"
+          element={
+            <Suspense fallback={<PageFallback />}>
+              <ServiceDetailPage />
+            </Suspense>
+          }
+        />
+        <Route
           path="/services/:groupId/:serviceSlug"
           element={
             <Suspense fallback={<PageFallback />}>

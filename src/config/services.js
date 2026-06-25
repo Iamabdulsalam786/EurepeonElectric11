@@ -224,17 +224,23 @@ export const SERVICE_TABS = [
   },
   {
     id: 'safety-upgrades',
-    tabLabel: 'Safety Upgrades',
-    shortLabel: 'Safety',
-    title: 'Electrical Safety Upgrades',
+    tabLabel: 'Inspection & Safety Upgrades',
+    shortLabel: 'Inspection',
+    title: 'Electrical Inspection & Safety Upgrades',
     image: CATEGORY_IMAGES.safety.default,
     link: '/#services',
     categories: [
       {
-        title: 'Safety Upgrades',
+        title: 'Inspection & Safety Upgrades',
         image: CATEGORY_IMAGES.safety.default,
         imagePosition: 'center',
-        items: ['GFCI installation', 'AFCI installation', 'Surge protection', 'Grounding improvements'],
+        items: [
+          'Electrical safety inspections',
+          'GFCI installation',
+          'AFCI installation',
+          'Surge protection',
+          'Grounding improvements',
+        ],
       },
     ],
   },

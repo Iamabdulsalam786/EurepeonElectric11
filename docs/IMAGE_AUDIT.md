@@ -48,7 +48,6 @@ Priority replacements to reduce repetition and improve relevance:
 
 | Section | Current | Needed photo |
 |---------|---------|--------------|
-| **EV Charging** | Existing licensed/local asset | Real EV charger install (Tesla/Level 2), no visible face |
 | **Indoor Lighting** | Existing licensed/local asset | Recessed/pendant lighting install, no visible face |
 | **Outdoor Lighting** | Existing licensed/local asset | Landscape/security/pathway lighting, no visible face |
 | **Home Rewiring** | Existing licensed/local asset | Residential wiring/rewire in progress, no visible face |

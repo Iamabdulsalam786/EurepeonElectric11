@@ -21,8 +21,11 @@ function initCarousels($) {
       animateOut: prefersReducedMotion ? false : 'fadeOut',
       animateIn: prefersReducedMotion ? false : 'fadeIn',
       active: true,
-      smartSpeed: prefersReducedMotion ? 0 : 1000,
-      autoplay: prefersReducedMotion ? false : 6000,
+      smartSpeed: prefersReducedMotion ? 0 : 1800,
+      autoplay: !prefersReducedMotion,
+      autoplayTimeout: 6000,
+      autoplaySpeed: prefersReducedMotion ? 0 : 1800,
+      autoplayHoverPause: true,
       navText,
       responsive: { 0: { items: 1 }, 600: { items: 1 }, 800: { items: 1 }, 1024: { items: 1 } },
     });
