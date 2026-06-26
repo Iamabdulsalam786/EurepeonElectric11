@@ -18,7 +18,11 @@ export default function MobileServiceGroupNav({ tabId, tabIds, label, onNavigate
   const primaryTabId = groupTabIds[0];
   const isGrouped = tabs.length > 1;
   const isGroupActive =
-    groupTabIds.some((entryId) => location.pathname.startsWith(`/services/${entryId}/`)) ||
+    groupTabIds.some(
+      (entryId) =>
+        location.pathname === `/services/${entryId}` ||
+        location.pathname.startsWith(`/services/${entryId}/`),
+    ) ||
     (location.pathname === '/' &&
       (groupTabIds.some((entryId) => location.hash === `#services-${entryId}`) ||
         location.hash === '#services'));
@@ -61,6 +65,14 @@ export default function MobileServiceGroupNav({ tabId, tabIds, label, onNavigate
     [navigate, onNavigate],
   );
 
+  const goToCategoryPage = useCallback(
+    (entryTabId) => {
+      onNavigate?.();
+      navigate(`/services/${entryTabId}`);
+    },
+    [navigate, onNavigate],
+  );
+
   if (!tabs.length) return null;
 
   return (
@@ -84,9 +96,10 @@ export default function MobileServiceGroupNav({ tabId, tabIds, label, onNavigate
           <button
             type="button"
             className={`mobile-nav-sublink${
-              location.pathname === '/' &&
-              (groupTabIds.some((entryId) => location.hash === `#services-${entryId}`) ||
-                location.hash === '#services')
+              groupTabIds.some((entryId) => location.pathname === `/services/${entryId}`) ||
+              (location.pathname === '/' &&
+                (groupTabIds.some((entryId) => location.hash === `#services-${entryId}`) ||
+                  location.hash === '#services'))
                 ? ' is-active'
                 : ''
             }`}
@@ -102,6 +115,19 @@ export default function MobileServiceGroupNav({ tabId, tabIds, label, onNavigate
               {isGrouped ? entryTab.title : entryTab.categories[0]?.title}
             </span>
             <ul className="mobile-nav-group__items">
+              {isGrouped && (
+                <li>
+                  <button
+                    type="button"
+                    className={`mobile-nav-sublink mobile-nav-sublink--leaf${
+                      location.pathname === `/services/${entryTab.id}` ? ' is-active' : ''
+                    }`}
+                    onClick={() => goToCategoryPage(entryTab.id)}
+                  >
+                    All {entryTab.shortLabel ?? entryTab.tabLabel} Services
+                  </button>
+                </li>
+              )}
               {entryTab.categories.flatMap((category) =>
                 category.items.map((item) => {
                   const itemPath = getServicePagePath(entryTab.id, item);

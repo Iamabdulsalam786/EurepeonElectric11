@@ -24,7 +24,11 @@ export default function ServicesNavDropdown({ tabId, tabIds, label, onNavigate }
   const primaryTabId = groupTabIds[0];
   const isGrouped = tabs.length > 1;
   const isGroupActive =
-    groupTabIds.some((entryId) => location.pathname.startsWith(`/services/${entryId}/`)) ||
+    groupTabIds.some(
+      (entryId) =>
+        location.pathname === `/services/${entryId}` ||
+        location.pathname.startsWith(`/services/${entryId}/`),
+    ) ||
     (location.pathname === '/' &&
       (groupTabIds.some((entryId) => location.hash === `#services-${entryId}`) ||
         location.hash === '#services'));
@@ -98,6 +102,16 @@ export default function ServicesNavDropdown({ tabId, tabIds, label, onNavigate }
     [navigate, handleNavigate],
   );
 
+  const handleTopLevelClick = useCallback(() => {
+    if (isGrouped) {
+      setOpen((prev) => !prev);
+      return;
+    }
+
+    handleNavigate();
+    navigate(`/services/${primaryTabId}`);
+  }, [isGrouped, primaryTabId, navigate, handleNavigate]);
+
   useEffect(() => {
     closeDropdown();
   }, [location.pathname, location.hash, closeDropdown]);
@@ -138,7 +152,7 @@ export default function ServicesNavDropdown({ tabId, tabIds, label, onNavigate }
         aria-expanded={open}
         aria-haspopup="true"
         aria-controls={menuId}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={handleTopLevelClick}
         onFocus={openDropdown}
       >
         <span>{label}</span>
@@ -166,6 +180,20 @@ export default function ServicesNavDropdown({ tabId, tabIds, label, onNavigate }
             {isGrouped && (
               <li role="presentation" className="nav-dropdown-divider">
                 <span className="nav-dropdown-group__label">{entryTab.title}</span>
+              </li>
+            )}
+            {isGrouped && (
+              <li role="none">
+                <a
+                  href={getServiceNavHref(entryTab.id)}
+                  className={`nav-dropdown-link nav-dropdown-link--all${
+                    location.pathname === `/services/${entryTab.id}` ? ' is-active' : ''
+                  }`}
+                  role="menuitem"
+                  onClick={goToServicePage(getServiceNavHref(entryTab.id))}
+                >
+                  All {entryTab.shortLabel ?? entryTab.tabLabel} Services
+                </a>
               </li>
             )}
             {entryTab.categories.map((category) => (

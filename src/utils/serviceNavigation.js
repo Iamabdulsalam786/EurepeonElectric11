@@ -1,8 +1,8 @@
-/** Hash links: #services | #services-residential | #services-ev-chargers */
+/** Service links: /services/:groupId for category pages, #services for the full homepage section */
 const SERVICE_HASH_PREFIX = 'services';
 
 export function getServiceNavHref(tabId) {
-  return tabId ? `/#${SERVICE_HASH_PREFIX}-${tabId}` : `/#${SERVICE_HASH_PREFIX}`;
+  return tabId ? `/services/${tabId}` : `/#${SERVICE_HASH_PREFIX}`;
 }
 
 export function parseServiceHash(hash = '') {
