@@ -439,6 +439,27 @@ export function getServicePageBySlug(groupId, slug) {
   return SERVICE_PAGES.find((page) => page.groupId === groupId && page.slug === slug);
 }
 
+export function getCategorySlug(categoryTitle) {
+  return slugify(categoryTitle);
+}
+
+export function getCategoryBySlug(groupId, categorySlug) {
+  const tab = SERVICE_TABS.find((entry) => entry.id === groupId);
+  if (!tab) return null;
+
+  return tab.categories.find((category) => getCategorySlug(category.title) === categorySlug) ?? null;
+}
+
+export function getCategoryPath(groupId, categoryTitle) {
+  return `/services/${groupId}/${getCategorySlug(categoryTitle)}`;
+}
+
+export function getServicesForCategory(groupId, categoryTitle) {
+  return SERVICE_PAGES.filter(
+    (page) => page.groupId === groupId && page.category === categoryTitle,
+  );
+}
+
 export function getServicePagePath(groupId, title) {
   const page = SERVICE_PAGES.find((entry) => entry.groupId === groupId && entry.title === title);
   return page?.path ?? null;
@@ -464,10 +485,23 @@ export function getServicePageMeta(pathname) {
   if (!match) return null;
 
   const page = getServicePageBySlug(match[1], match[2]);
-  if (!page) return null;
+  if (page) {
+    return {
+      title: page.title,
+      description: `${SITE.name} — ${page.title} for ${page.groupLabel.toLowerCase()} clients. Licensed, code-compliant electrical work with upfront pricing.`,
+    };
+  }
 
-  return {
-    title: page.title,
-    description: `${SITE.name} — ${page.title} for ${page.groupLabel.toLowerCase()} clients. Licensed, code-compliant electrical work with upfront pricing.`,
-  };
+  const category = getCategoryBySlug(match[1], match[2]);
+  if (category) {
+    const tab = SERVICE_TABS.find((entry) => entry.id === match[1]);
+    if (!tab) return null;
+
+    return {
+      title: category.title,
+      description: `${SITE.name} — ${category.title} under ${tab.title}. Browse available services and request a free quote.`,
+    };
+  }
+
+  return null;
 }

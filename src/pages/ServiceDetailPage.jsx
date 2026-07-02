@@ -3,8 +3,11 @@ import { Link, useParams } from 'react-router-dom';
 import { SITE } from '../config/site';
 import { SERVICE_TABS } from '../config/services';
 import {
+  getCategoryBySlug,
+  getCategoryPath,
   getServicePageBySlug,
   getServicesByGroup,
+  getServicesForCategory,
 } from '../config/servicePages';
 import { loadPageEnhancements } from '../utils/loadScripts';
 import { initializeTemplate } from '../utils/initTemplate';
@@ -25,7 +28,83 @@ function ServiceVideo({ src, poster, title }) {
   );
 }
 
-function ServiceCardGroups({ tab, pages, currentSlug }) {
+const CATEGORY_CARD_HIGHLIGHT_MAX = 6;
+
+function ServiceCategoryHighlights({ items }) {
+  const highlights = items.slice(0, CATEGORY_CARD_HIGHLIGHT_MAX);
+  const compact = highlights.length > 4;
+
+  return (
+    <ul
+      className={`service-highlights${compact ? ' service-highlights--compact' : ''}`}
+      aria-label="Available services"
+    >
+      {highlights.map((item) => (
+        <li key={item}>
+          <i className="fas fa-check" aria-hidden="true" />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function ServiceCategoryCards({ tab, groupId }) {
+  if (!tab?.categories?.length) return null;
+
+  return (
+    <div className="services-premium__panel home-services-grid service-card-nav__services-grid">
+      <div
+        className={`row services-premium__cards-row services-premium__cards-row--count-${tab.categories.length}`}
+      >
+        {tab.categories.map((category, index) => (
+          <div className="col-lg-4 col-md-6 services-premium__card-col" key={category.title}>
+            <a
+              href={getCategoryPath(groupId, category.title)}
+              data-service-detail-route="true"
+              className="service-auhtor-boxarea service-auhtor-boxarea--link"
+            >
+              <div className="img1">
+                <img
+                  src={category.image ?? tab.image}
+                  alt={`${category.title} — ${SITE.shortName}`}
+                  loading="lazy"
+                  style={{ objectPosition: category.imagePosition ?? 'center' }}
+                />
+              </div>
+              <div className="content-area">
+                <span className="service-card-index" aria-hidden="true">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 className="service-card-title">{category.title}</h3>
+                <ServiceCategoryHighlights items={category.items} />
+                <span className="service-card-action">View Services</span>
+              </div>
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ServiceListNav({ pages, currentSlug }) {
+  if (!pages.length) return null;
+
+  return (
+    <ul className="list-style-one clearfix service-list-nav">
+      {pages.map((item) => (
+        <li key={item.path} className={currentSlug === item.slug ? 'is-current' : undefined}>
+          <a href={item.path} data-service-detail-route="true">
+            {item.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function ServiceListGroups({ tab, pages, currentSlug }) {
   if (!tab || !pages.length) return null;
 
   const groups = tab.categories
@@ -38,50 +117,11 @@ function ServiceCardGroups({ tab, pages, currentSlug }) {
     .filter((category) => category.pages.length);
 
   return (
-    <div className="service-card-nav__groups">
+    <div className="service-list-nav__groups">
       {groups.map((category) => (
-        <div className="service-card-nav__group" key={category.title}>
-          <div className="service-card-nav__group-title">
-            <span>{tab.shortLabel ?? tab.tabLabel}</span>
-            <h3>{category.title}</h3>
-          </div>
-          <div className="services-premium__panel home-services-grid service-card-nav__services-grid">
-            <div
-              className={`row services-premium__cards-row services-premium__cards-row--count-${category.pages.length}`}
-            >
-              {category.pages.map((item, index) => (
-                <div
-                  className="col-lg-4 col-md-6 services-premium__card-col"
-                  key={item.path}
-                >
-                  <a
-                    href={item.path}
-                    data-service-detail-route="true"
-                    className={`service-auhtor-boxarea service-auhtor-boxarea--link${
-                      currentSlug === item.slug ? ' is-current' : ''
-                    }`}
-                  >
-                    <div className="img1">
-                      <img
-                        src={item.image}
-                        alt={`${item.title} — ${SITE.shortName}`}
-                        loading="lazy"
-                        style={{ objectPosition: item.imagePosition }}
-                      />
-                    </div>
-                    <div className="content-area">
-                      <span className="service-card-index" aria-hidden="true">
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <h3 className="service-card-title">{item.title}</h3>
-                      <p className="service-card-summary">{item.intro}</p>
-                      <span className="service-card-action">View Details</span>
-                    </div>
-                  </a>
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="service-list-nav__group" key={category.title}>
+          <h4 className="service-list-nav__group-title">{category.title}</h4>
+          <ServiceListNav pages={category.pages} currentSlug={currentSlug} />
         </div>
       ))}
     </div>
@@ -92,13 +132,16 @@ export default function ServiceDetailPage() {
   const { groupId, serviceSlug } = useParams();
   const groupServices = getServicesByGroup(groupId);
   const page = serviceSlug ? getServicePageBySlug(groupId, serviceSlug) : null;
+  const category = serviceSlug && !page ? getCategoryBySlug(groupId, serviceSlug) : null;
   const tab = SERVICE_TABS.find((entry) => entry.id === groupId);
   const groupLabel = tab?.shortLabel ?? tab?.tabLabel ?? page?.groupLabel;
   const groupTitle = tab?.title ?? page?.groupLabel;
   const isCategoryPage = Boolean(groupId && !serviceSlug && tab);
+  const isSubcategoryPage = Boolean(groupId && category && tab);
+  const categoryServices = category ? getServicesForCategory(groupId, category.title) : [];
 
   useEffect(() => {
-    if (!page && !isCategoryPage) return undefined;
+    if (!page && !isCategoryPage && !isSubcategoryPage) return undefined;
 
     let active = true;
 
@@ -116,9 +159,9 @@ export default function ServiceDetailPage() {
     return () => {
       active = false;
     };
-  }, [page, isCategoryPage, groupId, serviceSlug]);
+  }, [page, isCategoryPage, isSubcategoryPage, groupId, serviceSlug]);
 
-  if (!page && !isCategoryPage) {
+  if (!page && !isCategoryPage && !isSubcategoryPage) {
     return (
       <section className="page-title centred">
         <div className="auto-container">
@@ -162,11 +205,55 @@ export default function ServiceDetailPage() {
                 <h5 className="d_block fs_17 lh_25 fw_medium mb_9">{groupLabel} Services</h5>
                 <h2 className="d_block fs_40 lh_50 fw_bold">{groupTitle}</h2>
                 <p className="service-card-nav__lead">
-                  Choose a service below to view its existing details, featured image, and project
-                  information.
+                  Choose a service category below to browse available services and view full details.
                 </p>
               </div>
-              <ServiceCardGroups tab={tab} pages={groupServices} />
+              <ServiceCategoryCards tab={tab} groupId={groupId} />
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
+
+  if (isSubcategoryPage) {
+    return (
+      <>
+        <section className="page-title centred page-title--service">
+          <div className="bg-layer" />
+          <div className="auto-container">
+            <div className="content-box">
+              <h2>{category.title}</h2>
+              <ul className="bread-crumb clearfix">
+                <li>
+                  <Link to="/">Home</Link>
+                </li>
+                <li>
+                  <Link to={`/services/${groupId}`}>{groupLabel}</Link>
+                </li>
+                <li>{category.title}</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section className="service-details service-details-premium service-category-premium p_relative sec-pad">
+          <div className="pattern-layer-2" style={{ backgroundImage: 'url(/assets/images/shape/shape-24.png)' }} />
+          <div className="auto-container">
+            <div className="service-list-nav__panel">
+              <div className="sec-title p_relative mb_45 centred">
+                <h5 className="d_block fs_17 lh_25 fw_medium mb_9">{groupLabel} Services</h5>
+                <h2 className="d_block fs_40 lh_50 fw_bold">{category.title}</h2>
+                <p className="service-card-nav__lead">
+                  Select a service below to view details, featured images, and project information.
+                </p>
+              </div>
+              <ServiceListNav pages={categoryServices} />
+              <div className="service-list-nav__back mt_30 centred">
+                <Link to={`/services/${groupId}`} className="service-list-nav__back-link">
+                  Back to {groupLabel} Categories
+                </Link>
+              </div>
             </div>
           </div>
         </section>
@@ -187,7 +274,12 @@ export default function ServiceDetailPage() {
               <li>
                 <Link to="/">Home</Link>
               </li>
-              <li>{page.groupLabel}</li>
+              <li>
+                <Link to={`/services/${groupId}`}>{page.groupLabel}</Link>
+              </li>
+              <li>
+                <Link to={getCategoryPath(groupId, page.category)}>{page.category}</Link>
+              </li>
               <li>{page.title}</li>
             </ul>
           </div>
@@ -233,10 +325,7 @@ export default function ServiceDetailPage() {
                   </div>
                 </div>
 
-                <ServiceVideo
-                  src={page.video}
-                  title={page.groupLabel}
-                />
+                <ServiceVideo src={page.video} title={page.groupLabel} />
 
                 <div className="content-three service-details-premium__cta">
                   <h3>Request {page.title}</h3>
@@ -256,12 +345,12 @@ export default function ServiceDetailPage() {
                 </div>
 
                 {relatedServices.length > 0 && (
-                  <div className="content-three service-details-premium__related service-card-nav service-card-nav--related">
+                  <div className="content-three service-details-premium__related service-list-nav service-list-nav--related">
                     <div className="service-card-nav__head">
                       <span className="service-details-premium__eyebrow">{page.groupLabel} Services</span>
                       <h3>Explore More {page.groupLabel} Services</h3>
                     </div>
-                    <ServiceCardGroups tab={tab} pages={relatedServices} currentSlug={page.slug} />
+                    <ServiceListGroups tab={tab} pages={relatedServices} currentSlug={page.slug} />
                   </div>
                 )}
               </div>

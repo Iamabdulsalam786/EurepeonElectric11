@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import manifest from '../content/manifest.json';
-import ServicesSection from '../components/ServicesSection';
 import { loadPageEnhancements } from '../utils/loadScripts';
 import { loadDeferredStyles } from '../utils/loadStyles';
 import { initializeTemplate } from '../utils/initTemplate';
@@ -149,7 +148,6 @@ export default function TemplatePage() {
     return (
       <div key={location.pathname}>
         <div dangerouslySetInnerHTML={{ __html: parts.before }} />
-        <ServicesSection />
         <div dangerouslySetInnerHTML={{ __html: parts.after }} />
       </div>
     );

@@ -34,8 +34,9 @@ export const CLIENT_IMAGES = {
   newConstruction: `${RP}/new-construction.jpg`,
   remodelWiring: `${RP}/remodel-wiring.jpg`,
   heroOne: `${RP}/hero-banner-1.jpg`,
-  heroTwo: `${RP}/hero-banner-2.jpg`,
-  heroThree: `${RP}/hero-banner-3.jpg`,
+  heroTwo: `${RP}/residential-hero-banner-picture.png`,
+  heroThree: `${RP}/Commercial-Hero-banner-picture.png`,
+  heroFour: `${RP}/EV Charger- hero banner- Installation.png`,
 };
 
 /** Paths used by canonical HTML + React service cards */
@@ -58,8 +59,9 @@ export const STOCK_IMAGES = {
   insightEv: `${S}/insight-ev.jpg`,
   insightLighting: CLIENT_IMAGES.commercialLighting,
   heroOne: `${B}/banner-1.jpg`,
-  heroTwo: `${B}/banner-2.jpg`,
-  heroThree: `${B}/banner-3.jpg`,
+  heroTwo: CLIENT_IMAGES.heroTwo,
+  heroThree: CLIENT_IMAGES.heroThree,
+  heroFour: CLIENT_IMAGES.heroFour,
   aboutPrimary: CLIENT_IMAGES.residentialInstall,
   aboutSecondary: CLIENT_IMAGES.commercialTenant,
   chooseUs: CLIENT_IMAGES.commercialPower,
@@ -111,7 +113,12 @@ export const CATEGORY_IMAGES = {
 
 /** Each homepage/about slot uses a distinct client image where available */
 export const SECTION_MEDIA = {
-  heroSlides: [STOCK_IMAGES.heroOne, STOCK_IMAGES.heroTwo, STOCK_IMAGES.heroThree],
+  heroSlides: [
+    STOCK_IMAGES.heroOne,
+    STOCK_IMAGES.heroTwo,
+    STOCK_IMAGES.heroThree,
+    STOCK_IMAGES.heroFour,
+  ],
   aboutPrimary: CLIENT_IMAGES.residentialInstall,
   aboutSecondary: CLIENT_IMAGES.commercialTenant,
   featureSafety: CLIENT_IMAGES.safetyUpgrades,
