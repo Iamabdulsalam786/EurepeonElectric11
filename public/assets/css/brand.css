@@ -6972,3 +6972,33 @@ a.contact-premium__card:hover {
   }
 }
 
+/* =========================================================
+   Fast CSS Accordion — replaces jQuery slideDown/slideUp.
+   Uses max-height + overflow:hidden for GPU-composited
+   transitions (no JS layout thrashing, instant feel).
+   ========================================================= */
+
+/* Reset: always show the content box in the DOM (no display:none),
+   control visibility via max-height instead. */
+.accordion-box .block .acc-content {
+  display: block !important;
+  overflow: hidden;
+  max-height: 0;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  /* Snappy ease-out: feels instant on open, subtle on close */
+  transition:
+    max-height 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    padding-top 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+    padding-bottom 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: max-height;
+}
+
+/* Open state — toggled by JS via the .acc-open class */
+.accordion-box .block .acc-content.acc-open,
+.accordion-box .block .acc-content.current {
+  max-height: 600px;  /* large enough for any answer */
+  padding-top: 25px !important;
+  padding-bottom: 15px !important;
+}
+

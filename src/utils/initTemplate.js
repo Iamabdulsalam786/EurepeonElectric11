@@ -179,6 +179,32 @@ function initInteractions($) {
   if ($.fn.scrollAnimations) {
     $('[data-animation]:not([data-animation-text]), [data-animation-box]').scrollAnimations();
   }
+
+  // Accordion Box — CSS-driven fast transition (no jQuery slide animation)
+  if ($('.accordion-box').length) {
+    $('.accordion-box').off('click', '.acc-btn').on('click', '.acc-btn', function () {
+      const outerBox = $(this).parents('.accordion-box');
+      const target = $(this).parents('.accordion');
+
+      const isAlreadyOpen = $(this).hasClass('active');
+
+      if (isAlreadyOpen) {
+        // clicking an open item: close it
+        $(this).removeClass('active');
+        target.removeClass('active-block');
+        $(this).next('.acc-content').removeClass('acc-open');
+      } else {
+        // close all others in this box
+        outerBox.find('.acc-btn').removeClass('active');
+        outerBox.find('.acc-content').removeClass('acc-open');
+        outerBox.children('.accordion').removeClass('active-block');
+        // open this one
+        $(this).addClass('active');
+        target.addClass('active-block');
+        $(this).next('.acc-content').addClass('acc-open');
+      }
+    });
+  }
 }
 
 export function hidePreloader() {

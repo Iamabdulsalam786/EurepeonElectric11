@@ -73,9 +73,6 @@ function ServiceCategoryCards({ tab, groupId }) {
                 />
               </div>
               <div className="content-area">
-                <span className="service-card-index" aria-hidden="true">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
                 <h3 className="service-card-title">{category.title}</h3>
                 <ServiceCategoryHighlights items={category.items} />
                 <span className="service-card-action">View Services</span>

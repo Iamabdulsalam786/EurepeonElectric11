@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import manifest from '../content/manifest.json';
+import homeHtml from '../content/index.html?raw';
 import { loadPageEnhancements } from '../utils/loadScripts';
 import { loadDeferredStyles } from '../utils/loadStyles';
 import { initializeTemplate } from '../utils/initTemplate';
 
 const contentModules = import.meta.glob(
   [
-    '../content/index.html',
     '../content/about.html',
     '../content/contact.html',
     '../content/faq.html',
@@ -40,10 +40,10 @@ function splitHomeContent(html) {
 
 export default function TemplatePage() {
   const location = useLocation();
-  const [content, setContent] = useState('');
+  const isHome = location.pathname === '/';
+  const [content, setContent] = useState(() => (isHome ? homeHtml : ''));
   const [loadError, setLoadError] = useState('');
   const pageMeta = manifest[location.pathname];
-  const isHome = location.pathname === '/';
 
   const parts = useMemo(() => {
     if (!isHome || !content) return null;
@@ -51,6 +51,12 @@ export default function TemplatePage() {
   }, [content, isHome]);
 
   useEffect(() => {
+    if (isHome) {
+      setContent(homeHtml);
+      setLoadError('');
+      return;
+    }
+
     setContent('');
     setLoadError('');
 
@@ -72,7 +78,7 @@ export default function TemplatePage() {
         setContent('');
         setLoadError(error?.message || 'Could not load page content.');
       });
-  }, [location.pathname, pageMeta]);
+  }, [location.pathname, pageMeta, isHome]);
 
   useEffect(() => {
     if (!content) return undefined;

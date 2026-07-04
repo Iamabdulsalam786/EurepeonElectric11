@@ -12,9 +12,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://wa.me" />
-    <link rel="preload" href="/assets/images/banner/banner-1.jpg?v=20260622" as="image" fetchpriority="high" />
+    <link rel="preload" href="/assets/images/RelevantPics/residential-hero-1-optimized.webp" as="image" fetchpriority="high" />
     <link rel="preload" href="/assets/css/brand.css?v=20260622" as="style" />
     <link rel="preload" href="/assets/css/bootstrap.css?v=20260622" as="style" />
+    <link rel="preload" href="/assets/js/jquery.js" as="script" />
+    <link rel="preload" href="/assets/js/popper.min.js" as="script" />
+    <link rel="preload" href="/assets/js/bootstrap.min.js" as="script" />
+    <link rel="preload" href="/assets/js/plugins.js" as="script" />
+    <link rel="preload" href="/assets/js/owl.js" as="script" />
+    <link rel="preload" href="/assets/css/owl.css" as="style" />
     <style>
       /* Critical first-paint guard: prevent the hero carousel from collapsing before Owl/React finish loading. */
       .main-header--premium .header-shell--bar {
@@ -53,6 +59,23 @@
           min-height: 560px;
         }
       }
+      /* Highly-optimized background images with WebP format and progressive JPEG fallbacks */
+      .hero-banner-slide--1 .image-layer {
+        background-image: url(/assets/images/RelevantPics/residential-hero-1-optimized.jpg);
+        background-image: url(/assets/images/RelevantPics/residential-hero-1-optimized.webp);
+      }
+      .hero-banner-slide--2 .image-layer {
+        background-image: url(/assets/images/RelevantPics/residential-hero-2-optimized.jpg);
+        background-image: url(/assets/images/RelevantPics/residential-hero-2-optimized.webp);
+      }
+      .hero-banner-slide--3 .image-layer {
+        background-image: url(/assets/images/RelevantPics/commercial-hero-optimized.jpg);
+        background-image: url(/assets/images/RelevantPics/commercial-hero-optimized.webp);
+      }
+      .hero-banner-slide--4 .image-layer {
+        background-image: url(/assets/images/RelevantPics/ev-charger-hero-optimized.jpg);
+        background-image: url(/assets/images/RelevantPics/ev-charger-hero-optimized.webp);
+      }
     </style>
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
@@ -74,6 +97,12 @@
     <link href="/assets/css/style.css?v=20260622" rel="stylesheet" />
     <link href="/assets/css/responsive.css?v=20260622" rel="stylesheet" />
     <link href="/assets/css/brand.css?v=20260622" rel="stylesheet" />
+    <link href="/assets/css/owl.css" rel="stylesheet" data-template-href="/assets/css/owl.css" />
+    <script src="/assets/js/jquery.js" data-template-src="/assets/js/jquery.js" defer></script>
+    <script src="/assets/js/popper.min.js" data-template-src="/assets/js/popper.min.js" defer></script>
+    <script src="/assets/js/bootstrap.min.js" data-template-src="/assets/js/bootstrap.min.js" defer></script>
+    <script src="/assets/js/plugins.js" data-template-src="/assets/js/plugins.js" defer></script>
+    <script src="/assets/js/owl.js" data-template-src="/assets/js/owl.js" defer></script>
     <title>European Electric LLC</title>
   </head>
   <body>

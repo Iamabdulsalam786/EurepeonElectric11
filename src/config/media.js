@@ -33,10 +33,10 @@ export const CLIENT_IMAGES = {
   safetyUpgrades: `${RP}/safety-upgrades.jpg`,
   newConstruction: `${RP}/new-construction.jpg`,
   remodelWiring: `${RP}/remodel-wiring.jpg`,
-  heroOne: `${RP}/hero-banner-1.jpg`,
-  heroTwo: `${RP}/residential-hero-banner-picture.png`,
-  heroThree: `${RP}/Commercial-Hero-banner-picture.png`,
-  heroFour: `${RP}/EV Charger- hero banner- Installation.png`,
+  heroOne: `${RP}/residential-hero-1-optimized.webp`,
+  heroTwo: `${RP}/residential-hero-2-optimized.webp`,
+  heroThree: `${RP}/commercial-hero-optimized.webp`,
+  heroFour: `${RP}/ev-charger-hero-optimized.webp`,
 };
 
 /** Paths used by canonical HTML + React service cards */
@@ -58,7 +58,7 @@ export const STOCK_IMAGES = {
   insightPanel: CLIENT_IMAGES.residentialPanel,
   insightEv: `${S}/insight-ev.jpg`,
   insightLighting: CLIENT_IMAGES.commercialLighting,
-  heroOne: `${B}/banner-1.jpg`,
+  heroOne: CLIENT_IMAGES.heroOne,
   heroTwo: CLIENT_IMAGES.heroTwo,
   heroThree: CLIENT_IMAGES.heroThree,
   heroFour: CLIENT_IMAGES.heroFour,
