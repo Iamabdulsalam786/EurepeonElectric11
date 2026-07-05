@@ -41,9 +41,9 @@ function splitHomeContent(html) {
 export default function TemplatePage() {
   const location = useLocation();
   const isHome = location.pathname === '/';
-  const [content, setContent] = useState('');
+  // Default to homeHtml to prevent "Page Not Found" on mobile
+  const [content, setContent] = useState(homeHtml);
   const [loadError, setLoadError] = useState('');
-  const [hasInitialized, setHasInitialized] = useState(false);
   const pageMeta = manifest[location.pathname];
 
   const parts = useMemo(() => {
@@ -52,8 +52,6 @@ export default function TemplatePage() {
   }, [content, isHome]);
 
   useEffect(() => {
-    setHasInitialized(true);
-
     if (isHome) {
       setContent(homeHtml);
       setLoadError('');
@@ -116,19 +114,18 @@ export default function TemplatePage() {
     };
   }, [content, location.pathname]);
 
-  // Only show "Page Not Found" after initialization if we have no content AND no pageMeta
-  // This prevents the issue on mobile where location.pathname might not be ready on first render
-  if (hasInitialized && !content && !pageMeta) {
-    return (
-      <section className="page-title centred">
-        <div className="auto-container">
-          <div className="content-box">
-            <h2>Page Not Found</h2>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  // Disabled "Page Not Found" to prevent mobile display issues
+  // if (!content && !pageMeta) {
+  //   return (
+  //     <section className="page-title centred">
+  //       <div className="auto-container">
+  //         <div className="content-box">
+  //           <h2>Page Not Found</h2>
+  //         </div>
+  //       </div>
+  //     </section>
+  //   );
+  // }
 
   if (loadError) {
     return (
