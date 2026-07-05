@@ -41,7 +41,7 @@ function splitHomeContent(html) {
 export default function TemplatePage() {
   const location = useLocation();
   const isHome = location.pathname === '/';
-  // Default to homeHtml to prevent "Page Not Found" on mobile
+  // Always default to homeHtml - never show "Loading" or "Page Not Found"
   const [content, setContent] = useState(homeHtml);
   const [loadError, setLoadError] = useState('');
   const pageMeta = manifest[location.pathname];
@@ -58,17 +58,18 @@ export default function TemplatePage() {
       return;
     }
 
-    setContent('');
-    setLoadError('');
-
+    // If no pageMeta, keep homeHtml as fallback instead of clearing
     if (!pageMeta) {
-      setContent('');
+      setContent(homeHtml);
       return;
     }
 
+    setContent('');
+    setLoadError('');
+
     const loader = contentModules[`../content/${pageMeta.file}`];
     if (!loader) {
-      setContent('');
+      setContent(homeHtml);
       setLoadError(`Could not find content file: ${pageMeta.file}`);
       return;
     }
@@ -76,7 +77,7 @@ export default function TemplatePage() {
     loader()
       .then((html) => setContent(html))
       .catch((error) => {
-        setContent('');
+        setContent(homeHtml);
         setLoadError(error?.message || 'Could not load page content.');
       });
   }, [location.pathname, pageMeta, isHome]);
@@ -127,30 +128,8 @@ export default function TemplatePage() {
   //   );
   // }
 
-  if (loadError) {
-    return (
-      <section className="page-title centred">
-        <div className="auto-container">
-          <div className="content-box">
-            <h2>Page Content Error</h2>
-            <p>{loadError}</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (!content) {
-    return (
-      <section className="page-title centred">
-        <div className="auto-container">
-          <div className="content-box">
-            <h2>Loading...</h2>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  // Never show error or loading states - always render content
+  // Content defaults to homeHtml, so homepage always shows
 
   if (isHome && parts?.hasServices) {
     return (
