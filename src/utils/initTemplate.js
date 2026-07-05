@@ -157,28 +157,19 @@ function initInteractions($) {
     wow.init();
   }
 
-  if ($('#datepicker').length && $.fn.datepicker) {
-    $('#datepicker').datepicker({
-      dateFormat: 'mm/dd/yy',
-      changeMonth: true,
-      changeYear: true,
-      showOn: 'both',
-      buttonText: '<i class="icon-8"></i>',
-      beforeShow: function(input, inst) {
-        // Mobile-friendly positioning
-        if (window.innerWidth < 768) {
-          setTimeout(function() {
-            $('#ui-datepicker-div').css({
-              'position': 'fixed',
-              'top': '50%',
-              'left': '50%',
-              'transform': 'translate(-50%, -50%)',
-              'z-index': '9999'
-            });
-          }, 10);
-        }
-      }
-    });
+  if ($('#datepicker').length) {
+    // Use native date picker on mobile, jQuery datepicker on desktop
+    if (window.innerWidth < 768) {
+      $('#datepicker').attr('type', 'date');
+    } else if ($.fn.datepicker) {
+      $('#datepicker').datepicker({
+        dateFormat: 'mm/dd/yy',
+        changeMonth: true,
+        changeYear: true,
+        showOn: 'both',
+        buttonText: '<i class="icon-8"></i>'
+      });
+    }
   }
 
   if ($('.tabs-box').length) {
