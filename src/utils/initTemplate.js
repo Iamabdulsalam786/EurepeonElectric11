@@ -167,7 +167,10 @@ function initInteractions($) {
         changeMonth: true,
         changeYear: true,
         showOn: 'both',
-        buttonText: '<i class="icon-8"></i>'
+        buttonText: '<i class="icon-8"></i>',
+        beforeShow: function() {
+          $('#ui-datepicker-div').css('z-index', 99999);
+        }
       });
     }
   }

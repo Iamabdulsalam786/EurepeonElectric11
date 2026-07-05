@@ -1801,7 +1801,8 @@ div#mCSB_1_container{
 }
 
 .search-field .search-area .form-group input[type='text'],
-.search-field .search-area .form-group input[type='email']{
+.search-field .search-area .form-group input[type='email'],
+.search-field .search-area .form-group input[type='date']{
   position: relative;
   display: block;
   width: 100%;
