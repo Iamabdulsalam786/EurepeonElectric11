@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import manifest from '../content/manifest.json';
 import homeHtml from '../content/index.html?raw';
@@ -20,9 +20,6 @@ const contentModules = import.meta.glob(
     import: 'default',
   },
 );
-
-const SEARCH_FIELD_RE =
-  /<!-- search-field -->[\s\S]*?<!-- search-field end -->/;
 
 export default function TemplatePage() {
   const location = useLocation();
@@ -96,25 +93,17 @@ export default function TemplatePage() {
     };
   }, [content, location.pathname]);
 
-  // Disabled "Page Not Found" to prevent mobile display issues
-  // if (!content && !pageMeta) {
-  //   return (
-  //     <section className="page-title centred">
-  //       <div className="auto-container">
-  //         <div className="content-box">
-  //           <h2>Page Not Found</h2>
-  //         </div>
-  //       </div>
-  //     </section>
-  //   );
-  // }
-
   // Never show error or loading states - always render content
   // Content defaults to homeHtml, so homepage always shows
 
   if (isHome) {
-    const beforeSearch = content.split('<!-- search-field -->')[0];
-    const afterSearch = content.split('<!-- search-field end -->')[1];
+    // Split the home HTML into before search-field, and after search-field
+    const searchFieldStart = '<!-- search-field -->';
+    const searchFieldEnd = '<!-- search-field end -->';
+    
+    const beforeSearch = content.split(searchFieldStart)[0];
+    const afterSearch = content.split(searchFieldEnd)[1];
+    
     return (
       <div key={location.pathname}>
         <div dangerouslySetInnerHTML={{ __html: beforeSearch }} />
