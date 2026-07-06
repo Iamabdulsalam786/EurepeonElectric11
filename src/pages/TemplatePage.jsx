@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import manifest from '../content/manifest.json';
 import homeHtml from '../content/index.html?raw';
@@ -21,13 +21,34 @@ const contentModules = import.meta.glob(
   },
 );
 
+const BANNER_SECTION_END_RE = /<!-- banner-section end -->/;
+
+function splitHomeContent(html) {
+  const bannerEndMatch = html.match(BANNER_SECTION_END_RE);
+  
+  if (!bannerEndMatch) {
+    return { beforeBannerEnd: html, afterBannerEnd: '', hasSections: false };
+  }
+  
+  const bannerEndIndex = html.indexOf(bannerEndMatch[0]) + bannerEndMatch[0].length;
+  
+  const beforeBannerEnd = html.slice(0, bannerEndIndex);
+  const afterBannerEnd = html.slice(bannerEndIndex);
+  
+  return { beforeBannerEnd, afterBannerEnd, hasSections: true };
+}
+
 export default function TemplatePage() {
   const location = useLocation();
   const isHome = location.pathname === '/';
-  // Always default to homeHtml - never show "Loading" or "Page Not Found"
   const [content, setContent] = useState(homeHtml);
   const [loadError, setLoadError] = useState('');
   const pageMeta = manifest[location.pathname];
+
+  const parts = useMemo(() => {
+    if (!isHome || !content) return null;
+    return splitHomeContent(content);
+  }, [content, isHome]);
 
   useEffect(() => {
     if (isHome) {
@@ -36,7 +57,6 @@ export default function TemplatePage() {
       return;
     }
 
-    // If no pageMeta, keep homeHtml as fallback instead of clearing
     if (!pageMeta) {
       setContent(homeHtml);
       return;
@@ -93,22 +113,12 @@ export default function TemplatePage() {
     };
   }, [content, location.pathname]);
 
-  // Never show error or loading states - always render content
-  // Content defaults to homeHtml, so homepage always shows
-
-  if (isHome) {
-    // Split the home HTML into before search-field, and after search-field
-    const searchFieldStart = '<!-- search-field -->';
-    const searchFieldEnd = '<!-- search-field end -->';
-    
-    const beforeSearch = content.split(searchFieldStart)[0];
-    const afterSearch = content.split(searchFieldEnd)[1];
-    
+  if (isHome && parts?.hasSections) {
     return (
       <div key={location.pathname}>
-        <div dangerouslySetInnerHTML={{ __html: beforeSearch }} />
+        <div dangerouslySetInnerHTML={{ __html: parts.beforeBannerEnd }} />
         <ConsultationForm />
-        <div dangerouslySetInnerHTML={{ __html: afterSearch }} />
+        <div dangerouslySetInnerHTML={{ __html: parts.afterBannerEnd }} />
       </div>
     );
   }
