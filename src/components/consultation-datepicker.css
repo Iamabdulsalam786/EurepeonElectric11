@@ -33,6 +33,14 @@
   cursor: pointer;
 }
 
+/* For native date input, remove the default calendar icon */
+.consultation-date-input-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: -9999px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .consultation-date-input-wrapper input::placeholder {
   color: #808080;
   opacity: 1;
