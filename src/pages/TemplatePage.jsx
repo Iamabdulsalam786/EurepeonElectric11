@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { createRoot } from 'react-dom/client';
 import manifest from '../content/manifest.json';
 import homeHtml from '../content/index.html?raw';
 import ConsultationForm from '../components/ConsultationForm';
-import ServicesSection from '../components/ServicesSection';
 import { loadPageEnhancements } from '../utils/loadScripts';
 import { loadDeferredStyles } from '../utils/loadStyles';
 import { initializeTemplate } from '../utils/initTemplate';
@@ -23,30 +21,8 @@ const contentModules = import.meta.glob(
   },
 );
 
-const SERVICE_SECTION_RE =
-  /<!-- service-section -->[\s\S]*?<!-- service-section end -->/;
 const SEARCH_FIELD_RE =
   /<!-- search-field -->[\s\S]*?<!-- search-field end -->/;
-const BANNER_SECTION_END_RE =
-  /<!-- banner-section end -->/;
-
-function splitHomeContent(html) {
-  const bannerEndMatch = html.match(BANNER_SECTION_END_RE);
-  const serviceSectionMatch = html.match(SERVICE_SECTION_RE);
-  
-  if (!bannerEndMatch || !serviceSectionMatch) {
-    return { beforeBannerEnd: html, afterServiceSection: '', hasSections: false };
-  }
-  
-  const bannerEndIndex = html.indexOf(bannerEndMatch[0]) + bannerEndMatch[0].length;
-  const serviceSectionStart = html.indexOf(serviceSectionMatch[0]);
-  
-  const beforeBannerEnd = html.slice(0, bannerEndIndex);
-  const betweenBannerAndService = html.slice(bannerEndIndex, serviceSectionStart).replace(SEARCH_FIELD_RE, '');
-  const afterServiceSection = html.slice(serviceSectionStart + serviceSectionMatch[0].length);
-  
-  return { beforeBannerEnd, betweenBannerAndService, afterServiceSection, hasSections: true };
-}
 
 export default function TemplatePage() {
   const location = useLocation();
@@ -55,11 +31,6 @@ export default function TemplatePage() {
   const [content, setContent] = useState(homeHtml);
   const [loadError, setLoadError] = useState('');
   const pageMeta = manifest[location.pathname];
-
-  const parts = useMemo(() => {
-    if (!isHome || !content) return null;
-    return splitHomeContent(content);
-  }, [content, isHome]);
 
   useEffect(() => {
     if (isHome) {
@@ -141,14 +112,14 @@ export default function TemplatePage() {
   // Never show error or loading states - always render content
   // Content defaults to homeHtml, so homepage always shows
 
-  if (isHome && parts?.hasSections) {
+  if (isHome) {
+    const beforeSearch = content.split('<!-- search-field -->')[0];
+    const afterSearch = content.split('<!-- search-field end -->')[1];
     return (
       <div key={location.pathname}>
-        <div dangerouslySetInnerHTML={{ __html: parts.beforeBannerEnd }} />
+        <div dangerouslySetInnerHTML={{ __html: beforeSearch }} />
         <ConsultationForm />
-        <div dangerouslySetInnerHTML={{ __html: parts.betweenBannerAndService }} />
-        {/* <ServicesSection /> */}
-        <div dangerouslySetInnerHTML={{ __html: parts.afterServiceSection }} />
+        <div dangerouslySetInnerHTML={{ __html: afterSearch }} />
       </div>
     );
   }
