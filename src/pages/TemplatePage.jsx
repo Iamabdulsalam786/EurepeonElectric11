@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { createRoot } from 'react-dom/client';
 import manifest from '../content/manifest.json';
 import homeHtml from '../content/index.html?raw';
+import ConsultationForm from '../components/ConsultationForm';
+import ServicesSection from '../components/ServicesSection';
 import { loadPageEnhancements } from '../utils/loadScripts';
 import { loadDeferredStyles } from '../utils/loadStyles';
 import { initializeTemplate } from '../utils/initTemplate';
@@ -22,20 +25,27 @@ const contentModules = import.meta.glob(
 
 const SERVICE_SECTION_RE =
   /<!-- service-section -->[\s\S]*?<!-- service-section end -->/;
+const SEARCH_FIELD_RE =
+  /<!-- search-field -->[\s\S]*?<!-- search-field end -->/;
+const BANNER_SECTION_END_RE =
+  /<!-- banner-section end -->/;
 
 function splitHomeContent(html) {
-  const match = html.match(SERVICE_SECTION_RE);
-  if (!match) {
-    return { before: html, hasServices: false, after: '' };
+  const bannerEndMatch = html.match(BANNER_SECTION_END_RE);
+  const serviceSectionMatch = html.match(SERVICE_SECTION_RE);
+  
+  if (!bannerEndMatch || !serviceSectionMatch) {
+    return { beforeBannerEnd: html, afterServiceSection: '', hasSections: false };
   }
-
-  const [segment] = match;
-  const start = html.indexOf(segment);
-  return {
-    before: html.slice(0, start),
-    hasServices: true,
-    after: html.slice(start + segment.length),
-  };
+  
+  const bannerEndIndex = html.indexOf(bannerEndMatch[0]) + bannerEndMatch[0].length;
+  const serviceSectionStart = html.indexOf(serviceSectionMatch[0]);
+  
+  const beforeBannerEnd = html.slice(0, bannerEndIndex);
+  const betweenBannerAndService = html.slice(bannerEndIndex, serviceSectionStart).replace(SEARCH_FIELD_RE, '');
+  const afterServiceSection = html.slice(serviceSectionStart + serviceSectionMatch[0].length);
+  
+  return { beforeBannerEnd, betweenBannerAndService, afterServiceSection, hasSections: true };
 }
 
 export default function TemplatePage() {
@@ -131,11 +141,14 @@ export default function TemplatePage() {
   // Never show error or loading states - always render content
   // Content defaults to homeHtml, so homepage always shows
 
-  if (isHome && parts?.hasServices) {
+  if (isHome && parts?.hasSections) {
     return (
       <div key={location.pathname}>
-        <div dangerouslySetInnerHTML={{ __html: parts.before }} />
-        <div dangerouslySetInnerHTML={{ __html: parts.after }} />
+        <div dangerouslySetInnerHTML={{ __html: parts.beforeBannerEnd }} />
+        <ConsultationForm />
+        <div dangerouslySetInnerHTML={{ __html: parts.betweenBannerAndService }} />
+        {/* <ServicesSection /> */}
+        <div dangerouslySetInnerHTML={{ __html: parts.afterServiceSection }} />
       </div>
     );
   }

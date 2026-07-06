@@ -12,6 +12,11 @@ function getManagedForm(eventTarget) {
   const form = eventTarget.closest('form');
   if (!form || !form.closest('#main-content')) return null;
   if (!form.querySelector('input[type="email"], input[name="email"]')) return null;
+  
+  // Skip the React ConsultationForm, we handle it ourselves
+  if (form.closest('.search-field') && form.querySelector('[name="date"]')) {
+    return null;
+  }
 
   const isKnownInquiry =
     form.id === 'contact-form' ||

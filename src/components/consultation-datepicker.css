@@ -1,0 +1,174 @@
+.search-field .outer-container,
+.search-field .search-area {
+  overflow: visible;
+}
+
+.consultation-date-field {
+  position: relative;
+}
+
+.consultation-date-field .react-datepicker-wrapper,
+.consultation-date-field .react-datepicker__input-container {
+  display: block;
+  width: 100%;
+}
+
+.consultation-date-input-wrapper {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.consultation-date-input-wrapper input {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 50px;
+  border: 1px solid #e5e5e5;
+  font-size: 16px;
+  color: #141417;
+  padding: 10px 44px 10px 20px;
+  background: #fff;
+  transition: all 500ms ease;
+  cursor: pointer;
+}
+
+.consultation-date-input-wrapper input::placeholder {
+  color: #808080;
+  opacity: 1;
+}
+
+.consultation-date-input-wrapper input:focus {
+  border-color: var(--brand-primary, #0078c1) !important;
+  box-shadow: 0 0 0 3px rgba(0, 120, 193, 0.12) !important;
+  outline: none;
+}
+
+.consultation-date-input-wrapper .icon {
+  position: absolute;
+  top: 15px;
+  right: 30px;
+  z-index: 1;
+  font-size: 16px;
+  color: #808080;
+  pointer-events: none;
+}
+
+.consultation-datepicker-popper {
+  z-index: 10050 !important;
+}
+
+.consultation-datepicker-calendar {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  border: 1px solid var(--brand-border, #e5e5e5) !important;
+  border-radius: var(--radius-sm, 6px) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.14);
+  overflow: hidden;
+}
+
+.consultation-datepicker-calendar .react-datepicker__header {
+  background: #151515;
+  border-bottom: none;
+  border-radius: 0;
+  padding-top: 12px;
+}
+
+.consultation-datepicker-calendar .react-datepicker__current-month,
+.consultation-datepicker-calendar .react-datepicker-time__header,
+.consultation-datepicker-calendar .react-datepicker-year-header {
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.consultation-datepicker-calendar .react-datepicker__day-name {
+  color: #666;
+  font-weight: 600;
+  width: 2rem;
+  line-height: 2rem;
+  margin: 0.2rem;
+}
+
+.consultation-datepicker-calendar .react-datepicker__day {
+  width: 2rem;
+  line-height: 2rem;
+  margin: 0.2rem;
+  border-radius: var(--radius-sm, 6px);
+  color: #141417;
+}
+
+.consultation-datepicker-calendar .react-datepicker__day:hover {
+  background: rgba(0, 120, 193, 0.12);
+  border-radius: var(--radius-sm, 6px);
+}
+
+.consultation-datepicker-calendar .react-datepicker__day--selected,
+.consultation-datepicker-calendar .react-datepicker__day--keyboard-selected {
+  background: var(--brand-primary, #0078c1) !important;
+  color: #fff !important;
+  border-radius: var(--radius-sm, 6px);
+}
+
+.consultation-datepicker-calendar .react-datepicker__day--disabled {
+  color: #c5c5c5;
+}
+
+.consultation-datepicker-calendar .react-datepicker__day--outside-month {
+  color: #b0b0b0;
+}
+
+.consultation-datepicker-calendar .react-datepicker__navigation-icon::before {
+  border-color: #fff;
+}
+
+.consultation-datepicker-calendar .react-datepicker__navigation:hover *::before {
+  border-color: var(--brand-primary, #0078c1);
+}
+
+.consultation-datepicker-calendar .react-datepicker__triangle {
+  display: none;
+}
+
+.consultation-success-notification {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  padding: 16px 24px;
+  border-radius: 8px;
+  margin: 0 10px 20px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  animation: fadeIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+}
+
+.consultation-success-notification i {
+  font-size: 20px;
+  color: #28a745;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
