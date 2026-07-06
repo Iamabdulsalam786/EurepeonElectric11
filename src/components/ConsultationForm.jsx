@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import './consultation-datepicker.css';
 import { SITE } from '../config/site';
 
@@ -8,15 +6,7 @@ export default function ConsultationForm() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const formRef = useRef(null);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   useEffect(() => {
     const form = formRef.current;
@@ -74,14 +64,6 @@ export default function ConsultationForm() {
     }
   };
 
-  const handleNativeDateChange = (e) => {
-    if (e.target.value) {
-      setSelectedDate(new Date(e.target.value));
-    } else {
-      setSelectedDate(null);
-    }
-  };
-
   return (
     <section className="search-field">
       <div className="auto-container">
@@ -108,54 +90,28 @@ export default function ConsultationForm() {
                   <input type="text" name="phone" placeholder="Phone" required />
                 </div>
                 <div className="col-lg-3 col-md-6 col-sm-12 form-group consultation-date-field">
-                  {isMobile ? (
-                    <div className="consultation-date-input-wrapper">
-                      <input
-                        type="date"
-                        name="date"
-                        id="consultation-date"
-                        placeholder="Date"
-                        min={new Date().toISOString().split('T')[0]}
-                        value={selectedDate ? selectedDate.toISOString().split('T')[0] : ''}
-                        onChange={handleNativeDateChange}
-                        autoComplete="off"
-                        aria-label="Preferred consultation date"
-                      />
-                      <span className="icon" aria-hidden="true">
-                        <i className="icon-8"></i>
-                      </span>
-                    </div>
-                  ) : (
-                    <DatePicker
-                      selected={selectedDate}
-                      onChange={setSelectedDate}
-                      dateFormat="MM/dd/yyyy"
-                      minDate={new Date()}
-                      placeholderText="Date"
-                      id="consultation-date"
+                  <div className="consultation-date-input-wrapper">
+                    <input
+                      type="date"
                       name="date"
-                      customInput={
-                        <div className="consultation-date-input-wrapper">
-                          <input
-                            type="text"
-                            readOnly
-                            placeholder="Date"
-                            autoComplete="off"
-                            aria-label="Preferred consultation date"
-                          />
-                          <span className="icon" aria-hidden="true">
-                            <i className="icon-8"></i>
-                          </span>
-                        </div>
-                      }
-                      showPopperArrow={false}
-                      popperPlacement="bottom-start"
-                      popperProps={{ strategy: 'fixed' }}
-                      calendarClassName="consultation-datepicker-calendar"
-                      popperClassName="consultation-datepicker-popper"
-                      shouldCloseOnSelect
+                      id="consultation-date"
+                      placeholder="Date"
+                      min={new Date().toISOString().split('T')[0]}
+                      value={selectedDate ? selectedDate.toISOString().split('T')[0] : ''}
+                      onChange={(e) => {
+                        if (e.target.value) {
+                          setSelectedDate(new Date(e.target.value));
+                        } else {
+                          setSelectedDate(null);
+                        }
+                      }}
+                      autoComplete="off"
+                      aria-label="Preferred consultation date"
                     />
-                  )}
+                    <span className="icon" aria-hidden="true">
+                      <i className="icon-8"></i>
+                    </span>
+                  </div>
                 </div>
               </div>
               <div className="btn-box">

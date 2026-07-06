@@ -30,15 +30,7 @@ export default function TemplatePage() {
   const pageMeta = manifest[location.pathname];
 
   useEffect(() => {
-    console.log('=== TemplatePage useEffect ran ===');
-    console.log('  location.pathname:', location.pathname);
-    console.log('  isHome:', isHome);
-    console.log('  pageMeta:', pageMeta);
-    console.log('  contentModules keys:', Object.keys(contentModules));
-    console.log('  homeHtml includes searchFieldStart:', homeHtml.includes('<!-- search-field -->'));
-
     if (isHome) {
-      console.log('  Setting content to homeHtml');
       setContent(homeHtml);
       setLoadError('');
       return;
@@ -46,38 +38,27 @@ export default function TemplatePage() {
 
     // If no pageMeta, keep homeHtml as fallback instead of clearing
     if (!pageMeta) {
-      console.log('  No pageMeta, setting to homeHtml');
       setContent(homeHtml);
       return;
     }
 
-    console.log('  Setting content to empty');
     setContent('');
     setLoadError('');
 
-    const loaderKey = `../content/${pageMeta.file}`;
-    const loader = contentModules[loaderKey];
-    console.log('  loaderKey:', loaderKey);
-    console.log('  loader exists:', !!loader);
-    
+    const loader = contentModules[`../content/${pageMeta.file}`];
     if (!loader) {
-      console.log('  No loader, setting to homeHtml');
       setContent(homeHtml);
       setLoadError(`Could not find content file: ${pageMeta.file}`);
       return;
     }
 
     loader()
-      .then((html) => {
-        console.log('  Loader resolved, setting content to HTML');
-        setContent(html);
-      })
+      .then((html) => setContent(html))
       .catch((error) => {
-        console.log('  Loader error, setting to homeHtml');
         setContent(homeHtml);
         setLoadError(error?.message || 'Could not load page content.');
       });
-  }, [location.pathname, pageMeta, isHome, homeHtml]);
+  }, [location.pathname, pageMeta, isHome]);
 
   useEffect(() => {
     if (!content) return undefined;
@@ -120,14 +101,8 @@ export default function TemplatePage() {
     const searchFieldStart = '<!-- search-field -->';
     const searchFieldEnd = '<!-- search-field end -->';
     
-    console.log('Content contains searchFieldStart:', content.includes(searchFieldStart));
-    console.log('Content contains searchFieldEnd:', content.includes(searchFieldEnd));
-    
     const beforeSearch = content.split(searchFieldStart)[0];
     const afterSearch = content.split(searchFieldEnd)[1];
-    
-    console.log('isHome:', isHome, 'location:', location.pathname);
-    console.log('beforeSearch length:', beforeSearch.length, 'afterSearch length:', afterSearch?.length);
     
     return (
       <div key={location.pathname}>
