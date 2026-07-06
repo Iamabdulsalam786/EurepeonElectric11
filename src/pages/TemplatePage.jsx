@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import manifest from '../content/manifest.json';
 import homeHtml from '../content/index.html?raw';
 import ConsultationForm from '../components/ConsultationForm';
+import ServicesSection from '../components/ServicesSection';
 import { loadPageEnhancements } from '../utils/loadScripts';
 import { loadDeferredStyles } from '../utils/loadStyles';
 import { initializeTemplate } from '../utils/initTemplate';
@@ -97,18 +98,25 @@ export default function TemplatePage() {
   // Content defaults to homeHtml, so homepage always shows
 
   if (isHome) {
-    // Split the home HTML into before search-field, and after search-field
+    // First split at search-field for ConsultationForm
     const searchFieldStart = '<!-- search-field -->';
     const searchFieldEnd = '<!-- search-field end -->';
-    
     const beforeSearch = content.split(searchFieldStart)[0];
     const afterSearch = content.split(searchFieldEnd)[1];
+    
+    // Now split afterSearch into before service-section and after service-section
+    const serviceSectionStart = '<!-- service-section -->';
+    const serviceSectionEnd = '<!-- service-section end -->';
+    const beforeServices = afterSearch.split(serviceSectionStart)[0];
+    const afterServices = afterSearch.split(serviceSectionEnd)[1];
     
     return (
       <div key={location.pathname}>
         <div dangerouslySetInnerHTML={{ __html: beforeSearch }} />
         <ConsultationForm />
-        <div dangerouslySetInnerHTML={{ __html: afterSearch }} />
+        <div dangerouslySetInnerHTML={{ __html: beforeServices }} />
+        <ServicesSection />
+        <div dangerouslySetInnerHTML={{ __html: afterServices }} />
       </div>
     );
   }
