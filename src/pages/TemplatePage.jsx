@@ -22,7 +22,7 @@ const contentModules = import.meta.glob(
 );
 
 const BANNER_SECTION_END_RE = /<!-- banner-section end -->/;
-const PRICING_SECTION_RE = /<!-- pricing-section -->/;
+const TESTIMONIAL_SECTION_END_RE = /<!-- testimonial-style-two end -->/;
 
 function splitHomeContent(html) {
   const bannerEndMatch = html.match(BANNER_SECTION_END_RE);
@@ -40,19 +40,16 @@ function splitHomeContent(html) {
 }
 
 function splitAboutContent(html) {
-  const pricingMatch = html.match(PRICING_SECTION_RE);
+  const testimonialEndMatch = html.match(TESTIMONIAL_SECTION_END_RE);
   
-  if (!pricingMatch) {
+  if (!testimonialEndMatch) {
     return { before: html, after: '', hasSections: false };
   }
   
-  const pricingStartIndex = html.indexOf(pricingMatch[0]);
+  const testimonialEndIndex = html.indexOf(testimonialEndMatch[0]) + testimonialEndMatch[0].length;
   
-  const before = html.slice(0, pricingStartIndex);
-  // Skip the whole static <!-- pricing-section --> ... <!-- pricing-section end --> part
-  const pricingEndComment = '<!-- pricing-section end -->';
-  const pricingEndIndex = html.indexOf(pricingEndComment, pricingStartIndex) + pricingEndComment.length;
-  const after = html.slice(pricingEndIndex);
+  const before = html.slice(0, testimonialEndIndex);
+  const after = html.slice(testimonialEndIndex);
   
   return { before, after, hasSections: true };
 }
