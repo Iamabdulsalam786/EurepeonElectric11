@@ -22,33 +22,56 @@ const contentModules = import.meta.glob(
 );
 
 const BANNER_SECTION_END_RE = /<!-- banner-section end -->/;
+const APPOINTMENT_SECTION_RE = /<!-- appointment-section -->/;
 
 function splitHomeContent(html) {
   const bannerEndMatch = html.match(BANNER_SECTION_END_RE);
   
   if (!bannerEndMatch) {
-    return { beforeBannerEnd: html, afterBannerEnd: '', hasSections: false };
+    return { before: html, after: '', hasSections: false };
   }
   
   const bannerEndIndex = html.indexOf(bannerEndMatch[0]) + bannerEndMatch[0].length;
   
-  const beforeBannerEnd = html.slice(0, bannerEndIndex);
-  const afterBannerEnd = html.slice(bannerEndIndex);
+  const before = html.slice(0, bannerEndIndex);
+  const after = html.slice(bannerEndIndex);
   
-  return { beforeBannerEnd, afterBannerEnd, hasSections: true };
+  return { before, after, hasSections: true };
+}
+
+function splitAppointmentContent(html) {
+  const appointmentMatch = html.match(APPOINTMENT_SECTION_RE);
+  
+  if (!appointmentMatch) {
+    return { before: html, after: '', hasSections: false };
+  }
+  
+  const appointmentStartIndex = html.indexOf(appointmentMatch[0]);
+  
+  const before = html.slice(0, appointmentStartIndex);
+  // Skip the whole static <!-- appointment-section --> ... <!-- appointment-section end --> part
+  const appointmentEndComment = '<!-- appointment-section end -->';
+  const appointmentEndIndex = html.indexOf(appointmentEndComment, appointmentStartIndex) + appointmentEndComment.length;
+  const after = html.slice(appointmentEndIndex);
+  
+  return { before, after, hasSections: true };
 }
 
 export default function TemplatePage() {
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const isAppointment = location.pathname === '/appointment';
+  const isAbout = location.pathname === '/about';
   const [content, setContent] = useState(homeHtml);
   const [loadError, setLoadError] = useState('');
   const pageMeta = manifest[location.pathname];
 
   const parts = useMemo(() => {
-    if (!isHome || !content) return null;
-    return splitHomeContent(content);
-  }, [content, isHome]);
+    if (!content) return null;
+    if (isHome) return splitHomeContent(content);
+    if (isAppointment) return splitAppointmentContent(content);
+    return null;
+  }, [content, isHome, isAppointment]);
 
   useEffect(() => {
     if (isHome) {
@@ -105,12 +128,12 @@ export default function TemplatePage() {
     };
   }, [content, location.pathname]);
 
-  if (isHome && parts?.hasSections) {
+  if ((isHome || isAppointment) && parts?.hasSections) {
     return (
       <div key={location.pathname}>
-        <div dangerouslySetInnerHTML={{ __html: parts.beforeBannerEnd }} />
+        <div dangerouslySetInnerHTML={{ __html: parts.before }} />
         <ConsultationForm />
-        <div dangerouslySetInnerHTML={{ __html: parts.afterBannerEnd }} />
+        <div dangerouslySetInnerHTML={{ __html: parts.after }} />
       </div>
     );
   }
