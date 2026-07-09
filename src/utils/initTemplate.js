@@ -152,8 +152,24 @@ function initInteractions($) {
     $('html, body').animate({ scrollTop: 0 }, 1000);
   });
 
-  if ($('.wow').length && window.WOW) {
-    const wow = new window.WOW({ mobile: false });
+  // Reset WOW.js elements completely before re-initializing
+  if (window.WOW) {
+    // Clean up any existing WOW‑added attributes/classes/styles
+    $('.wow').each(function() {
+      $(this)
+        .removeClass('animated')
+        .removeAttr('style')
+        .removeAttr('data-wow-animated')
+        .css('visibility', 'visible'); // Make sure all WOW elements are visible initially
+    });
+    // Create a new WOW instance and initialize
+    const wow = new window.WOW({
+      boxClass: 'wow',
+      animateClass: 'animated',
+      offset: 0,
+      mobile: true, // Enable on mobile
+      live: true    // Live reload for dynamically added elements
+    });
     wow.init();
   }
 

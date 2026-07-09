@@ -94,16 +94,8 @@ export default function TemplatePage() {
         initializeTemplate();
       };
 
-      if (document.querySelector('.banner-carousel, .owl-carousel')) {
-        await runEnhancements();
-        return;
-      }
-
-      if (typeof window.requestIdleCallback === 'function') {
-        window.requestIdleCallback(() => runEnhancements(), { timeout: 900 });
-      } else {
-        window.setTimeout(runEnhancements, 50);
-      }
+      // Always run enhancements immediately - no conditional waiting!
+      await runEnhancements();
     };
 
     boot();
