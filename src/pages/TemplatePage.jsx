@@ -22,7 +22,6 @@ const contentModules = import.meta.glob(
 );
 
 const BANNER_SECTION_END_RE = /<!-- banner-section end -->/;
-const TESTIMONIAL_SECTION_END_RE = /<!-- testimonial-style-two end -->/;
 
 function splitHomeContent(html) {
   const bannerEndMatch = html.match(BANNER_SECTION_END_RE);
@@ -39,25 +38,9 @@ function splitHomeContent(html) {
   return { before, after, hasSections: true };
 }
 
-function splitAboutContent(html) {
-  const testimonialEndMatch = html.match(TESTIMONIAL_SECTION_END_RE);
-  
-  if (!testimonialEndMatch) {
-    return { before: html, after: '', hasSections: false };
-  }
-  
-  const testimonialEndIndex = html.indexOf(testimonialEndMatch[0]) + testimonialEndMatch[0].length;
-  
-  const before = html.slice(0, testimonialEndIndex);
-  const after = html.slice(testimonialEndIndex);
-  
-  return { before, after, hasSections: true };
-}
-
 export default function TemplatePage() {
   const location = useLocation();
   const isHome = location.pathname === '/';
-  const isAbout = location.pathname === '/about';
   const [content, setContent] = useState(homeHtml);
   const [loadError, setLoadError] = useState('');
   const pageMeta = manifest[location.pathname];
@@ -65,9 +48,8 @@ export default function TemplatePage() {
   const parts = useMemo(() => {
     if (!content) return null;
     if (isHome) return splitHomeContent(content);
-    if (isAbout) return splitAboutContent(content);
     return null;
-  }, [content, isHome, isAbout]);
+  }, [content, isHome]);
 
   useEffect(() => {
     if (isHome) {
@@ -124,7 +106,7 @@ export default function TemplatePage() {
     };
   }, [content, location.pathname]);
 
-  if ((isHome || isAbout) && parts?.hasSections) {
+  if (isHome && parts?.hasSections) {
     return (
       <div key={location.pathname}>
         <div dangerouslySetInnerHTML={{ __html: parts.before }} />

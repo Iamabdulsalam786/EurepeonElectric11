@@ -2065,6 +2065,70 @@ h2.fs_30,
   pointer-events: none;
 }
 
+/* ---- About page appointment form (professional style) ---- */
+.appointment-section .content_block_13 .content-box {
+  background: #ffffff;
+  padding: 48px 40px 50px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-md);
+}
+
+.appointment-section .content_block_13 .content-box .form-inner .form-group {
+  position: relative;
+  display: block;
+  margin-bottom: 24px;
+}
+
+.appointment-section .content_block_13 .content-box .form-inner .form-group input[type="text"],
+.appointment-section .content_block_13 .content-box .form-inner .form-group input[type="email"],
+.appointment-section .content_block_13 .content-box .form-inner .form-group textarea,
+.appointment-section .content_block_13 .content-box .form-inner .form-group .select-box .nice-select {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 50px;
+  font-size: 15px;
+  color: var(--brand-dark);
+  line-height: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-radius: var(--radius-sm);
+  padding: 0 18px;
+  background: #fafbfc;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+
+.appointment-section .content_block_13 .content-box .form-inner .form-group textarea {
+  height: 130px;
+  line-height: 1.6;
+  padding: 14px 18px;
+  resize: vertical;
+}
+
+.appointment-section .content_block_13 .content-box .form-inner .form-group input[type="text"]:focus,
+.appointment-section .content_block_13 .content-box .form-inner .form-group input[type="email"]:focus,
+.appointment-section .content_block_13 .content-box .form-inner .form-group textarea:focus,
+.appointment-section .content_block_13 .content-box .form-inner .form-group .select-box .nice-select.focus {
+  border-color: var(--brand-primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(0, 120, 193, 0.08);
+  outline: none;
+}
+
+.appointment-section .content_block_13 .content-box .form-inner .form-group .select-box .nice-select {
+  padding: 0 45px 0 18px;
+}
+
+.appointment-section .content_block_13 .content-box .form-inner .form-group .select-box .nice-select::after {
+  border-bottom: 2px solid var(--brand-muted);
+  border-right: 2px solid var(--brand-muted);
+  right: 20px;
+}
+
+.appointment-section .content_block_13 .content-box .form-inner .form-group .theme-btn {
+  padding: 14px 34px;
+  border-radius: var(--radius-md);
+}
+
 .chooseus-section--stats .content_block_four .content-box {
   max-width: 1120px;
   margin: 0 auto;
