@@ -22,7 +22,7 @@ const contentModules = import.meta.glob(
 );
 
 const BANNER_SECTION_END_RE = /<!-- banner-section end -->/;
-const APPOINTMENT_SECTION_RE = /<!-- appointment-section -->/;
+const PRICING_SECTION_RE = /<!-- pricing-section -->/;
 
 function splitHomeContent(html) {
   const bannerEndMatch = html.match(BANNER_SECTION_END_RE);
@@ -39,20 +39,20 @@ function splitHomeContent(html) {
   return { before, after, hasSections: true };
 }
 
-function splitAppointmentContent(html) {
-  const appointmentMatch = html.match(APPOINTMENT_SECTION_RE);
+function splitAboutContent(html) {
+  const pricingMatch = html.match(PRICING_SECTION_RE);
   
-  if (!appointmentMatch) {
+  if (!pricingMatch) {
     return { before: html, after: '', hasSections: false };
   }
   
-  const appointmentStartIndex = html.indexOf(appointmentMatch[0]);
+  const pricingStartIndex = html.indexOf(pricingMatch[0]);
   
-  const before = html.slice(0, appointmentStartIndex);
-  // Skip the whole static <!-- appointment-section --> ... <!-- appointment-section end --> part
-  const appointmentEndComment = '<!-- appointment-section end -->';
-  const appointmentEndIndex = html.indexOf(appointmentEndComment, appointmentStartIndex) + appointmentEndComment.length;
-  const after = html.slice(appointmentEndIndex);
+  const before = html.slice(0, pricingStartIndex);
+  // Skip the whole static <!-- pricing-section --> ... <!-- pricing-section end --> part
+  const pricingEndComment = '<!-- pricing-section end -->';
+  const pricingEndIndex = html.indexOf(pricingEndComment, pricingStartIndex) + pricingEndComment.length;
+  const after = html.slice(pricingEndIndex);
   
   return { before, after, hasSections: true };
 }
@@ -60,7 +60,6 @@ function splitAppointmentContent(html) {
 export default function TemplatePage() {
   const location = useLocation();
   const isHome = location.pathname === '/';
-  const isAppointment = location.pathname === '/appointment';
   const isAbout = location.pathname === '/about';
   const [content, setContent] = useState(homeHtml);
   const [loadError, setLoadError] = useState('');
@@ -69,9 +68,9 @@ export default function TemplatePage() {
   const parts = useMemo(() => {
     if (!content) return null;
     if (isHome) return splitHomeContent(content);
-    if (isAppointment) return splitAppointmentContent(content);
+    if (isAbout) return splitAboutContent(content);
     return null;
-  }, [content, isHome, isAppointment]);
+  }, [content, isHome, isAbout]);
 
   useEffect(() => {
     if (isHome) {
@@ -128,7 +127,7 @@ export default function TemplatePage() {
     };
   }, [content, location.pathname]);
 
-  if ((isHome || isAppointment) && parts?.hasSections) {
+  if ((isHome || isAbout) && parts?.hasSections) {
     return (
       <div key={location.pathname}>
         <div dangerouslySetInnerHTML={{ __html: parts.before }} />
