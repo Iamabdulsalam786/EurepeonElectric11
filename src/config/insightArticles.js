@@ -1,5 +1,5 @@
-import { CLIENT_IMAGES, STOCK_IMAGES } from './media';
-import { SITE } from './site';
+import { CLIENT_IMAGES, STOCK_IMAGES } from './media.js';
+import { SITE } from './site.js';
 
 export const INSIGHT_ARTICLES = [
   {

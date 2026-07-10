@@ -1,6 +1,6 @@
-import { SERVICE_TABS } from './services';
-import { SITE } from './site';
-import { CATEGORY_IMAGES, CLIENT_IMAGES, RELEVANT_PICS } from './media';
+import { SERVICE_TABS } from './services.js';
+import { SITE } from './site.js';
+import { CATEGORY_IMAGES, CLIENT_IMAGES, RELEVANT_PICS } from './media.js';
 
 const RP = '/assets/images/RelevantPics';
 

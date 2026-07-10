@@ -1,4 +1,4 @@
-import { CATEGORY_IMAGES } from './media';
+import { CATEGORY_IMAGES } from './media.js';
 
 /** Homepage showcase cards — summary copy for the 3-card layout */
 export const SERVICE_CARD_META = {
