@@ -42,6 +42,7 @@ export default function MobileMenu() {
               item.type === 'service-group' ? (
                 <MobileServiceGroupNav
                   key={item.id}
+                  id={item.id}
                   tabId={item.tabId}
                   tabIds={item.tabIds}
                   label={item.label}
