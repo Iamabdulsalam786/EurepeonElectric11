@@ -275,6 +275,87 @@ export const SERVICE_TABS = [
       },
     ],
   },
+  {
+    id: 'other-services',
+    tabLabel: 'Other Services',
+    shortLabel: 'Other',
+    title: 'Other Electrical Services',
+    image: CATEGORY_IMAGES.other.default,
+    link: '/#services',
+    categories: [
+      {
+        title: 'EV Charging Services',
+        image: CATEGORY_IMAGES.ev.charging,
+        imagePosition: 'center',
+        items: [
+          'Tesla charger installation',
+          'Level 2 charger installation',
+          'Home charging station setup',
+          'Circuit installation',
+          'Permit assistance',
+        ],
+      },
+      {
+        title: 'Indoor Lighting',
+        image: CATEGORY_IMAGES.lighting.indoor,
+        imagePosition: 'center top',
+        items: [
+          'Recessed lighting',
+          'Pendant lighting',
+          'Chandeliers',
+          'Cabinet lighting',
+          'Accent lighting',
+        ],
+      },
+      {
+        title: 'Outdoor Lighting',
+        image: CATEGORY_IMAGES.lighting.outdoor,
+        imagePosition: 'center',
+        items: [
+          'Landscape lighting',
+          'Security lighting',
+          'Pathway lighting',
+          'Motion sensor lights',
+          'Deck and patio lighting',
+        ],
+      },
+      {
+        title: 'Electrical Panels',
+        image: CATEGORY_IMAGES.panels.electrical,
+        imagePosition: 'center',
+        items: [
+          'Panel replacement',
+          'Panel upgrades',
+          'Subpanel installation',
+          'Breaker replacement',
+          'Fuse box replacement',
+        ],
+      },
+      {
+        title: 'Service Upgrades',
+        image: CATEGORY_IMAGES.panels.service,
+        imagePosition: 'center top',
+        items: [
+          '100A to 200A upgrades',
+          '200A to 400A upgrades',
+          'Utility service coordination',
+          'Meter upgrades',
+        ],
+      },
+      {
+        title: 'Inspection & Safety Upgrades',
+        image: CATEGORY_IMAGES.safety.default,
+        imagePosition: 'center',
+        items: [
+          'Electrical safety inspections',
+          'GFCI installation',
+          'AFCI installation',
+          'Surge protection',
+          'Grounding improvements',
+        ],
+      },
+    ],
+  },
 ];
 
 /** Sections 4–7 — same data as homepage tabs (for reference / footer links) */

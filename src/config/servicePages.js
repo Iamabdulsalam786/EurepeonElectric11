@@ -12,6 +12,7 @@ export const SERVICE_NAV_GROUP_IDS = [
   'lighting-solutions',
   'safety-upgrades',
   'panel-upgrades',
+  'other-services',
 ];
 
 export function slugify(text) {
@@ -30,6 +31,7 @@ const GROUP_AUDIENCE = {
   'ev-chargers': 'homeowners and EV drivers',
   'lighting-solutions': 'homeowners, businesses, and property managers',
   'panel-upgrades': 'homes and businesses that need safer, higher-capacity electrical service',
+  'other-services': 'homeowners, businesses, and property managers',
 };
 
 const GROUP_BENEFITS = {
@@ -74,6 +76,12 @@ const GROUP_BENEFITS = {
     'Panel replacement and service upgrades',
     'Permit and utility coordination',
     'Safer breaker and subpanel solutions',
+  ],
+  'other-services': [
+    'Licensed electricians',
+    'Code-compliant work',
+    'Upfront estimates',
+    'Clean job sites',
   ],
 };
 

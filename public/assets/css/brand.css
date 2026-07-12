@@ -2277,6 +2277,11 @@ h2.fs_30,
     padding: 48px 20px 22px;
   }
 
+  /* Keep category pages' content area padding the same as desktop */
+  .services-premium__panel.service-card-nav__services-grid .service-auhtor-boxarea .content-area {
+    padding: 48px 24px 24px;
+  }
+
   .contact-page-image img {
     min-height: 300px;
   }
@@ -2338,6 +2343,11 @@ h2.fs_30,
 
   .services-premium__panel.home-services-grid .service-auhtor-boxarea .content-area {
     padding: 44px 18px 20px;
+  }
+
+  /* Keep category pages' content area padding the same as desktop */
+  .services-premium__panel.service-card-nav__services-grid .service-auhtor-boxarea .content-area {
+    padding: 48px 24px 24px;
   }
 
   .testimonial-section--refined .bg-layer-2 {
@@ -6569,6 +6579,11 @@ a.contact-premium__card:hover {
   .services-premium__panel.home-services-grid {
     --service-card-image-height: 200px;
     --service-card-body-height: 260px;
+  }
+
+  /* Keep category pages (service-card-nav) the same height as desktop */
+  .services-premium__panel.service-card-nav__services-grid {
+    --service-card-body-height: 290px; /* Keep desktop value for category pages */
   }
 
   .services-premium__cards-row--count-1 .services-premium__card-col,

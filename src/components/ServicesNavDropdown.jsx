@@ -9,7 +9,7 @@ import {
 } from '../utils/serviceNavigation';
 import { parseInternalHref } from '../utils/mobileMenu';
 
-export default function ServicesNavDropdown({ tabId, tabIds, label, onNavigate }) {
+export default function ServicesNavDropdown({ id, tabId, tabIds, label, onNavigate }) {
   const location = useLocation();
   const navigate = useNavigate();
   const menuId = useId();
@@ -71,7 +71,11 @@ export default function ServicesNavDropdown({ tabId, tabIds, label, onNavigate }
       event.preventDefault();
       event.stopPropagation();
 
-      const target = parseInternalHref(isGrouped ? getServiceNavHref() : getServiceNavHref(primaryTabId));
+      // For "other-services", go to /services/other-services
+      const navHref = id === 'other-services'
+        ? getServiceNavHref(id)
+        : (isGrouped ? getServiceNavHref() : getServiceNavHref(primaryTabId));
+      const target = parseInternalHref(navHref);
       if (!target) return;
 
       const sameRoute = location.pathname === target.pathname && location.hash === target.hash;
@@ -87,7 +91,7 @@ export default function ServicesNavDropdown({ tabId, tabIds, label, onNavigate }
       window.setTimeout(() => scrollToServiceTarget(target.hash), 800);
       window.setTimeout(() => scrollToServiceTarget(target.hash), 1400);
     },
-    [navigate, handleNavigate, location.pathname, location.hash, scrollToServiceTarget, isGrouped, primaryTabId],
+    [navigate, handleNavigate, location.pathname, location.hash, scrollToServiceTarget, isGrouped, primaryTabId, id],
   );
 
   const goToServicePage = useCallback(
@@ -167,7 +171,7 @@ export default function ServicesNavDropdown({ tabId, tabIds, label, onNavigate }
       >
         <li role="none">
           <a
-            href={isGrouped ? getServiceNavHref() : getServiceNavHref(primaryTabId)}
+            href={id === 'other-services' ? getServiceNavHref(id) : (isGrouped ? getServiceNavHref() : getServiceNavHref(primaryTabId))}
             className="nav-dropdown-link nav-dropdown-link--all"
             role="menuitem"
             onClick={goToAllServices}

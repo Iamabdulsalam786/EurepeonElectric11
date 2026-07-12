@@ -109,6 +109,9 @@ export const CATEGORY_IMAGES = {
     remodel: CLIENT_IMAGES.remodelWiring,
     default: CLIENT_IMAGES.newConstruction,
   },
+  other: {
+    default: CLIENT_IMAGES.evCharging,
+  },
 };
 
 /** Each homepage/about slot uses a distinct client image where available */

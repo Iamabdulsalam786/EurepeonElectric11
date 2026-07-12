@@ -25,7 +25,7 @@ function MainNavigation() {
     <ul className="navigation clearfix navigation-premium">
       {MAIN_NAV.map((item) =>
         item.type === 'service-group' ? (
-          <ServicesNavDropdown key={item.id} tabId={item.tabId} tabIds={item.tabIds} label={item.label} />
+          <ServicesNavDropdown key={item.id} id={item.id} tabId={item.tabId} tabIds={item.tabIds} label={item.label} />
         ) : (
           <NavItem key={item.label} item={item} />
         ),
