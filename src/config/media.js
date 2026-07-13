@@ -32,7 +32,7 @@ export const CLIENT_IMAGES = {
   panelElectrical: `${RP}/panel-electrical.jpg`,
   safetyUpgrades: `${RP}/safety-upgrades.jpg`,
   newConstruction: `${RP}/new-construction.jpg`,
-  remodelWiring: `${RP}/remodel-wiring.jpg`,
+  remodelWiring: `${RP}/remodeling projects card updated 1.jpg`,
   heroOne: `${RP}/residential-hero-1-optimized.webp`,
   heroTwo: `${RP}/residential-hero-2-optimized.webp`,
   heroThree: `${RP}/commercial-hero-optimized.webp`,

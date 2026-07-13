@@ -31,7 +31,8 @@ export default function ServicesNavDropdown({ id, tabId, tabIds, label, onNaviga
     ) ||
     (location.pathname === '/' &&
       (groupTabIds.some((entryId) => location.hash === `#services-${entryId}`) ||
-        location.hash === '#services'));
+        location.hash === '#services')) ||
+    (id === 'other-services' && location.pathname === '/services/other-services');
 
   const openDropdown = useCallback(() => {
     if (closeTimerRef.current) {
@@ -107,14 +108,16 @@ export default function ServicesNavDropdown({ id, tabId, tabIds, label, onNaviga
   );
 
   const handleTopLevelClick = useCallback(() => {
-    if (isGrouped) {
-      setOpen((prev) => !prev);
+    // All main navbar items (including grouped ones) go directly to their category pages
+    if (id === 'other-services') {
+      handleNavigate();
+      navigate('/services/other-services');
       return;
     }
-
+    
     handleNavigate();
     navigate(`/services/${primaryTabId}`);
-  }, [isGrouped, primaryTabId, navigate, handleNavigate]);
+  }, [primaryTabId, navigate, handleNavigate, id]);
 
   useEffect(() => {
     closeDropdown();
@@ -169,63 +172,58 @@ export default function ServicesNavDropdown({ id, tabId, tabIds, label, onNaviga
         onMouseEnter={openDropdown}
         onMouseLeave={scheduleClose}
       >
-        <li role="none">
-          <a
-            href={id === 'other-services' ? getServiceNavHref(id) : (isGrouped ? getServiceNavHref() : getServiceNavHref(primaryTabId))}
-            className="nav-dropdown-link nav-dropdown-link--all"
-            role="menuitem"
-            onClick={goToAllServices}
-          >
-            All {label} Services
-          </a>
-        </li>
         {tabs.map((entryTab) => (
           <Fragment key={entryTab.id}>
-            {isGrouped && (
-              <li role="presentation" className="nav-dropdown-divider">
-                <span className="nav-dropdown-group__label">{entryTab.title}</span>
-              </li>
-            )}
-            {isGrouped && (
+            {id === 'other-services' ? (
+              // For Other Services: only show clickable main category links, no sub-services
               <li role="none">
                 <a
                   href={getServiceNavHref(entryTab.id)}
-                  className={`nav-dropdown-link nav-dropdown-link--all${
+                  className={`nav-dropdown-link${
                     location.pathname === `/services/${entryTab.id}` ? ' is-active' : ''
                   }`}
                   role="menuitem"
                   onClick={goToServicePage(getServiceNavHref(entryTab.id))}
                 >
-                  All {entryTab.shortLabel ?? entryTab.tabLabel} Services
+                  {entryTab.title}
                 </a>
               </li>
-            )}
-            {entryTab.categories.map((category) => (
-              <Fragment key={`${entryTab.id}-${category.title}`}>
-                {!isGrouped && (
+            ) : (
+              // For all other services (Residential, Commercial, etc.): use full original rendering
+              <Fragment>
+                {isGrouped && (
                   <li role="presentation" className="nav-dropdown-divider">
-                    <span className="nav-dropdown-group__label">{category.title}</span>
+                    <span className="nav-dropdown-group__label">{entryTab.title}</span>
                   </li>
                 )}
-                {category.items.map((item) => {
-                  const itemPath = getServicePagePath(entryTab.id, item);
-                  const isItemActive = itemPath && location.pathname === itemPath;
+                {entryTab.categories.map((category) => (
+                  <Fragment key={`${entryTab.id}-${category.title}`}>
+                    {!isGrouped && (
+                      <li role="presentation" className="nav-dropdown-divider">
+                        <span className="nav-dropdown-group__label">{category.title}</span>
+                      </li>
+                    )}
+                    {category.items.map((item) => {
+                      const itemPath = getServicePagePath(entryTab.id, item);
+                      const isItemActive = itemPath && location.pathname === itemPath;
 
-                  return (
-                    <li key={`${entryTab.id}-${item}`} role="none">
-                      <a
-                        href={itemPath ?? '#'}
-                        className={`nav-dropdown-link${isItemActive ? ' is-active' : ''}`}
-                        role="menuitem"
-                        onClick={goToServicePage(itemPath)}
-                      >
-                        {item}
-                      </a>
-                    </li>
-                  );
-                })}
+                      return (
+                        <li key={`${entryTab.id}-${item}`} role="none">
+                          <a
+                            href={itemPath ?? '#'}
+                            className={`nav-dropdown-link${isItemActive ? ' is-active' : ''}`}
+                            role="menuitem"
+                            onClick={goToServicePage(itemPath)}
+                          >
+                            {item}
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </Fragment>
+                ))}
               </Fragment>
-            ))}
+            )}
           </Fragment>
         ))}
       </ul>

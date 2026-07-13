@@ -157,10 +157,10 @@ const SERVICE_DETAIL_IMAGE_OVERRIDES = {
   'new-construction:new-home-wiring': CLIENT_IMAGES.newConstruction,
   'new-construction:new-commercial-building-wiring': `${RP}/power-distribution-systems-optimized.jpg`,
   'new-construction:temporary-construction-power': CLIENT_IMAGES.commercialPower,
-  'new-construction:kitchen-remodel-wiring': CLIENT_IMAGES.remodelWiring,
-  'new-construction:bathroom-remodel-wiring': CLIENT_IMAGES.residentialRewire,
-  'new-construction:room-additions': CLIENT_IMAGES.newConstruction,
-  'new-construction:adu-electrical-installation': CLIENT_IMAGES.panelElectrical,
+  'new-construction:kitchen-remodel-wiring': `${RP}/Kitchen Remodeling pic updated1.jpg`,
+  'new-construction:bathroom-remodel-wiring': `${RP}/bathroom remodel wiring updated1.jpg`,
+  'new-construction:room-additions': `${RP}/Room additions updated1.jpg`,
+  'new-construction:adu-electrical-installation': `${RP}/ADU electrical installation updated1.jpg`,
   'safety-upgrades:electrical-safety-inspections': `${RP}/safety-upgrades.jpg`,
   'safety-upgrades:gfci-installation': `${RP}/safety-upgrades.jpg`,
   'safety-upgrades:afci-installation': `${RP}/circuit-breaker-replacement-optimized.jpg`,
@@ -169,7 +169,7 @@ const SERVICE_DETAIL_IMAGE_OVERRIDES = {
   'ev-chargers:tesla-charger-installation': `${RP}/ev-tesla-charger-installation-clean.jpg`,
   'ev-chargers:level-2-charger-installation': `${RP}/ev-level-2-charger-installation-clean.jpg`,
   'ev-chargers:home-charging-station-setup': `${RP}/ev-home-charging-station-setup-clean.jpg`,
-  'ev-chargers:circuit-installation': `${RP}/ev-circuit-installation-clean.jpg`,
+  'ev-chargers:circuit-installation': `${RP}/Circuit installation updated11.jpg`,
   'ev-chargers:permit-assistance': `${RP}/ev-permit-assistance-clean.jpg`,
 };
 

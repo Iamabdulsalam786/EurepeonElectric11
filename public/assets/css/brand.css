@@ -1030,10 +1030,16 @@ h2.fs_30,
   transform: translateY(0) !important;
 }
 
-.main-menu .navigation > li.nav-item-premium--dropdown > ul.nav-dropdown-menu > li {
+.main-menu .navigation > li.nav-item-premium--dropdown > ul.nav-dropdown-menu > li,
+.main-menu .navigation > li.nav-item-premium--dropdown > ul.nav-dropdown-menu > li:hover,
+.main-menu .navigation > li.nav-item-premium--dropdown > ul.nav-dropdown-menu > li:active {
   position: relative !important;
   width: 100% !important;
   float: none !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+  -ms-transform: none !important;
+  transition: none !important;
 }
 
 /* Flat dropdown links — every item is a direct clickable anchor */
@@ -1056,7 +1062,10 @@ h2.fs_30,
   cursor: pointer !important;
   pointer-events: auto !important;
   z-index: 2 !important;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  transition: none !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+  -ms-transform: none !important;
 }
 
 .main-menu .navigation > li.nav-item-premium--dropdown > ul.nav-dropdown-menu > li > a.nav-dropdown-link {
@@ -1075,15 +1084,24 @@ h2.fs_30,
   border-bottom: none !important;
   border-radius: var(--radius-sm) !important;
   text-decoration: none !important;
-  transition: background var(--transition-fast), color var(--transition-fast);
+  transition: none !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+  -ms-transform: none !important;
 }
 
 .main-menu .navigation > li.nav-item-premium--dropdown > ul.nav-dropdown-menu > li > a.nav-dropdown-link:hover,
 .main-menu .navigation > li.nav-item-premium--dropdown > ul.nav-dropdown-menu > li > a.nav-dropdown-link.is-active,
 .main-menu .navigation > li.nav-item-premium--dropdown > ul.nav-dropdown-menu a.nav-dropdown-link:hover,
-.main-menu .navigation > li.nav-item-premium--dropdown > ul.nav-dropdown-menu a.nav-dropdown-link.is-active {
+.main-menu .navigation > li.nav-item-premium--dropdown > ul.nav-dropdown-menu a.nav-dropdown-link.is-active,
+.main-menu .navigation > li.nav-item-premium--dropdown > ul.nav-dropdown-menu > li > a.nav-dropdown-link:active,
+.main-menu .navigation > li.nav-item-premium--dropdown > ul.nav-dropdown-menu a.nav-dropdown-link:active {
   color: var(--brand-primary) !important;
   background: var(--brand-light) !important;
+  transform: none !important;
+  -webkit-transform: none !important;
+  -ms-transform: none !important;
+  transition: none !important;
 }
 
 .main-menu .navigation > li.nav-item-premium--dropdown > ul.nav-dropdown-menu > li > a.nav-dropdown-link--all {
@@ -1197,6 +1215,8 @@ h2.fs_30,
   width: 100%;
   display: block;
 }
+
+
 
 .overlay-anim-black-bg.overlay-animation:after,
 .image_block_eight .overlay-anim-black-bg:after,
@@ -1375,6 +1395,19 @@ h2.fs_30,
 .services-premium__tabs--primary {
   gap: 12px;
   margin-bottom: 28px;
+}
+
+.service-details-premium__wide-banner {
+  width: 130%;
+  margin-left: -15%; /* center it since we increased width by 30% */
+}
+
+.service-details-premium__wide-banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 75vh; /* decrease height by ~25% */
+  object-fit: cover;
 }
 
 .services-premium__subnav {
@@ -6433,6 +6466,20 @@ a.contact-premium__card:hover {
   .service-list-nav li a {
     font-size: 16px;
   }
+}
+
+/* EV Charging wide banner */
+.service-details-premium__wide-banner {
+  width: 100%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  max-width: 1200px; /* Match the auto-container's max width */
+}
+
+.service-details-premium__wide-banner img {
+  width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px;
 }
 
 /* Service detail video */

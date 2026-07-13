@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { SERVICE_TABS } from '../config/services';
 import { SITE } from '../config/site';
 import { CATEGORY_IMAGES } from '../config/media';
+const RP = '/assets/images/RelevantPics';
 
 const DEFAULT_SERVICE_IMAGE = CATEGORY_IMAGES.residential.default;
 const animDurations = [800, 1000, 1200, 800, 1000, 1200];
@@ -76,7 +77,11 @@ export default function ServicesSection() {
                 <Link to={`/services/${tab.id}`} className="service-auhtor-boxarea service-auhtor-boxarea--link">
                   <div className="img1">
                     <img
-                      src={tab.image ?? DEFAULT_SERVICE_IMAGE}
+                      src={
+                        tab.id === 'new-construction'
+                          ? `${RP}/construction and remodeling pic updated 1.jpg`
+                          : tab.image ?? DEFAULT_SERVICE_IMAGE
+                      }
                       alt={tab.title}
                       loading="lazy"
                       style={{

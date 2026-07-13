@@ -1,7 +1,7 @@
 import { useCallback, useId, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SERVICE_TABS } from '../config/services';
-import { getServicePagePath } from '../config/servicePages';
+import { getServicePagePath, getCategoryPath } from '../config/servicePages';
 import { getServiceNavHref, parseServiceHash, scrollToServicesSection } from '../utils/serviceNavigation';
 import { parseInternalHref } from '../utils/mobileMenu';
 
@@ -25,7 +25,8 @@ export default function MobileServiceGroupNav({ id, tabId, tabIds, label, onNavi
     ) ||
     (location.pathname === '/' &&
       (groupTabIds.some((entryId) => location.hash === `#services-${entryId}`) ||
-        location.hash === '#services'));
+        location.hash === '#services')) ||
+    (id === 'other-services' && location.pathname === '/services/other-services');
 
   const scrollToServiceTarget = useCallback((hash) => {
     const { sectionId } = parseServiceHash(hash);
@@ -78,6 +79,17 @@ export default function MobileServiceGroupNav({ id, tabId, tabIds, label, onNavi
     [navigate, onNavigate],
   );
 
+  const handleTopLevelClick = useCallback(() => {
+    // All main navbar items go directly to their category pages
+    if (id === 'other-services') {
+      onNavigate?.();
+      navigate('/services/other-services');
+      return;
+    }
+    onNavigate?.();
+    navigate(`/services/${primaryTabId}`);
+  }, [id, primaryTabId, navigate, onNavigate]);
+
   if (!tabs.length) return null;
 
   return (
@@ -90,69 +102,55 @@ export default function MobileServiceGroupNav({ id, tabId, tabIds, label, onNavi
         className={`mobile-nav-link mobile-nav-link--toggle${isGroupActive ? ' is-active' : ''}`}
         aria-expanded={open}
         aria-controls={menuId}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={handleTopLevelClick}
       >
         <span>{label}</span>
         <i className={`fas fa-chevron-right mobile-nav-caret${open ? ' is-open' : ''}`} aria-hidden="true" />
       </button>
 
       <ul id={menuId} className="mobile-nav-sublist" hidden={!open}>
-        <li>
-          <button
-            type="button"
-            className={`mobile-nav-sublink${
-              groupTabIds.some((entryId) => location.pathname === `/services/${entryId}`) ||
-              (location.pathname === '/' &&
-                (groupTabIds.some((entryId) => location.hash === `#services-${entryId}`) ||
-                  location.hash === '#services'))
-                ? ' is-active'
-                : ''
-            }`}
-            onClick={goToAllServices}
-          >
-            All {label} Services
-          </button>
-        </li>
-
         {tabs.map((entryTab) => (
-          <li key={entryTab.id} className="mobile-nav-group">
-            <span className="mobile-nav-group__label">
-              {isGrouped ? entryTab.title : entryTab.categories[0]?.title}
-            </span>
-            <ul className="mobile-nav-group__items">
-              {isGrouped && (
-                <li>
-                  <button
-                    type="button"
-                    className={`mobile-nav-sublink mobile-nav-sublink--leaf${
-                      location.pathname === `/services/${entryTab.id}` ? ' is-active' : ''
-                    }`}
-                    onClick={() => goToCategoryPage(entryTab.id)}
-                  >
-                    All {entryTab.shortLabel ?? entryTab.tabLabel} Services
-                  </button>
-                </li>
-              )}
-              {entryTab.categories.flatMap((category) =>
-                category.items.map((item) => {
-                  const itemPath = getServicePagePath(entryTab.id, item);
-                  const isItemActive = itemPath && location.pathname === itemPath;
+          id === 'other-services' ? (
+            // For Other Services on mobile: only show clickable main category links
+            <li key={entryTab.id}>
+              <button
+                type="button"
+                className={`mobile-nav-sublink${
+                  location.pathname === `/services/${entryTab.id}` ? ' is-active' : ''
+                }`}
+                onClick={() => goToCategoryPage(entryTab.id)}
+              >
+                {entryTab.title}
+              </button>
+            </li>
+          ) : (
+            // For all other services: original full rendering
+            <li key={entryTab.id} className="mobile-nav-group">
+              <span className="mobile-nav-group__label">
+                {isGrouped ? entryTab.title : entryTab.categories[0]?.title}
+              </span>
+              <ul className="mobile-nav-group__items">
+                {entryTab.categories.flatMap((category) =>
+                  category.items.map((item) => {
+                    const itemPath = getServicePagePath(entryTab.id, item);
+                    const isItemActive = itemPath && location.pathname === itemPath;
 
-                  return (
-                    <li key={`${entryTab.id}-${item}`}>
-                      <button
-                        type="button"
-                        className={`mobile-nav-sublink mobile-nav-sublink--leaf${isItemActive ? ' is-active' : ''}`}
-                        onClick={() => goToServicePage(entryTab.id, item)}
-                      >
-                        {item}
-                      </button>
-                    </li>
-                  );
-                }),
-              )}
-            </ul>
-          </li>
+                    return (
+                      <li key={`${entryTab.id}-${item}`}>
+                        <button
+                          type="button"
+                          className={`mobile-nav-sublink mobile-nav-sublink--leaf${isItemActive ? ' is-active' : ''}`}
+                          onClick={() => goToServicePage(entryTab.id, item)}
+                        >
+                          {item}
+                        </button>
+                      </li>
+                    );
+                  }),
+                )}
+              </ul>
+            </li>
+          )
         ))}
       </ul>
     </li>

@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { SITE } from '../config/site';
 import { SERVICE_TABS } from '../config/services';
+import { CATEGORY_IMAGES } from '../config/media';
 import {
   getCategoryBySlug,
   getCategoryPath,
   getServicePageBySlug,
   getServicesByGroup,
   getServicesForCategory,
+  getServicePagePath,
 } from '../config/servicePages';
 import { loadPageEnhancements } from '../utils/loadScripts';
 import { initializeTemplate } from '../utils/initTemplate';
@@ -136,6 +138,8 @@ export default function ServiceDetailPage() {
   const isCategoryPage = Boolean(groupId && !serviceSlug && tab);
   const isSubcategoryPage = Boolean(groupId && category && tab);
   const categoryServices = category ? getServicesForCategory(groupId, category.title) : [];
+  const hasSingleCategory = tab?.categories?.length === 1;
+  const singleCategoryServices = hasSingleCategory ? getServicesForCategory(groupId, tab.categories[0].title) : [];
 
   useEffect(() => {
     if (!page && !isCategoryPage && !isSubcategoryPage) return undefined;
@@ -197,16 +201,39 @@ export default function ServiceDetailPage() {
         <section className="service-details service-details-premium service-category-premium p_relative sec-pad">
           <div className="pattern-layer-2" style={{ backgroundImage: 'url(/assets/images/shape/shape-24.png)' }} />
           <div className="auto-container">
-            <div className="service-card-nav service-card-nav--category">
-              <div className="sec-title p_relative mb_45 centred">
-                <h5 className="d_block fs_17 lh_25 fw_medium mb_9">{groupLabel} Services</h5>
-                <h2 className="d_block fs_40 lh_50 fw_bold">{groupTitle}</h2>
-                <p className="service-card-nav__lead">
-                  Choose a service category below to browse available services and view full details.
-                </p>
+            {hasSingleCategory ? (
+              <div className="service-list-nav__panel">
+                <div className="sec-title p_relative mb_45 centred">
+                  <h5 className="d_block fs_17 lh_25 fw_medium mb_9">{groupLabel} Services</h5>
+                  <h2 className="d_block fs_40 lh_50 fw_bold">{tab.categories[0].title}</h2>
+                  <p className="service-card-nav__lead">
+                    {groupId === 'ev-chargers'
+                      ? 'Choose from our professional EV charger installation services, including Level 2 chargers, Tesla chargers, dedicated circuits, and permit assistance — all designed to keep your electric vehicle powered safely and reliably.'
+                      : 'Select a service below to view details, featured images, and project information.'}
+                  </p>
+                </div>
+                <figure className="image-box service-details-premium__wide-banner mt_40 mb_40">
+                  <img
+                    src={tab.categories[0].image ?? tab.image}
+                    alt={`${tab.categories[0].title} — ${SITE.shortName}`}
+                    loading="lazy"
+                    style={{ objectPosition: tab.categories[0].imagePosition ?? 'center' }}
+                  />
+                </figure>
+                <ServiceListNav pages={singleCategoryServices} />
               </div>
-              <ServiceCategoryCards tab={tab} groupId={groupId} />
-            </div>
+            ) : (
+              <div className="service-card-nav service-card-nav--category">
+                <div className="sec-title p_relative mb_45 centred">
+                  <h5 className="d_block fs_17 lh_25 fw_medium mb_9">{groupLabel} Services</h5>
+                  <h2 className="d_block fs_40 lh_50 fw_bold">{groupTitle}</h2>
+                  <p className="service-card-nav__lead">
+                    Choose a service category below to browse available services and view full details.
+                  </p>
+                </div>
+                <ServiceCategoryCards tab={tab} groupId={groupId} />
+              </div>
+            )}
           </div>
         </section>
       </>
@@ -245,6 +272,14 @@ export default function ServiceDetailPage() {
                   Select a service below to view details, featured images, and project information.
                 </p>
               </div>
+              <figure className="image-box service-details-premium__wide-banner mt_40 mb_40">
+                <img
+                  src={category.image ?? tab.image}
+                  alt={`${category.title} — ${SITE.shortName}`}
+                  loading="lazy"
+                  style={{ objectPosition: category.imagePosition ?? 'center' }}
+                />
+              </figure>
               <ServiceListNav pages={categoryServices} />
               <div className="service-list-nav__back mt_30 centred">
                 <Link to={`/services/${groupId}`} className="service-list-nav__back-link">

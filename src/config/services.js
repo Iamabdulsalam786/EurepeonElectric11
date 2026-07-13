@@ -288,11 +288,11 @@ export const SERVICE_TABS = [
         image: CATEGORY_IMAGES.ev.charging,
         imagePosition: 'center',
         items: [
-          'Tesla charger installation',
           'Level 2 charger installation',
           'Home charging station setup',
           'Circuit installation',
           'Permit assistance',
+          'Tesla charger installation',
         ],
       },
       {
